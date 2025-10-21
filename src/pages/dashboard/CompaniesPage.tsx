@@ -1,10 +1,11 @@
 import CompanyList from "@/components/company/CompanyList";
+import { Card } from "@/components/ui/card";
 
 const CompaniesPage = () => {
   return (
-    <div className="p-6">
+    <Card className="p-6">
       <CompanyList />
-    </div>
+    </Card>
   );
 };
 
