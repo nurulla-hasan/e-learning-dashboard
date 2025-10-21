@@ -1,5 +1,4 @@
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
   Table,
@@ -9,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Search, Edit } from "lucide-react";
+import { Search } from "lucide-react";
 import useSmartFetchHook from "@/hooks/useSmartFetchHook";
 import { useGetUsersQuery } from "@/redux/features/user/userApi";
 import type { IUser } from "@/types/user.type";
@@ -17,6 +16,7 @@ import type { IUser } from "@/types/user.type";
 import CustomPagination2 from "../../../tools/CustomPagination2";
 import ListLoading from "../loader/ListLoading";
 import ServerErrorCard from "../card/ServerErrorCard";
+import ToggleButton from "./ToggleButton";
 
 const UserList = () => {
   const {
@@ -25,6 +25,9 @@ const UserList = () => {
     currentPage,
     setCurrentPage,
     totalPages,
+    total,
+    page,
+    limit,
     items,
     isLoading,
     isError,
@@ -49,7 +52,7 @@ const UserList = () => {
           <div className="flex items-center">
             <span className="text-sm sm:text-base text-gray-600">Total:</span>
             <span className="ml-2 px-3 py-1 bg-blue-100 text-blue-800 font-semibold rounded-full text-sm">
-              {items?.length || 0}
+              {total}
             </span>
           </div>
         </div>
@@ -95,7 +98,7 @@ const UserList = () => {
                       className={index % 2 === 0 ? "bg-gray-50" : "bg-muted/30"}
                     >
                       <TableCell className="w-16 text-muted-foreground">
-                        {index + 1}
+                        {index + 1 + (page - 1) * limit}
                       </TableCell>
                       <TableCell className="min-w-32 font-medium text-foreground">
                         {user.fullName}
@@ -113,17 +116,17 @@ const UserList = () => {
                         <div className="flex items-center gap-2">
                           <Badge
                             variant="secondary"
-                            className="bg-green-100 text-green-800 hover:bg-green-100 border-green-200"
+                            className={
+                              user.status === "BLOCKED"
+                                ? "bg-red-100 text-red-800 hover:bg-red-100 border-red-200"
+                                : user.status === "PENDING"
+                                ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100 border-yellow-200"
+                                : "bg-green-100 text-green-800 hover:bg-green-100 border-green-200"
+                            }
                           >
                             {user.status}
                           </Badge>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-6 w-6 p-0 text-muted-foreground hover:text-foreground"
-                          >
-                            <Edit className="h-3 w-3" />
-                          </Button>
+                          <ToggleButton user={user} />
                         </div>
                       </TableCell>
                     </TableRow>
@@ -149,7 +152,7 @@ const UserList = () => {
         <CustomPagination2
           currentPage={currentPage}
           totalPages={totalPages}
-          onPageChange={setCurrentPage}
+          setCurrentPage={setCurrentPage}
         />
       </div>
     </div>

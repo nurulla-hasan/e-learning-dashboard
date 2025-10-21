@@ -93,7 +93,35 @@ export const userApi = apiSlice.injectEndpoints({
       },
     }),
 
+    // Update user block status
+    updateUserStatus: builder.mutation({
+      query: ({ userId }: { userId: string }) => ({
+        url: `/admin/users/${userId}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: (result) => {
+        if (result?.success) {
+          return [TagTypes.users];
+        }
+        return [];
+      },
+      async onQueryStarted(_arg, { queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          SuccessToast("User status updated successfully");
+        } catch (err: any) {
+          const status = err?.error?.status;
+          const message = err?.error?.data?.message || "Something Went Wrong";
+          if (status === 500) {
+            ErrorToast("Something Went Wrong");
+          }
+          else {
+            ErrorToast(message);
+          }
+        }
+      },
+    }),
   }),
 });
 
-export const { useGetUsersQuery, useGetMeQuery, useUpdateProfileMutation } = userApi;
+export const { useGetUsersQuery, useGetMeQuery, useUpdateProfileMutation, useUpdateUserStatusMutation } = userApi;

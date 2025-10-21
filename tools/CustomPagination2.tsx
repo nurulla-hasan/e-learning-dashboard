@@ -70,15 +70,23 @@ const usePagination = ({
 interface CustomPaginationProps {
   currentPage: number;
   totalPages: number;
-  onPageChange: (page: number) => void;
+  setCurrentPage: (page: number) => void;
+  length?: number;
 }
 
 const CustomPagination2: React.FC<CustomPaginationProps> = ({
   currentPage,
   totalPages,
-  onPageChange,
+  setCurrentPage,
+  length,
 }) => {
   const paginationRange = usePagination({ currentPage, totalPages });
+
+  React.useEffect(() => {
+    if (length === 0 && currentPage > 1) {
+      setCurrentPage(1);
+    }
+  }, [length, currentPage, setCurrentPage]);
 
   if (currentPage === 0 || paginationRange.length < 2) {
     return null;
@@ -92,7 +100,7 @@ const CustomPagination2: React.FC<CustomPaginationProps> = ({
             href="#"
             onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
               e.preventDefault();
-              onPageChange(Math.max(currentPage - 1, 1));
+              setCurrentPage(Math.max(currentPage - 1, 1));
             }}
             className={
               currentPage === 1 ? "pointer-events-none opacity-50" : ""
@@ -115,7 +123,7 @@ const CustomPagination2: React.FC<CustomPaginationProps> = ({
                 href="#"
                 onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                   e.preventDefault();
-                  onPageChange(pageNumber as number);
+                  setCurrentPage(pageNumber as number);
                 }}
                 isActive={currentPage === pageNumber}
               >
@@ -129,7 +137,7 @@ const CustomPagination2: React.FC<CustomPaginationProps> = ({
             href="#"
             onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
               e.preventDefault();
-              onPageChange(Math.min(currentPage + 1, totalPages));
+              setCurrentPage(Math.min(currentPage + 1, totalPages));
             }}
             className={
               currentPage === totalPages ? "pointer-events-none opacity-50" : ""

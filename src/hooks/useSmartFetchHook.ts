@@ -13,6 +13,7 @@ interface Meta {
   totalPages?: number;
   totalPage?: number;
   limit?: number;
+  page?: number;
 }
 
 interface QueryHookResult<T = unknown> {
@@ -34,7 +35,10 @@ interface UseSmartFetchHookReturn<T = unknown> {
   currentPage: number;
   setCurrentPage: (page: number) => void;
   totalPages: number;
+  total: number;
   items: T[];
+  limit: number;
+  page: number;
   isLoading: boolean;
   isError: boolean;
   filterParams: Record<string, unknown>;
@@ -79,9 +83,9 @@ const useSmartFetchHook = <T = unknown>(
 
   const items = data?.data || [];
   const meta = data?.meta;
-  
-  // const total = meta?.total || 0;
-  // const limit = (queryParams as any)?.limit || meta?.limit;
+  const total = meta?.total || 0;
+  const page = meta?.page || 0;
+  const limit = (queryParams as any)?.limit || meta?.limit;
   const totalPages = meta?.totalPages || 1;
 
   return {
@@ -90,6 +94,9 @@ const useSmartFetchHook = <T = unknown>(
     currentPage,
     setCurrentPage,
     totalPages,
+    total,
+    limit,
+    page,
     items,
     isLoading,
     isError,
