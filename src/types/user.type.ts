@@ -1,12 +1,13 @@
 export type TBlockStatus = "blocked" | "unblocked";
 
 export type IUser = {
-  _id: string;
+  id: string;
   fullName: string;
   email: string;
-  phone: string;
-  profileImg: string;
+  dateOfBirth: string | null;
+  role: string;
   status: string;
+  createdAt: string;
 };
 
 

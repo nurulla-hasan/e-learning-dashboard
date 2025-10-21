@@ -1,0 +1,105 @@
+{
+    "success": true,
+    "statusCode": 200,
+    "message": "User list retrieved successfully",
+    "data": [
+        {
+            "id": "68edf5c2fc99b7269abc8f7c",
+            "fullName": "Zephr Dillon",
+            "email": "tipamuser@mailinator.com",
+            "dateOfBirth": null,
+            "role": "STUDENT",
+            "status": "PENDING",
+            "createdAt": "2025-10-14T07:03:30.889Z"
+        },
+        {
+            "id": "68edf54dfc99b7269abc8f7b",
+            "fullName": "Ivan Espinoza",
+            "email": "hugutyxazo@mailinator.com",
+            "dateOfBirth": null,
+            "role": "STUDENT",
+            "status": "PENDING",
+            "createdAt": "2025-10-14T07:01:33.691Z"
+        },
+        {
+            "id": "68edf4bafc99b7269abc8f7a",
+            "fullName": "Joel Zimmerman",
+            "email": "vapu@mailinator.com",
+            "dateOfBirth": null,
+            "role": "STUDENT",
+            "status": "PENDING",
+            "createdAt": "2025-10-14T06:59:06.135Z"
+        },
+        {
+            "id": "68edf46cfc99b7269abc8f79",
+            "fullName": "Caryn Walters",
+            "email": "qyja@mailinator.com",
+            "dateOfBirth": null,
+            "role": "STUDENT",
+            "status": "PENDING",
+            "createdAt": "2025-10-14T06:57:48.051Z"
+        },
+        {
+            "id": "68edf2e40c18ab198e814dfe",
+            "fullName": "Noah Mcdowell",
+            "email": "moyeni4774@djkux.com",
+            "dateOfBirth": null,
+            "role": "STUDENT",
+            "status": "PENDING",
+            "createdAt": "2025-10-14T06:51:16.793Z"
+        },
+        {
+            "id": "68edf2ae0c18ab198e814dfd",
+            "fullName": "efaz khondhoker",
+            "email": "kegidis723@capiena.com",
+            "dateOfBirth": null,
+            "role": "STUDENT",
+            "status": "PENDING",
+            "createdAt": "2025-10-14T06:50:22.111Z"
+        },
+        {
+            "id": "68edf2780c18ab198e814dfb",
+            "fullName": "efaz khondhoker",
+            "email": "ferico2184@djkux.com",
+            "dateOfBirth": null,
+            "role": "STUDENT",
+            "status": "PENDING",
+            "createdAt": "2025-10-14T06:49:28.396Z"
+        },
+        {
+            "id": "68edf1ee0c18ab198e814df7",
+            "fullName": "efaz khondhoker",
+            "email": "fefobin346@capiena.com",
+            "dateOfBirth": null,
+            "role": "STUDENT",
+            "status": "PENDING",
+            "createdAt": "2025-10-14T06:47:10.345Z"
+        },
+        {
+            "id": "68eded63efdff0a0753405bd",
+            "fullName": "efaz khondhoker",
+            "email": "efazkhg@gmail.com",
+            "dateOfBirth": null,
+            "role": "STUDENT",
+            "status": "PENDING",
+            "createdAt": "2025-10-14T06:27:47.218Z"
+        },
+        {
+            "id": "68edecf1efdff0a0753405bc",
+            "fullName": "Keaton Mccormick",
+            "email": "wycuwywu@mailinator.com",
+            "dateOfBirth": null,
+            "role": "STUDENT",
+            "status": "PENDING",
+            "createdAt": "2025-10-14T06:25:53.901Z"
+        }
+    ],
+    "meta": {
+        "page": 1,
+        "limit": 10,
+        "total": 16,
+        "totalPages": 2,
+        "hasNextPage": true,
+        "hasPrevPage": false
+    }
+}

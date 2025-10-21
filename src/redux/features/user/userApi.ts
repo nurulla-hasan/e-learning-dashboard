@@ -2,24 +2,33 @@
 
 import TagTypes from "../../../constant/tagType.constant";
 import { ErrorToast, SuccessToast } from "../../../helper/ValidationHelper";
-import type { IParam } from "../../../types/global.type";
+// import type { IParam } from "../../../types/global.type";
 import { apiSlice } from "../api/apiSlice";
 import { SetUser } from "./userSlice";
 
 export const userApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
+
     getUsers: builder.query({
       query: (args) => {
+        // const params = new URLSearchParams();
+        // if (args !== undefined && args.length > 0) {
+        //   args.forEach((item: IParam) => {
+        //     if (item.value) {
+        //       params.append(item.name, item.value);
+        //     }
+        //   });
+        // }
         const params = new URLSearchParams();
-        if (args !== undefined && args.length > 0) {
-          args.forEach((item: IParam) => {
-            if (item.value) {
-              params.append(item.name, item.value);
-            }
-          });
-        }
+          if (args) {
+                Object.entries(args).forEach(([key, value]) => {
+                 if (value) {
+                params.append(key, value as string);
+              }
+            });
+          }
         return {
-          url: "/user/get-users",
+          url: "/admin/users",
           method: "GET",
           params: params,
         };
@@ -27,6 +36,8 @@ export const userApi = apiSlice.injectEndpoints({
       keepUnusedDataFor: 600,
       providesTags: [TagTypes.users],
     }),
+
+    // 
     getMe: builder.query({
       query: () => ({
         url: "/user/get-me",
@@ -51,6 +62,8 @@ export const userApi = apiSlice.injectEndpoints({
         }
       },
     }),
+
+    //
     updateProfile: builder.mutation({
       query: (data) => ({
         url: `/user/edit-my-profile`,
@@ -79,6 +92,7 @@ export const userApi = apiSlice.injectEndpoints({
         }
       },
     }),
+
   }),
 });
 
