@@ -1,4 +1,5 @@
-export type TBlockStatus = "blocked" | "unblocked";
+export type TBlockStatus = "BLOCKED" | "ACTIVE";
+
 
 export type IUser = {
   id: string;
@@ -7,7 +8,7 @@ export type IUser = {
   password?: string; // Optional as it might not always be included
   dateOfBirth: string | null;
   role: string;
-  status: string;
+  status: TBlockStatus;
   isVerified: boolean;
   isProfileComplete: boolean;
   address: string | null;
@@ -42,4 +43,17 @@ export type IUserDataSource = {
   profileImg: string;
   status: string;
 }
+
+export type IUserWithCompany = IUser & {
+  company: {
+    id: string;
+    userId: string;
+    companyName: string;
+    companyEmail: string;
+    companyAddress: string;
+    companyVatId?: string;
+    createdAt: string;
+    updatedAt: string;
+  };
+};
 

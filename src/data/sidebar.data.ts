@@ -6,6 +6,7 @@ export const menuItems: IMenuItem[] = [
   { name: 'Dashboard', icon: LayoutDashboard, href: '/' },
   { name: 'Orders', icon: BookImage, href: '/orders' },
   { name: 'Users', icon: Users, href: '/users' },
+  { name: 'Companies', icon: Users, href: '/companies' },
   { name: 'Category', icon: ChartBarStacked , href: '/categories' },
   { name: 'Courses', icon: Ratio , href: '/courses' },
   {

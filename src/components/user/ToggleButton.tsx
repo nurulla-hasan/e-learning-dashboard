@@ -11,8 +11,8 @@ const ToggleButton = ({user}: {user: IUser}) => {
   const handleToggleUserStatus = async (userId: string) => {
     try {
       await updateUserStatus({ userId }).unwrap();
-    } catch (error) {
-      console.error("Failed to update user status:", error);
+    } catch {
+    //   console.log("Failed to update user status:", error);
     }
   };
   return (

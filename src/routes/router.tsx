@@ -29,6 +29,7 @@ import UpdateTestPage from "@/pages/test/UpdateTestPage";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import PublicRoute from "./PublicRoute";
 import PrivateRoute from "./PrivateRoute";
+import CompaniesPage from "@/pages/dashboard/CompaniesPage";
 
 
 const router = createBrowserRouter([
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
       {
         path: "users",
         element: <UsersPage />,
+      },
+      {
+        path: "companies",
+        element: <CompaniesPage />,
       },
       {
         path: "orders",
