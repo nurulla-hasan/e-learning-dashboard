@@ -34,6 +34,25 @@ export const courseApi = apiSlice.injectEndpoints({
       invalidatesTags: [TagTypes.courses],
     }),
 
+    // Get single course
+    getSingleCourse: builder.query({
+      query: (id: string) => ({
+        url: `/courses/${id}`,
+        method: "GET",
+      }),
+      providesTags: [TagTypes.courses],
+    }),
+
+    // Update course
+    updateCourse: builder.mutation({
+      query: ({ id, bodyData }: { id: string; bodyData: FormData }) => ({
+        url: `/courses/${id}`,
+        method: "PATCH",
+        body: bodyData,
+      }),
+      invalidatesTags: [TagTypes.courses],
+    }),
+
     // Delete course
     deleteCourse: builder.mutation({
       query: (id) => ({
@@ -46,5 +65,11 @@ export const courseApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetCoursesQuery, useCreateCourseMutation, useDeleteCourseMutation } =
+export const { 
+  useGetCoursesQuery,
+   useCreateCourseMutation,
+    useGetSingleCourseQuery,
+     useUpdateCourseMutation,
+      useDeleteCourseMutation 
+    } =
   courseApi;

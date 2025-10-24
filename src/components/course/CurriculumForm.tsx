@@ -321,7 +321,7 @@ const CurriculumForm: React.FC<ICurriculumFormProps> = ({
 
             {selectedSection && (
               <Card className="border-0 md:border p-0 md:p-6">
-                <CardHeader className="p-0 md:p-6 shadow-none md:shadow-sm">
+                <CardHeader className="p-0 md:p-6 shadow-none md:shadow-sm rounded-lg">
                   <CardTitle>Tests</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4 p-0 md:p-6">

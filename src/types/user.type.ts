@@ -1,4 +1,4 @@
-export type TBlockStatus = "BLOCKED" | "ACTIVE";
+export type TBlockStatus = "BLOCKED" | "ACTIVE" | "PENDING";
 
 
 export type IUser = {

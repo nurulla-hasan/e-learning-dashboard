@@ -51,6 +51,7 @@ const MenuItem: React.FC<SidebarNavItemProps> = ({ item, level = 0, setSidebarOp
           {item.submenu?.map((child: IMenuItem) => (
             // <MenuItem key={child.title} item={child} level={level + 1} />
             <Button
+              key={child.name}
               variant="ghost"
               onClick={() => handleNavigate(child?.href as string)}
               className={cn(
