@@ -10,25 +10,24 @@ import {
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { Trash2 } from "lucide-react";
-import { useDeleteCourseMutation } from "@/redux/features/course/courseApi";
+import { useDeleteTestMutation } from "@/redux/features/test/testApi";
 import { ErrorToast, SuccessToast } from "@/helper/ValidationHelper";
 
-const DeleteCourseModal = ({ courseId }: { courseId: string }) => {
+const DeleteTestModal = ({ testId }: { testId: string }) => {
   const [open, setOpen] = useState(false);
-  const [deleteCourse, { isLoading: deleteLoading }] =
-    useDeleteCourseMutation();
+  const [deleteTest, { isLoading: deleteLoading }] =
+    useDeleteTestMutation();
 
   const handleDelete = async (id: string) => {
     try {
-      await deleteCourse(id).unwrap();
+      await deleteTest(id).unwrap();
       setOpen(false);
-      SuccessToast("Course deleted successfully");
+      SuccessToast("Test deleted successfully");
     } catch (error) {
       console.log(error);
-      ErrorToast("Failed to delete course");
+      ErrorToast("Failed to delete test");
     }
   };
-
 
   return (
     <div>
@@ -47,7 +46,7 @@ const DeleteCourseModal = ({ courseId }: { courseId: string }) => {
           showCloseButton={false}
         >
           <DialogHeader>
-            <DialogTitle>Are you sure, you want to delete?</DialogTitle>
+            <DialogTitle>Are you sure, you want to delete this test?</DialogTitle>
           </DialogHeader>
 
           <DialogFooter className="flex justify-end gap-2">
@@ -61,9 +60,7 @@ const DeleteCourseModal = ({ courseId }: { courseId: string }) => {
             <Button
               disabled={deleteLoading}
               variant="destructive"
-              onClick={() => {
-                handleDelete(courseId);
-              }}
+              onClick={() => handleDelete(testId)}
             >
               {deleteLoading ? "Deleting..." : "Yes"}
             </Button>
@@ -74,4 +71,4 @@ const DeleteCourseModal = ({ courseId }: { courseId: string }) => {
   );
 };
 
-export default DeleteCourseModal;
+export default DeleteTestModal;

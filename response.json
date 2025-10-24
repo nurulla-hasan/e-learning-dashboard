@@ -1,42 +1,154 @@
 {
-  "courseTitle": "Golap Hasan Course",
-  "courseShortDescription": "Learn design from scratch.",
-  "courseDescription": "Full UI/UX",
-  "courseLevel": "Beginner",
-  "categoryId": "68c7adabfa864223d9f28fa9",
-  "price": 200,
-  "discountPrice": 150,
-  "skillLevel": "BEGINNER",
-  "difficulty": "EASY",
-  "instructorName": "John Doe",
-  "instructorDesignation": "Senior Designer",
-  "instructorDescription": "10 years exp.",
-  "sections": [
-    {
-      "title": "Introduction",
-      "order": 1,
-      "lessons": [
+    "success": true,
+    "statusCode": 200,
+    "message": "Test list retrieved successfully",
+    "data": [
         {
-          "title": "Welcome",
-          "order": 1,
-          "tempKey": "lesson1"
+            "id": "68fb4c7a2f0839527735a6c4",
+            "title": "Final Examination Golap",
+            "description": "Test your knowledge concepts from chapters 1 to 5",
+            "passingScore": 70,
+            "totalMarks": 15,
+            "timeLimit": 60,
+            "isPublished": false,
+            "createdAt": "2025-10-24T09:52:58.219Z",
+            "updatedAt": "2025-10-24T09:52:58.219Z",
+            "sectionId": null,
+            "totalQuestions": 5,
+            "totalAttempts": 0,
+            "questionTypes": [
+                "MCQ",
+                "TRUE_FALSE",
+                "SHORT_ANSWER"
+            ]
         },
         {
-          "title": "Srart your journey",
-          "order": 2,
-          "tempKey": "lesson2"
+            "id": "68fa100e221bcc8a2d62b786",
+            "title": "Final Examination",
+            "description": "Test your knowledge concepts from chapters 1 to 5",
+            "passingScore": 70,
+            "totalMarks": 15,
+            "timeLimit": 60,
+            "isPublished": false,
+            "createdAt": "2025-10-23T11:22:54.404Z",
+            "updatedAt": "2025-10-23T12:16:52.466Z",
+            "sectionId": "68fa1cb7907852d98bd98d7c",
+            "sectionTitle": "ffdgfrgtreg",
+            "courseId": "68fa1cb4907852d98bd98d79",
+            "courseTitle": "Omnis sapiente eu non sit quisquam reprehenderit officia nemo id odit",
+            "courseLevel": "Beginner",
+            "categoryName": "IT & Software",
+            "totalQuestions": 5,
+            "totalAttempts": 0,
+            "questionTypes": [
+                "MCQ",
+                "TRUE_FALSE",
+                "SHORT_ANSWER"
+            ]
         },
         {
-          "title": "Get Information",
-          "order": 3,
-          "tempKey": "lesson3"
-        }
-      ],
-      "tests": [
+            "id": "68fa0f4f221bcc8a2d62b771",
+            "title": "Midterm Examination",
+            "description": "Test your knowledge concepts from chapters 1 to 5",
+            "passingScore": 70,
+            "totalMarks": 15,
+            "timeLimit": 60,
+            "isPublished": false,
+            "createdAt": "2025-10-23T11:19:43.530Z",
+            "updatedAt": "2025-10-23T12:16:52.466Z",
+            "sectionId": "68fa1cb5907852d98bd98d7a",
+            "sectionTitle": "efs",
+            "courseId": "68fa1cb4907852d98bd98d79",
+            "courseTitle": "Omnis sapiente eu non sit quisquam reprehenderit officia nemo id odit",
+            "courseLevel": "Beginner",
+            "categoryName": "IT & Software",
+            "totalQuestions": 5,
+            "totalAttempts": 0,
+            "questionTypes": [
+                "MCQ",
+                "TRUE_FALSE",
+                "SHORT_ANSWER"
+            ]
+        },
         {
-          "testId": "68f9fdf2eeddf70b6670b313"
+            "id": "68f9fdf2eeddf70b6670b313",
+            "title": "Midterm Examination - Chapter 1-5",
+            "description": "Test your knowledge on basic concepts from chapters 1 to 5",
+            "passingScore": 70,
+            "totalMarks": 15,
+            "timeLimit": 60,
+            "isPublished": false,
+            "createdAt": "2025-10-23T10:05:38.147Z",
+            "updatedAt": "2025-10-23T10:06:54.027Z",
+            "sectionId": "68f9fe3eeeddf70b6670b329",
+            "sectionTitle": "Introduction",
+            "courseId": "68f9fe3eeeddf70b6670b328",
+            "courseTitle": "Golap Hasan Course",
+            "courseLevel": "Beginner",
+            "categoryName": "Development",
+            "totalQuestions": 5,
+            "totalAttempts": 0,
+            "questionTypes": [
+                "MCQ",
+                "TRUE_FALSE",
+                "SHORT_ANSWER"
+            ]
+        },
+        {
+            "id": "68f70df6f90cdfa689a0248b",
+            "title": "Final Examination - Chapter 1-5",
+            "description": "Test your knowledge on basic concepts from chapters 1 to 5",
+            "passingScore": 70,
+            "totalMarks": 15,
+            "timeLimit": 60,
+            "isPublished": false,
+            "createdAt": "2025-10-21T04:37:10.445Z",
+            "updatedAt": "2025-10-23T09:01:29.038Z",
+            "sectionId": "68f9eee9eeddf70b6670b30d",
+            "sectionTitle": "Basics of Codes",
+            "courseId": "68f9eee9eeddf70b6670b30a",
+            "courseTitle": "Backend",
+            "courseLevel": "Beginner",
+            "categoryName": "Development",
+            "totalQuestions": 5,
+            "totalAttempts": 0,
+            "questionTypes": [
+                "MCQ",
+                "SHORT_ANSWER",
+                "TRUE_FALSE"
+            ]
+        },
+        {
+            "id": "68ca778888144d67193e7a01",
+            "title": "Midterm Examination - Chapter 1-5",
+            "description": "Test your knowledge on basic concepts from chapters 1 to 5",
+            "passingScore": 70,
+            "totalMarks": 15,
+            "timeLimit": 60,
+            "isPublished": false,
+            "createdAt": "2025-09-17T08:55:36.374Z",
+            "updatedAt": "2025-10-07T07:21:10.073Z",
+            "sectionId": "68e4bf6681b141f1ff4a69f4",
+            "sectionTitle": "Introduction",
+            "courseId": "68e4bf6681b141f1ff4a69f3",
+            "courseTitle": "Design Mastery123",
+            "courseLevel": "Beginner",
+            "categoryName": "New category",
+            "totalQuestions": 5,
+            "totalAttempts": 1,
+            "questionTypes": [
+                "SHORT_ANSWER",
+                "MCQ",
+                "TRUE_FALSE"
+            ]
         }
-      ]
+    ],
+    "meta": {
+        "page": 1,
+        "limit": 10,
+        "total": 6,
+        "totalPages": 1,
+        "hasNextPage": false,
+        "hasPrevPage": false
     }
-  ]
 }

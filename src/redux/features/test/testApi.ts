@@ -1,10 +1,10 @@
 import TagTypes from "../../../constant/tagType.constant";
 import { apiSlice } from "../api/apiSlice";
 
-export const courseApi = apiSlice.injectEndpoints({
+export const testApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    // Get all companies
-    getCourses: builder.query({
+    // Get all tests
+    getTests: builder.query({
       query: (args) => {
         const params = new URLSearchParams();
         if (args) {
@@ -15,36 +15,35 @@ export const courseApi = apiSlice.injectEndpoints({
           });
         }
         return {
-          url: "/courses",
+          url: "/tests",
           method: "GET",
           params: params,
         };
       },
-      keepUnusedDataFor: 600,
-      providesTags: [TagTypes.courses],
+      providesTags: [TagTypes.tests],
     }),
 
-    // Create course
-    createCourse: builder.mutation({
+    // Create test
+    createTest: builder.mutation({
       query: (bodyData) => ({
-        url: "/courses",
+        url: "/tests",
         method: "POST",
         body: bodyData,
       }),
-      invalidatesTags: [TagTypes.courses],
+      invalidatesTags: [TagTypes.tests],
     }),
 
-    // Delete course
-    deleteCourse: builder.mutation({
+    // Delete test
+    deleteTest: builder.mutation({
       query: (id) => ({
-        url: `/courses/${id}`,
+        url: `/tests/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: [TagTypes.courses],
+      invalidatesTags: [TagTypes.tests],
     }),
-
+    
   }),
 });
 
-export const { useGetCoursesQuery, useCreateCourseMutation, useDeleteCourseMutation } =
-  courseApi;
+export const { useGetTestsQuery, useCreateTestMutation, useDeleteTestMutation } =
+  testApi;

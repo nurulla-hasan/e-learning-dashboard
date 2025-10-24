@@ -96,7 +96,7 @@ const CourseList = () => {
         <div className="relative">
           {/* Single table container with synchronized scrolling */}
           <div className="overflow-auto">
-            <Table className="min-w-[800px]">
+            <Table className="">
               <TableHeader className="sticky top-0 z-10 bg-yellow-50 border-b">
                 <TableRow className="hover:bg-yellow-50">
                   <TableHead className="w-16 bg-yellow-50">S.N.</TableHead>
@@ -165,7 +165,7 @@ const CourseList = () => {
                           >
                             <Pencil className="h-3 w-3" />
                           </Button>
-                          <DeleteCourseModal />
+                          <DeleteCourseModal courseId={course?.id} />
                         </div>
                       </TableCell>
                     </TableRow>

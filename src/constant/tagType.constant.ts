@@ -1,6 +1,7 @@
 const TagTypes = {
     users: "Users",
     companies: "Companies",
+    tests: "Tests",
     categories: "Categories",
     courses: "Courses",
     categoryDropDown: "CategoryDropDown",

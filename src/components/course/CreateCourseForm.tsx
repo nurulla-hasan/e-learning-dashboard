@@ -5,8 +5,7 @@ import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
 import { ErrorToast, SuccessToast } from "@/helper/ValidationHelper";
 import {
-  useCreateCourseMutation,
-  useGetTestsQuery,
+  useCreateCourseMutation
 } from "@/redux/features/course/courseApi";
 import type { ISection } from "../../types/create.course.type";
 import { useGetCategoriesQuery } from "@/redux/features/category/categoryApi";
@@ -19,6 +18,7 @@ import CourseMetaDetails from "./CourseMetaDetails";
 import CoursePricing from "./CoursePricing";
 import CourseInstructorInfo from "./CourseInstructorInfo";
 import CurriculumForm from "./CurriculumForm";
+import { useGetTestsQuery } from "@/redux/features/test/testApi";
 
 const CreateCourseForm = () => {
   const navigate = useNavigate();

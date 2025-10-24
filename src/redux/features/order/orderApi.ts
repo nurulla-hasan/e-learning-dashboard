@@ -36,6 +36,7 @@ export const orderApi = apiSlice.injectEndpoints({
         { type: TagTypes.order, id: arg },
       ],
     }),
+    
     updateOrder: builder.mutation({
       query: ({ id, data }) => ({
         url: `/order/update-order/${id}`,
