@@ -1,16 +1,22 @@
-import React, { useState, useRef } from 'react';
-import { Upload } from 'lucide-react';
+import React, { useState, useRef } from "react";
+import { Upload } from "lucide-react";
 
 interface ImageUploadProps {
   image: File | null;
   setImage: (file: File | null) => void;
   preview: string | null;
-  setPreview: React.Dispatch<React.SetStateAction<string | null>>
+  setPreview: React.Dispatch<React.SetStateAction<string | null>>;
   title: string;
   setIconError: () => void;
 }
 
-const ImageUpload: React.FC<ImageUploadProps> = ({preview, setPreview, setImage, title, setIconError}) => {
+const ImageUpload: React.FC<ImageUploadProps> = ({
+  preview,
+  setPreview,
+  setImage,
+  title,
+  setIconError,
+}) => {
   const [dragging, setDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -35,7 +41,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({preview, setPreview, setImage,
     e.preventDefault();
     e.stopPropagation();
     setDragging(false);
-    
+
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       const file = e.dataTransfer.files[0];
       handleFile(file);
@@ -51,19 +57,19 @@ const ImageUpload: React.FC<ImageUploadProps> = ({preview, setPreview, setImage,
 
   const handleFile = (file: File) => {
     // Check if file is an image
-    if (!file.type.match('image.*')) {
-      alert('Please select an image file');
+    if (!file.type.match("image.*")) {
+      alert("Please select an image file");
       return;
     }
-    
+
     // Check file size (limit to 5MB)
     if (file.size > 5 * 1024 * 1024) {
-      alert('File size should not exceed 5MB');
+      alert("File size should not exceed 5MB");
       return;
     }
 
     setImage(file);
-    
+
     // Create preview
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -72,15 +78,13 @@ const ImageUpload: React.FC<ImageUploadProps> = ({preview, setPreview, setImage,
     reader.readAsDataURL(file);
   };
 
-  
   const handleRemove = () => {
     setImage(null);
     setIconError();
     setPreview(null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
-    
   };
 
   const handleClick = () => {
@@ -94,19 +98,19 @@ const ImageUpload: React.FC<ImageUploadProps> = ({preview, setPreview, setImage,
       <label className="block text-sm font-medium text-gray-700 mb-1">
         {title}
       </label>
-      
+
       <div
         onClick={handleClick}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
         onDragOver={handleDragOver}
         onDrop={handleDrop}
-        className={`mt-1 relative border-2 border-dashed rounded-lg p-4 h-48 flex flex-col items-center justify-center cursor-pointer transition-all duration-200 ${
+        className={`mt-1 relative border-2 border-dashed rounded-lg p-4 flex flex-col items-center justify-center cursor-pointer transition-all duration-200 overflow-hidden ${
           dragging
-            ? 'border-blue-500 bg-blue-50'
+            ? "border-blue-500 bg-blue-50"
             : preview
-            ? 'border-green-400 bg-white'
-            : 'border-gray-300 hover:border-gray-400 bg-gray-50 hover:bg-gray-100'
+            ? "border-green-400 bg-white"
+            : "border-gray-300 hover:border-gray-400 bg-gray-50 hover:bg-gray-100"
         }`}
       >
         <input
@@ -116,14 +120,15 @@ const ImageUpload: React.FC<ImageUploadProps> = ({preview, setPreview, setImage,
           className="hidden"
           accept="image/*"
         />
-        
+
         {preview ? (
           <div className="relative w-full h-full flex items-center justify-center">
             <img
               src={preview}
               alt="Category preview"
-              className="max-h-full max-w-full object-contain rounded transition-opacity duration-300"
+              className="max-w-full object-contain rounded-md pointer-events-none"
             />
+
             <button
               type="button"
               onClick={(e) => {
@@ -158,7 +163,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({preview, setPreview, setImage,
                 </p>
                 <p className="text-xs text-gray-500 mt-1">
                   PNG, JPG, JPEG
-                   {/* up to 5MB */}
+                  {/* up to 5MB */}
                 </p>
               </div>
             </div>

@@ -24,10 +24,26 @@ export const courseApi = apiSlice.injectEndpoints({
       providesTags: [TagTypes.courses],
     }),
 
+    // Create course
+    createCourse: builder.mutation({
+      query: (bodyData) => ({
+        url: "/courses",
+        method: "POST",
+        body: bodyData,
+      }),
+      invalidatesTags: [TagTypes.courses],
+    }),
 
+    //  GET TESTS
+    getTests: builder.query({
+      query: () => ({
+        url: "/tests",
+        method: "GET",
+      }),
+      providesTags: [TagTypes.courses],
+    }),
   }),
 });
 
-export const {
-  useGetCoursesQuery,
-} = courseApi;
+export const { useGetCoursesQuery, useCreateCourseMutation, useGetTestsQuery } =
+  courseApi;

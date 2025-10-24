@@ -1,82 +1,52 @@
-"use client"
+'use client'
 
 import type React from "react"
-
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Plus, Upload, X, Check } from "lucide-react"
-import curriculum_img from "../../assets/images/course/course-thumbnail-laptop-coding.jpg";
+import { Plus, Upload, X, Check, Trash2 } from "lucide-react"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import type { ICurriculumFormProps, ISection, ILesson } from "../../types/create.course.type"
 
-interface Section {
-  id: string
-  title: string
-  lessons: Lesson[]
-}
-
-interface Lesson {
-  id: string
-  title: string
-  description: string
-}
-
-const CurriculumForm = () => {
-  const [sections, setSections] = useState<Section[]>([
-    {
-      id: "1",
-      title: "Introduction",
-      lessons: [{ id: "1-1", title: "Understanding the web structure", description: "" }],
-    },
-    {
-      id: "2",
-      title: "HTML5 – Building the Structure",
-      lessons: [],
-    },
-    {
-      id: "3",
-      title: "CSS3 – Styling Websites",
-      lessons: [],
-    },
-    {
-      id: "4",
-      title: "JavaScript Basics",
-      lessons: [],
-    },
-    {
-      id: "5",
-      title: "Final Project",
-      lessons: [],
-    },
-  ])
-
-  const [selectedSectionId, setSelectedSectionId] = useState<string>("1")
+const CurriculumForm: React.FC<ICurriculumFormProps> = ({
+  sections,
+  onSectionsChange,
+  onLessonFileChange,
+  onDeleteLesson,
+  onAddTest,
+  onRemoveTest,
+  lessonFiles,
+  testsData,
+}) => {
+  const [selectedSectionId, setSelectedSectionId] = useState<string | null>(null)
   const [isAddingSectionOpen, setIsAddingSectionOpen] = useState(false)
   const [newSectionTitle, setNewSectionTitle] = useState("")
   const [isAddingLesson, setIsAddingLesson] = useState(false)
   const [newLessonTitle, setNewLessonTitle] = useState("")
-  const [editingLessonTitle, setEditingLessonTitle] = useState("")
-  //const [courseThumbnail, setCourseThumbnail] = useState<string>(curriculum_img)
-  const courseThumbnail = curriculum_img;
+  const [uploadingLessonId, setUploadingLessonId] = useState<string | null>(null)
+  const [selectedTestId, setSelectedTestId] = useState<string>("")
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
-  const selectedSection = sections.find((s) => s.id === selectedSectionId)
+  const selectedSection = sections.find(s => s.id === selectedSectionId)
 
   useEffect(() => {
-    if (selectedSection && selectedSection.lessons.length > 0) {
-      setEditingLessonTitle(selectedSection.lessons[0].title)
-    } else {
-      setEditingLessonTitle("")
+    if (sections.length > 0 && !selectedSectionId) {
+      setSelectedSectionId(sections[0].id)
     }
-  }, [selectedSection])
+  }, [sections, selectedSectionId])
 
   const handleAddSection = () => {
     if (newSectionTitle.trim()) {
-      const newSection: Section = {
+      const newSection: ISection = {
         id: Date.now().toString(),
         title: newSectionTitle.trim(),
         lessons: [],
+        order: sections.length + 1,
+        tests: [],
       }
-      setSections([...sections, newSection])
+      const newSections = [...sections, newSection]
+      onSectionsChange(newSections)
       setNewSectionTitle("")
       setIsAddingSectionOpen(false)
       setSelectedSectionId(newSection.id)
@@ -85,49 +55,62 @@ const CurriculumForm = () => {
 
   const handleAddLesson = () => {
     if (newLessonTitle.trim() && selectedSection) {
-      const newLesson: Lesson = {
+      const newLesson: ILesson = {
         id: Date.now().toString(),
         title: newLessonTitle.trim(),
         description: "",
+        order: selectedSection.lessons.length + 1,
       }
-
-      setSections(
-        sections.map((section) =>
-          section.id === selectedSectionId ? { ...section, lessons: [...section.lessons, newLesson] } : section,
-        ),
+      const newSections = sections.map(section =>
+        section.id === selectedSectionId
+          ? { ...section, lessons: [...section.lessons, newLesson] }
+          : section,
       )
+      onSectionsChange(newSections)
       setNewLessonTitle("")
       setIsAddingLesson(false)
     }
   }
 
-  const handleLessonTitleChange = (newTitle: string) => {
-    setEditingLessonTitle(newTitle)
+  const handleLessonTitleChange = (lessonId: string, newTitle: string) => {
+    const newSections = sections.map(section => {
+      if (section.id === selectedSectionId) {
+        return {
+          ...section,
+          lessons: section.lessons.map(lesson =>
+            lesson.id === lessonId ? { ...lesson, title: newTitle } : lesson,
+          ),
+        }
+      }
+      return section
+    })
+    onSectionsChange(newSections)
+  }
 
-    if (selectedSection && selectedSection.lessons.length > 0) {
-      setSections(
-        sections.map((section) =>
-          section.id === selectedSectionId
-            ? {
-                ...section,
-                lessons: section.lessons.map((lesson, index) =>
-                  index === 0 ? { ...lesson, title: newTitle } : lesson,
-                ),
-              }
-            : section,
-        ),
-      )
+  const handleUploadClick = (lessonId: string) => {
+    setUploadingLessonId(lessonId)
+    fileInputRef.current?.click()
+  }
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0 && uploadingLessonId) {
+      onLessonFileChange(uploadingLessonId, e.target.files[0])
+      setUploadingLessonId(null)
+    }
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''
+    }
+  }
+
+  const handleAddTestClick = () => {
+    if (selectedSectionId && selectedTestId) {
+      onAddTest(selectedSectionId, selectedTestId)
     }
   }
 
   const handleKeyPress = (e: React.KeyboardEvent, action: () => void) => {
     if (e.key === "Enter") {
       action()
-    } else if (e.key === "Escape") {
-      setIsAddingSectionOpen(false)
-      setIsAddingLesson(false)
-      setNewSectionTitle("")
-      setNewLessonTitle("")
     }
   }
 
@@ -155,27 +138,28 @@ const CurriculumForm = () => {
             </div>
           ))}
 
-          {/* Add Section Input */}
           {isAddingSectionOpen ? (
             <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
               <Input
                 value={newSectionTitle}
-                onChange={(e) => setNewSectionTitle(e.target.value)}
+                onChange={e => setNewSectionTitle(e.target.value)}
                 placeholder="Enter section title..."
                 className="flex-1 h-8"
                 autoFocus
-                onKeyDown={(e) => handleKeyPress(e, handleAddSection)}
+                onKeyDown={e => handleKeyPress(e, handleAddSection)}
               />
-              <Button size="sm" onClick={handleAddSection} disabled={!newSectionTitle.trim()} className="h-8 w-8 p-0">
+              <Button
+                size="sm"
+                onClick={handleAddSection}
+                disabled={!newSectionTitle.trim()}
+                className="h-8 w-8 p-0"
+              >
                 <Check className="h-4 w-4" />
               </Button>
               <Button
                 size="sm"
                 variant="ghost"
-                onClick={() => {
-                  setIsAddingSectionOpen(false)
-                  setNewSectionTitle("")
-                }}
+                onClick={() => setIsAddingSectionOpen(false)}
                 className="h-8 w-8 p-0"
               >
                 <X className="h-4 w-4" />
@@ -194,104 +178,151 @@ const CurriculumForm = () => {
         </CardContent>
       </Card>
 
-      {/* Lesson Details Section */}
+      {/* Lesson and Test Details Section */}
       <div className="space-y-6">
+        <input
+          type="file"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          className="hidden"
+          accept="video/*,image/*,.pdf,.doc,.docx"
+        />
+        {selectedSection &&
+          selectedSection.lessons.map((lesson, index) => {
+            const lessonTempKey = lesson.tempKey
+            const selectedFile = lessonTempKey ? lessonFiles[lessonTempKey] : null
+            return (
+              <Card key={lesson.id}>
+                <CardHeader className="flex-row items-center justify-between">
+                  <CardTitle className="text-lg font-semibold">
+                    Lesson {index + 1}
+                  </CardTitle>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => onDeleteLesson(lesson.id)}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-2">
+                      Title*
+                    </label>
+                    <Input
+                      value={lesson.title}
+                      onChange={e =>
+                        handleLessonTitleChange(lesson.id, e.target.value)
+                      }
+                      placeholder="Enter lesson title"
+                      className="w-full"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">
+                      Upload Resources
+                    </label>
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                      <Button
+                        variant="ghost"
+                        className="text-blue-600 hover:text-blue-700"
+                        onClick={() => handleUploadClick(lesson.id)}
+                        type="button"
+                      >
+                        <Upload className="h-4 w-4 mr-2" />
+                        Upload
+                      </Button>
+                      <p className="text-xs text-gray-500 mt-2">
+                        *Upload video file/pdf/docs
+                      </p>
+                      {selectedFile && (
+                        <p className="text-sm text-green-600 mt-2">
+                          File selected: {selectedFile.name}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )
+          })}
+
+        {selectedSection && (isAddingLesson ? (
+          <div className="flex items-center gap-2">
+            <Input
+              value={newLessonTitle}
+              onChange={e => setNewLessonTitle(e.target.value)}
+              placeholder="Enter lesson title..."
+              className="flex-1"
+              autoFocus
+              onKeyDown={e => handleKeyPress(e, handleAddLesson)}
+            />
+            <Button
+              size="sm"
+              onClick={handleAddLesson}
+              disabled={!newLessonTitle.trim()}
+            >
+              <Check className="h-4 w-4" />
+            </Button>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => setIsAddingLesson(false)}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        ) : (
+          <Button
+            variant="ghost"
+            className="w-full justify-center text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+            onClick={() => setIsAddingLesson(true)}
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Add Lesson
+          </Button>
+        ))}
+
         {selectedSection && (
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg font-semibold">
-                Lesson {sections.findIndex((s) => s.id === selectedSectionId) + 1}
-              </CardTitle>
+              <CardTitle>Tests</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium mb-2">Title*</label>
-                <Input
-                  value={editingLessonTitle}
-                  onChange={(e) => handleLessonTitleChange(e.target.value)}
-                  placeholder="Understanding the web structure"
-                  className="w-full"
-                />
+              {selectedSection.tests.map(test => {
+                const testTitle = testsData.find(t => t.id === test.testId)?.title;
+                return (
+                  <div key={test.testId} className="flex items-center justify-between p-2 bg-gray-100 rounded-md">
+                    <span>{testTitle || test.testId}</span>
+                    <Button variant="destructive" size="icon" onClick={() => onRemoveTest(selectedSection.id, test.testId)}>
+                        <X className="h-4 w-4"/>
+                    </Button>
+                  </div>
+                )
+              })}
+              <div className="flex items-center gap-2">
+                <Select onValueChange={setSelectedTestId} value={selectedTestId}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a test" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {testsData.map(test => (
+                      <SelectItem key={test.id} value={test.id}>
+                        {test.title}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Button onClick={handleAddTestClick} disabled={!selectedTestId} type="button">Add Test</Button>
               </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2">Upload Resources</label>
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-                  <Button variant="ghost" className="text-blue-600 hover:text-blue-700">
-                    <Upload className="h-4 w-4 mr-2" />
-                    Upload
-                  </Button>
-                  <p className="text-xs text-gray-500 mt-2">*Upload video file/pdf/docs</p>
-                </div>
-              </div>
-
-              {/* Add Lesson Button */}
-              {isAddingLesson ? (
-                <div className="flex items-center gap-2">
-                  <Input
-                    value={newLessonTitle}
-                    onChange={(e) => setNewLessonTitle(e.target.value)}
-                    placeholder="Enter lesson title..."
-                    className="flex-1"
-                    autoFocus
-                    onKeyDown={(e) => handleKeyPress(e, handleAddLesson)}
-                  />
-                  <Button size="sm" onClick={handleAddLesson} disabled={!newLessonTitle.trim()}>
-                    <Check className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => {
-                      setIsAddingLesson(false)
-                      setNewLessonTitle("")
-                    }}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
-              ) : (
-                <Button
-                  variant="ghost"
-                  className="w-full justify-center text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-                  onClick={() => setIsAddingLesson(true)}
-                >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Lesson
-                </Button>
-              )}
             </CardContent>
           </Card>
         )}
-
-          {/* Media Section */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg font-semibold">Media</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div>
-              <label className="block text-sm font-medium mb-2">Course Thumbnail*</label>
-              <div className="flex items-center gap-4">
-                <div className="w-32 h-20 bg-gray-100 rounded-lg overflow-hidden">
-                  <img
-                    src={courseThumbnail || "/placeholder.svg"}
-                    alt="Course thumbnail"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="flex-1">
-                  <Input value="CoverPhoto.png" readOnly className="mb-2" />
-                  <Button className="bg-blue-500 hover:bg-blue-600 text-white">Upload</Button>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </div>
   )
 }
 
-
-export default CurriculumForm;
+export default CurriculumForm

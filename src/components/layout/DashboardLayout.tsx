@@ -7,7 +7,7 @@ const DashboardLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen overflow-y-auto bg-gray-50">
       {/* Sidebar */}
       <Sidebar 
         sidebarOpen={sidebarOpen} 
@@ -22,7 +22,7 @@ const DashboardLayout: React.FC = () => {
         />
         
         {/* Main Content Area */}
-        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-background min-h-[calc(100vh-62px)] px-4 py-4 lg:px-6 lg:py-6">
+        <main className="h-[calc(100vh-62px)] flex-1 overflow-y-auto bg-background px-4 py-4 ">
             <Outlet/>
         </main>
       </div>
