@@ -105,7 +105,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         onDragLeave={handleDragLeave}
         onDragOver={handleDragOver}
         onDrop={handleDrop}
-        className={`mt-1 relative border-2 border-dashed rounded-lg p-4 flex flex-col items-center justify-center cursor-pointer transition-all duration-200 overflow-hidden ${
+        className={`md:h-[250px] mt-1 relative border-2 border-dashed rounded-lg p-4 flex flex-col items-center justify-center cursor-pointer transition-all duration-200 overflow-hidden ${
           dragging
             ? "border-blue-500 bg-blue-50"
             : preview
@@ -122,7 +122,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
         />
 
         {preview ? (
-          <div className="relative w-full h-full flex items-center justify-center">
+          <div className="relative w-full h-28 md:h-58 flex items-center justify-center">
             <img
               src={preview}
               alt="Category preview"
