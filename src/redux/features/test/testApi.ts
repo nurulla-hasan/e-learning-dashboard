@@ -23,6 +23,26 @@ export const testApi = apiSlice.injectEndpoints({
       providesTags: [TagTypes.tests],
     }),
 
+    // Get all test attempts
+    getTestAttempts: builder.query({
+      query: (args) => {
+        const params = new URLSearchParams();
+        if (args) {
+          Object.entries(args).forEach(([key, value]) => {
+            if (value) {
+              params.append(key, value as string);
+            }
+          });
+        }
+        return {
+          url: "/attempt-test",
+          method: "GET",
+          params: params,
+        };
+      },
+      providesTags: [TagTypes.tests],
+    }),
+
     // Get single test
     getSingleTest: builder.query({
       query: (id) => ({
@@ -64,5 +84,12 @@ export const testApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetTestsQuery, useCreateTestMutation, useDeleteTestMutation, useUpdateTestMutation, useGetSingleTestQuery } =
+export const {
+   useGetTestsQuery,
+   useCreateTestMutation,
+   useDeleteTestMutation,
+   useUpdateTestMutation,
+   useGetSingleTestQuery,
+   useGetTestAttemptsQuery,
+} =
   testApi;

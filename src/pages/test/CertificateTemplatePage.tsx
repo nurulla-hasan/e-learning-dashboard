@@ -1,41 +1,83 @@
-import { ArrowLeft, Upload } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import Certificate from "@/components/certificate/Certificate";
-import { useNavigate } from "react-router-dom";
+import PolicyLazyLoader from "@/components/loader/PolicyLazyLoader";
+import PolicyLoading from "@/components/loader/PolicyLoading";
+import { useGetSingleCertificateQuery } from "@/redux/features/certificate/certificateApi";
+import { FileText } from "lucide-react";
+import { lazy, Suspense, type ReactNode } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+const UpdateCertificateTemplateForm = lazy(() => import("@/components/certificate/UpdateCertificateTemplateForm"));
 
 const CertificateTemplatePage = () => {
   const navigate = useNavigate();
+  const params = useParams();
+  const certificateId = params.id;
+
+  const { data, isLoading, isSuccess, isError } = useGetSingleCertificateQuery(certificateId || "", { skip: !certificateId });
+  const certificate = data?.data;
+
+  let content: ReactNode;
+
+  if (isLoading) {
+    return <PolicyLoading />;
+  }
+
+  if (!isLoading && isSuccess && certificate) {
+    content = (
+      <>
+        <Suspense fallback={<PolicyLazyLoader />}>
+          <UpdateCertificateTemplateForm
+            id={certificate?.id}
+            content={certificate?.content}
+            title={certificate?.title}
+            description={certificate?.description}
+          />
+        </Suspense>
+      </>
+    );
+  } else if (!certificateId) {
+    // If no certificate ID, show form for creating new certificate
+    content = (
+      <>
+        <Suspense fallback={<PolicyLazyLoader />}>
+          <UpdateCertificateTemplateForm />
+        </Suspense>
+      </>
+    );
+  }
+
+  if (!isLoading && isError) {
+    content = <h1 className="text-center text-red-600">Server Error Occurred</h1>;
+  }
 
   return (
-    <div className="min-h-full bg-white">
-      {/* Header */}
-      <header className="flex items-center gap-4 p-4 md:p-6 border-b border-accent/20">
-        <Button onClick={()=>navigate("/certificate-issued")} variant="ghost" size="sm" className="text-foreground hover:bg-muted">
-          <ArrowLeft className="h-4 w-4" />
-        </Button>
-        <h1 className="text-lg font-semibold text-foreground">Certificate Template</h1>
-      </header>
-
-      {/* Main Content */}
-      <main className="container mx-auto px-4 py-8 md:py-12 max-w-4xl">
-        <div className="space-y-8">
-          {/* Certificate Display */}
-          <div className="flex justify-center">
-            <Certificate />
-          </div>
-
-          {/* Upload Section */}
-          <div className="flex flex-col items-center space-y-4">
-            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 rounded-lg font-medium transition-colors">
-              <Upload className="h-4 w-4 mr-2" />
-              Upload Template
-            </Button>
+    <div className="min-h-full bg-white py-8 px-4 sm:px-6 lg:px-8">
+      <div className="w-full mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+        <div className="bg-cyan-500 px-6 py-4">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center gap-3">
+              <Button
+                onClick={() => navigate("/certificate-issued")}
+                variant="ghost"
+                size="sm"
+                className="text-white hover:bg-cyan-600"
+              >
+                <ArrowLeft className="h-4 w-4" />
+              </Button>
+              <h1 className="text-2xl font-bold text-white flex items-center">
+                <FileText className="mr-2" size={24} />
+                Certificate Template
+              </h1>
+            </div>
           </div>
         </div>
-      </main>
+        <div className="p-6">
+          {content}
+        </div>
+      </div>
     </div>
-  )
-}
-
+  );
+};
 
 export default CertificateTemplatePage;

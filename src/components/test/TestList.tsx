@@ -131,7 +131,7 @@ const TestList = () => {
                           <Button
                             onClick={() => navigate(`/update-test/${item?.id}`)}
                             size="icon"
-                            className="bg-green-600 hover:bg-green-700 text-white rounded-full"
+                            className="bg-cyan-600 hover:bg-cyan-700 text-white"
                           >
                             <Pencil className="h-3 w-3" />
                           </Button>

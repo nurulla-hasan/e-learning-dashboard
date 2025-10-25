@@ -1,184 +1,47 @@
 {
     "success": true,
     "statusCode": 200,
-    "message": "Test details retrieved successfully",
-    "data": {
-        "id": "68fcb1e964b2ca0703a4add3",
-        "userId": "68ddfadcace204dd21badd3b",
-        "sectionId": null,
-        "title": "Final Examination Golap",
-        "description": "Test your knowledge concepts from chapters 1 to 5",
-        "passingScore": 70,
-        "totalMarks": 15,
-        "timeLimit": 60,
-        "isActive": true,
-        "isPublished": false,
-        "createdAt": "2025-10-25T11:18:01.037Z",
-        "updatedAt": "2025-10-25T11:18:01.037Z",
-        "questions": [
-            {
-                "id": "68fcb1e964b2ca0703a4add4",
-                "testId": "68fcb1e964b2ca0703a4add3",
-                "title": "What is the capital of France?",
-                "description": "Choose the correct capital city",
-                "type": "MCQ",
-                "marks": 2,
-                "explanation": "Paris has been the capital of France since 987 AD",
-                "order": 1,
-                "isActive": true,
-                "createdAt": "2025-10-25T11:18:01.037Z",
-                "updatedAt": "2025-10-25T11:18:01.037Z",
-                "options": [
-                    {
-                        "id": "68fcb1eb64b2ca0703a4add9",
-                        "questionId": "68fcb1e964b2ca0703a4add4",
-                        "text": "London",
-                        "isCorrect": false,
-                        "order": 1,
-                        "createdAt": "2025-10-25T11:18:01.037Z",
-                        "updatedAt": "2025-10-25T11:18:01.037Z"
-                    },
-                    {
-                        "id": "68fcb1eb64b2ca0703a4adda",
-                        "questionId": "68fcb1e964b2ca0703a4add4",
-                        "text": "Paris",
-                        "isCorrect": true,
-                        "order": 2,
-                        "createdAt": "2025-10-25T11:18:01.037Z",
-                        "updatedAt": "2025-10-25T11:18:01.037Z"
-                    },
-                    {
-                        "id": "68fcb1eb64b2ca0703a4addb",
-                        "questionId": "68fcb1e964b2ca0703a4add4",
-                        "text": "Berlin",
-                        "isCorrect": false,
-                        "order": 3,
-                        "createdAt": "2025-10-25T11:18:01.037Z",
-                        "updatedAt": "2025-10-25T11:18:01.037Z"
-                    },
-                    {
-                        "id": "68fcb1eb64b2ca0703a4addc",
-                        "questionId": "68fcb1e964b2ca0703a4add4",
-                        "text": "Madrid",
-                        "isCorrect": false,
-                        "order": 4,
-                        "createdAt": "2025-10-25T11:18:01.037Z",
-                        "updatedAt": "2025-10-25T11:18:01.037Z"
-                    }
-                ]
-            },
-            {
-                "id": "68fcb1e964b2ca0703a4add5",
-                "testId": "68fcb1e964b2ca0703a4add3",
-                "title": "The Earth is flat.",
-                "description": "Determine if this statement is true or false",
-                "type": "TRUE_FALSE",
-                "marks": 1,
-                "explanation": "The Earth is an oblate spheroid, not flat",
-                "order": 2,
-                "isActive": true,
-                "createdAt": "2025-10-25T11:18:01.037Z",
-                "updatedAt": "2025-10-25T11:18:01.037Z",
-                "options": [
-                    {
-                        "id": "68fcb1eb64b2ca0703a4addd",
-                        "questionId": "68fcb1e964b2ca0703a4add5",
-                        "text": "True",
-                        "isCorrect": false,
-                        "order": 1,
-                        "createdAt": "2025-10-25T11:18:01.037Z",
-                        "updatedAt": "2025-10-25T11:18:01.037Z"
-                    },
-                    {
-                        "id": "68fcb1eb64b2ca0703a4adde",
-                        "questionId": "68fcb1e964b2ca0703a4add5",
-                        "text": "False",
-                        "isCorrect": true,
-                        "order": 2,
-                        "createdAt": "2025-10-25T11:18:01.037Z",
-                        "updatedAt": "2025-10-25T11:18:01.037Z"
-                    }
-                ]
-            },
-            {
-                "id": "68fcb1ea64b2ca0703a4add6",
-                "testId": "68fcb1e964b2ca0703a4add3",
-                "title": "What is the chemical symbol for gold?",
-                "description": "Provide the correct chemical symbol",
-                "type": "SHORT_ANSWER",
-                "marks": 3,
-                "explanation": "Gold's symbol Au comes from Latin 'aurum'",
-                "order": 3,
-                "isActive": true,
-                "createdAt": "2025-10-25T11:18:01.037Z",
-                "updatedAt": "2025-10-25T11:18:01.037Z",
-                "options": []
-            },
-            {
-                "id": "68fcb1ea64b2ca0703a4add7",
-                "testId": "68fcb1e964b2ca0703a4add3",
-                "title": "Explain Newton's First Law of Motion",
-                "description": "Provide a brief explanation",
-                "type": "SHORT_ANSWER",
-                "marks": 5,
-                "explanation": "Also known as the Law of Inertia",
-                "order": 4,
-                "isActive": true,
-                "createdAt": "2025-10-25T11:18:01.037Z",
-                "updatedAt": "2025-10-25T11:18:01.037Z",
-                "options": []
-            },
-            {
-                "id": "68fcb1ea64b2ca0703a4add8",
-                "testId": "68fcb1e964b2ca0703a4add3",
-                "title": "Which of the following are programming languages?",
-                "description": "Select all that apply",
-                "type": "MCQ",
-                "marks": 4,
-                "explanation": "Multiple correct answers are possible",
-                "order": 5,
-                "isActive": true,
-                "createdAt": "2025-10-25T11:18:01.037Z",
-                "updatedAt": "2025-10-25T11:18:01.037Z",
-                "options": [
-                    {
-                        "id": "68fcb1eb64b2ca0703a4addf",
-                        "questionId": "68fcb1ea64b2ca0703a4add8",
-                        "text": "JavaScript",
-                        "isCorrect": true,
-                        "order": 1,
-                        "createdAt": "2025-10-25T11:18:01.037Z",
-                        "updatedAt": "2025-10-25T11:18:01.037Z"
-                    },
-                    {
-                        "id": "68fcb1eb64b2ca0703a4ade0",
-                        "questionId": "68fcb1ea64b2ca0703a4add8",
-                        "text": "HTML",
-                        "isCorrect": false,
-                        "order": 2,
-                        "createdAt": "2025-10-25T11:18:01.037Z",
-                        "updatedAt": "2025-10-25T11:18:01.037Z"
-                    },
-                    {
-                        "id": "68fcb1eb64b2ca0703a4ade1",
-                        "questionId": "68fcb1ea64b2ca0703a4add8",
-                        "text": "Python",
-                        "isCorrect": true,
-                        "order": 3,
-                        "createdAt": "2025-10-25T11:18:01.037Z",
-                        "updatedAt": "2025-10-25T11:18:01.037Z"
-                    },
-                    {
-                        "id": "68fcb1eb64b2ca0703a4ade2",
-                        "questionId": "68fcb1ea64b2ca0703a4add8",
-                        "text": "CSS",
-                        "isCorrect": false,
-                        "order": 4,
-                        "createdAt": "2025-10-25T11:18:01.037Z",
-                        "updatedAt": "2025-10-25T11:18:01.037Z"
-                    }
-                ]
+    "message": "All certificates retrieved successfully",
+    "data": [
+        {
+            "id": "68e62a8fd033c0abad77bf3c",
+            "certificateId": "MGHRQIHW-N2BCMS",
+            "issueDate": "2025-10-08T09:10:38.993Z",
+            "createdAt": "2025-10-08T09:10:38.410Z",
+            "userId": "68c656890ce5ec82b3563b35",
+            "userFullName": "Efaz Khondhoker",
+            "userEmail": "efazkh@gmail.com",
+            "userImage": "https://lerirides.nyc3.digitaloceanspaces.com/user-profile-images/1760684148495_Screenshot 2025-10-17 125322.png",
+            "courseId": "68ca2e049043bcfafae98e9b",
+            "courseTitle": "Design Mastery",
+            "courseShortDescription": "Learn design from scratch",
+            "courseLevel": "Beginner",
+            "instructorName": "John Doe",
+            "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1758082948594_nick-morrison-FHnnjk1Yj7Y-unsplash.jpg",
+            "categoryName": "Development",
+            "certificateTitle": "Standard Completion Certificate",
+            "placeholders": [
+                "{{fullName}}",
+                "{{dob}}",
+                "{{startDate}}",
+                "{{endDate}}",
+                "{{certificateNumber}}"
+            ],
+            "mainContents": {
+                "fullName": "efaz khondhoker",
+                "dob": "1990-01-01",
+                "startDate": "2025-09-17",
+                "endDate": "2025-09-17",
+                "certificateNumber": "MGHRQIHW-N2BCMS"
             }
-        ]
+        }
+    ],
+    "meta": {
+        "page": 1,
+        "limit": 10,
+        "total": 1,
+        "totalPages": 1,
+        "hasNextPage": false,
+        "hasPrevPage": false
     }
 }
