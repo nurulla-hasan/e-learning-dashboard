@@ -46,9 +46,10 @@ interface UseSmartFetchHookReturn<T = unknown> {
 }
 
 const useSmartFetchHook = <T = unknown>(
-  queryHook: (params: QueryHookParams) => QueryHookResult<T>,
+  queryHook: (params: QueryHookParams, opts?: any) => QueryHookResult<T>,
   options: UseSmartFetchHookOptions = {},
-  initialParams: Record<string, unknown> = {}
+  initialParams: Record<string, unknown> = {},
+  hookOptions?: any
 ): UseSmartFetchHookReturn<T> => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
@@ -74,7 +75,7 @@ const useSmartFetchHook = <T = unknown>(
     ...queryOptions,
   }), [currentPage, debouncedSearchTerm, debouncedFilterParams, queryOptions]);
 
-  const { data, isLoading, isError } = queryHook(queryParams);
+  const { data, isLoading, isError } = queryHook(queryParams, hookOptions);
 
   // Reset to first page when debounced search term or params change
   useEffect(() => {

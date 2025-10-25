@@ -2,23 +2,23 @@
 
 import TagTypes from "../../../constant/tagType.constant";
 import { ErrorToast, SuccessToast } from "../../../helper/ValidationHelper";
-import type { IParam } from "../../../types/global.type";
 import { apiSlice } from "../api/apiSlice";
 
 export const orderApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getOrders: builder.query({
+    // All Orders
+    getEnrolledStudentOrders: builder.query({
       query: (args) => {
         const params = new URLSearchParams();
-        if (args !== undefined && args.length > 0) {
-          args.forEach((item: IParam) => {
-            if (item.value) {
-              params.append(item.name, item.value);
+        if (args) {
+          Object.entries(args).forEach(([key, value]) => {
+            if (value) {
+              params.append(key, value as string);
             }
           });
         }
         return {
-          url: "/order/get-all-orders",
+          url: "/enrolled-courses/students",
           method: "GET",
           params: params,
         };
@@ -26,6 +26,28 @@ export const orderApi = apiSlice.injectEndpoints({
       keepUnusedDataFor: 120,
       providesTags: [TagTypes.orders],
     }),
+
+    getCompanyOrders: builder.query({
+      query: (args) => {
+       const params = new URLSearchParams();
+        if (args) {
+          Object.entries(args).forEach(([key, value]) => {
+            if (value) {
+              params.append(key, value as string);
+            }
+          });
+        }
+        return {
+          url: "/enrolled-courses/employees",
+          method: "GET",
+          params: params,
+        };
+      },
+      keepUnusedDataFor: 120,
+      providesTags: [TagTypes.orders],
+    }),
+
+    // Single Order
     getSingleOrder: builder.query({
       query: (id) => ({
         url: `/order/get-single-order/${id}`,
@@ -36,7 +58,8 @@ export const orderApi = apiSlice.injectEndpoints({
         { type: TagTypes.order, id: arg },
       ],
     }),
-    
+
+    // Update Order
     updateOrder: builder.mutation({
       query: ({ id, data }) => ({
         url: `/order/update-order/${id}`,
@@ -68,4 +91,9 @@ export const orderApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetOrdersQuery, useGetSingleOrderQuery, useUpdateOrderMutation } = orderApi;
+export const { 
+  useGetEnrolledStudentOrdersQuery,
+  useGetCompanyOrdersQuery,
+   useGetSingleOrderQuery,
+    useUpdateOrderMutation
+   } = orderApi;
