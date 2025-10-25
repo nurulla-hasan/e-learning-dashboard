@@ -88,6 +88,9 @@ const UserList = () => {
                   <TableHead className="min-w-24 bg-yellow-50">
                     Status
                   </TableHead>
+                  <TableHead className="min-w-24 bg-yellow-50">
+                    Action
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -126,7 +129,12 @@ const UserList = () => {
                           >
                             {user.status}
                           </Badge>
+                        </div>
+                      </TableCell>
+                      <TableCell className="min-w-24">
+                        <div className="flex items-center gap-2">
                           <ToggleButton user={user} />
+                          
                         </div>
                       </TableCell>
                     </TableRow>

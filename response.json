@@ -1,84 +1,184 @@
 {
-  "success": true,
-  "statusCode": 200,
-  "message": "Course details retrieved successfully",
-  "data": {
-    "categoryName": "IT & Software",
-    "id": "68fb733b23c0449e79f25c14",
-    "userId": "68ddfadcace204dd21badd3b",
-    "courseTitle": "All in one",
-    "courseShortDescription": "Expedita qui sint perferendis dolore necessitatibus fugiat unde",
-    "courseDescription": "Nostrum pariatur Quisquam est ut Expedita qui sint perferendis dolore necessitatibus fugiat unde Expedita qui sint perferendis dolore necessitatibus fugiat unde Expedita qui sint perferendis dolore necessitatibus fugiat unde Expedita qui sint perferendis dolore necessitatibus fugiat unde Expedita qui sint perferendis dolore necessitatibus fugiat unde Expedita qui sint perferendis dolore necessitatibus fugiat unde Expedita qui sint perferendis dolore necessitatibus fugiat unde",
-    "courseLevel": "Beginner",
-    "categoryId": "68ef1c2d1b43154afc7ba250",
-    "certificate": false,
-    "lifetimeAccess": false,
-    "price": 200,
-    "discountPrice": 70,
-    "instructorName": "Eugenia Mccoy",
-    "instructorImage": "https://lerirides.nyc3.digitaloceanspaces.com/courses/instructors/1761309499202_Screenshot 2025-10-17 125322.png",
-    "instructorDesignation": "Vero labore consequuntur dolores officia reprehenderit non",
-    "instructorDescription": "Necessitatibus laboriosam labore aut et nisi et placeat illum nobis vero placeat",
-    "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1761309499071_Screenshot 2025-10-23 131151.png",
-    "totalLessons": 3,
-    "totalSections": 2,
-    "totalDuration": 0,
-    "avgRating": 0,
-    "totalRatings": 0,
-    "totalEnrollments": 0,
-    "isPublished": false,
-    "lastUpdated": "2025-10-24T12:38:19.373Z",
-    "difficulty": "EASY",
-    "skillLevel": "BEGINNER",
-    "courseLength": null,
-    "createdAt": "2025-10-24T12:38:19.373Z",
-    "updatedAt": "2025-10-24T12:38:19.373Z",
-    "Section": [
-      {
-        "id": "68fb733b23c0449e79f25c15",
-        "courseId": "68fb733b23c0449e79f25c14",
-        "title": "curry 1",
-        "order": 1,
-        "totalLength": 0,
-        "totalLessons": 2,
-        "testCount": 0,
-        "createdAt": "2025-10-24T12:38:19.373Z",
-        "updatedAt": "2025-10-24T12:38:19.373Z",
-        "Lesson": [
-          {
-            "title": "lesson 1",
-            "order": 1
-          },
-          {
-            "title": "lesson 2",
-            "order": 2
-          }
-        ],
-        "Test": []
-      },
-      {
-        "id": "68fb733d23c0449e79f25c18",
-        "courseId": "68fb733b23c0449e79f25c14",
-        "title": "curry 2",
-        "order": 2,
-        "totalLength": 0,
-        "totalLessons": 1,
-        "testCount": 1,
-        "createdAt": "2025-10-24T12:38:19.373Z",
-        "updatedAt": "2025-10-24T12:38:19.373Z",
-        "Lesson": [
-          {
-            "title": "lesson 1",
-            "order": 1
-          }
-        ],
-        "Test": [
-          {
-            "id": "68fb638deff9c9981f7a369b",
-            "title": "Praesentium amet sequi hic velit optio pariatur"
-          }
+    "success": true,
+    "statusCode": 200,
+    "message": "Test details retrieved successfully",
+    "data": {
+        "id": "68fcb1e964b2ca0703a4add3",
+        "userId": "68ddfadcace204dd21badd3b",
+        "sectionId": null,
+        "title": "Final Examination Golap",
+        "description": "Test your knowledge concepts from chapters 1 to 5",
+        "passingScore": 70,
+        "totalMarks": 15,
+        "timeLimit": 60,
+        "isActive": true,
+        "isPublished": false,
+        "createdAt": "2025-10-25T11:18:01.037Z",
+        "updatedAt": "2025-10-25T11:18:01.037Z",
+        "questions": [
+            {
+                "id": "68fcb1e964b2ca0703a4add4",
+                "testId": "68fcb1e964b2ca0703a4add3",
+                "title": "What is the capital of France?",
+                "description": "Choose the correct capital city",
+                "type": "MCQ",
+                "marks": 2,
+                "explanation": "Paris has been the capital of France since 987 AD",
+                "order": 1,
+                "isActive": true,
+                "createdAt": "2025-10-25T11:18:01.037Z",
+                "updatedAt": "2025-10-25T11:18:01.037Z",
+                "options": [
+                    {
+                        "id": "68fcb1eb64b2ca0703a4add9",
+                        "questionId": "68fcb1e964b2ca0703a4add4",
+                        "text": "London",
+                        "isCorrect": false,
+                        "order": 1,
+                        "createdAt": "2025-10-25T11:18:01.037Z",
+                        "updatedAt": "2025-10-25T11:18:01.037Z"
+                    },
+                    {
+                        "id": "68fcb1eb64b2ca0703a4adda",
+                        "questionId": "68fcb1e964b2ca0703a4add4",
+                        "text": "Paris",
+                        "isCorrect": true,
+                        "order": 2,
+                        "createdAt": "2025-10-25T11:18:01.037Z",
+                        "updatedAt": "2025-10-25T11:18:01.037Z"
+                    },
+                    {
+                        "id": "68fcb1eb64b2ca0703a4addb",
+                        "questionId": "68fcb1e964b2ca0703a4add4",
+                        "text": "Berlin",
+                        "isCorrect": false,
+                        "order": 3,
+                        "createdAt": "2025-10-25T11:18:01.037Z",
+                        "updatedAt": "2025-10-25T11:18:01.037Z"
+                    },
+                    {
+                        "id": "68fcb1eb64b2ca0703a4addc",
+                        "questionId": "68fcb1e964b2ca0703a4add4",
+                        "text": "Madrid",
+                        "isCorrect": false,
+                        "order": 4,
+                        "createdAt": "2025-10-25T11:18:01.037Z",
+                        "updatedAt": "2025-10-25T11:18:01.037Z"
+                    }
+                ]
+            },
+            {
+                "id": "68fcb1e964b2ca0703a4add5",
+                "testId": "68fcb1e964b2ca0703a4add3",
+                "title": "The Earth is flat.",
+                "description": "Determine if this statement is true or false",
+                "type": "TRUE_FALSE",
+                "marks": 1,
+                "explanation": "The Earth is an oblate spheroid, not flat",
+                "order": 2,
+                "isActive": true,
+                "createdAt": "2025-10-25T11:18:01.037Z",
+                "updatedAt": "2025-10-25T11:18:01.037Z",
+                "options": [
+                    {
+                        "id": "68fcb1eb64b2ca0703a4addd",
+                        "questionId": "68fcb1e964b2ca0703a4add5",
+                        "text": "True",
+                        "isCorrect": false,
+                        "order": 1,
+                        "createdAt": "2025-10-25T11:18:01.037Z",
+                        "updatedAt": "2025-10-25T11:18:01.037Z"
+                    },
+                    {
+                        "id": "68fcb1eb64b2ca0703a4adde",
+                        "questionId": "68fcb1e964b2ca0703a4add5",
+                        "text": "False",
+                        "isCorrect": true,
+                        "order": 2,
+                        "createdAt": "2025-10-25T11:18:01.037Z",
+                        "updatedAt": "2025-10-25T11:18:01.037Z"
+                    }
+                ]
+            },
+            {
+                "id": "68fcb1ea64b2ca0703a4add6",
+                "testId": "68fcb1e964b2ca0703a4add3",
+                "title": "What is the chemical symbol for gold?",
+                "description": "Provide the correct chemical symbol",
+                "type": "SHORT_ANSWER",
+                "marks": 3,
+                "explanation": "Gold's symbol Au comes from Latin 'aurum'",
+                "order": 3,
+                "isActive": true,
+                "createdAt": "2025-10-25T11:18:01.037Z",
+                "updatedAt": "2025-10-25T11:18:01.037Z",
+                "options": []
+            },
+            {
+                "id": "68fcb1ea64b2ca0703a4add7",
+                "testId": "68fcb1e964b2ca0703a4add3",
+                "title": "Explain Newton's First Law of Motion",
+                "description": "Provide a brief explanation",
+                "type": "SHORT_ANSWER",
+                "marks": 5,
+                "explanation": "Also known as the Law of Inertia",
+                "order": 4,
+                "isActive": true,
+                "createdAt": "2025-10-25T11:18:01.037Z",
+                "updatedAt": "2025-10-25T11:18:01.037Z",
+                "options": []
+            },
+            {
+                "id": "68fcb1ea64b2ca0703a4add8",
+                "testId": "68fcb1e964b2ca0703a4add3",
+                "title": "Which of the following are programming languages?",
+                "description": "Select all that apply",
+                "type": "MCQ",
+                "marks": 4,
+                "explanation": "Multiple correct answers are possible",
+                "order": 5,
+                "isActive": true,
+                "createdAt": "2025-10-25T11:18:01.037Z",
+                "updatedAt": "2025-10-25T11:18:01.037Z",
+                "options": [
+                    {
+                        "id": "68fcb1eb64b2ca0703a4addf",
+                        "questionId": "68fcb1ea64b2ca0703a4add8",
+                        "text": "JavaScript",
+                        "isCorrect": true,
+                        "order": 1,
+                        "createdAt": "2025-10-25T11:18:01.037Z",
+                        "updatedAt": "2025-10-25T11:18:01.037Z"
+                    },
+                    {
+                        "id": "68fcb1eb64b2ca0703a4ade0",
+                        "questionId": "68fcb1ea64b2ca0703a4add8",
+                        "text": "HTML",
+                        "isCorrect": false,
+                        "order": 2,
+                        "createdAt": "2025-10-25T11:18:01.037Z",
+                        "updatedAt": "2025-10-25T11:18:01.037Z"
+                    },
+                    {
+                        "id": "68fcb1eb64b2ca0703a4ade1",
+                        "questionId": "68fcb1ea64b2ca0703a4add8",
+                        "text": "Python",
+                        "isCorrect": true,
+                        "order": 3,
+                        "createdAt": "2025-10-25T11:18:01.037Z",
+                        "updatedAt": "2025-10-25T11:18:01.037Z"
+                    },
+                    {
+                        "id": "68fcb1eb64b2ca0703a4ade2",
+                        "questionId": "68fcb1ea64b2ca0703a4add8",
+                        "text": "CSS",
+                        "isCorrect": false,
+                        "order": 4,
+                        "createdAt": "2025-10-25T11:18:01.037Z",
+                        "updatedAt": "2025-10-25T11:18:01.037Z"
+                    }
+                ]
+            }
         ]
-      }
-    ]
-  }
+    }
 }

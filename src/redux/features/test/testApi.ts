@@ -23,22 +23,31 @@ export const testApi = apiSlice.injectEndpoints({
       providesTags: [TagTypes.tests],
     }),
 
+    // Get single test
+    getSingleTest: builder.query({
+      query: (id) => ({
+        url: `/tests/${id}`,
+        method: "GET",
+      }),
+      providesTags: [TagTypes.tests],
+    }),
+
     // Create test
     createTest: builder.mutation({
-      query: (bodyData) => ({
+      query: (data) => ({
         url: "/tests",
         method: "POST",
-        body: bodyData,
+        body: data,
       }),
       invalidatesTags: [TagTypes.tests],
     }),
 
     // Update test
     updateTest: builder.mutation({
-      query: (bodyData) => ({
-        url: `/tests/${bodyData.id}`,
-        method: "PUT",
-        body: bodyData,
+      query: ({data, id}) => ({
+        url: `/tests/${id}`,
+        method: "PATCH",
+        body: data,
       }),
       invalidatesTags: [TagTypes.tests],
     }),
@@ -55,5 +64,5 @@ export const testApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetTestsQuery, useCreateTestMutation, useDeleteTestMutation, useUpdateTestMutation } =
+export const { useGetTestsQuery, useCreateTestMutation, useDeleteTestMutation, useUpdateTestMutation, useGetSingleTestQuery } =
   testApi;
