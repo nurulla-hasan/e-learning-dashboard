@@ -4,8 +4,8 @@ import { getToken } from "../../../helper/SessionHelper.ts";
 import { ErrorToast } from "../../../helper/ValidationHelper.ts";
 import TagTypes from "@/constant/tagType.constant.ts";
 
-export const baseUrl = "https://paulina-e-learning-platform.vercel.app/api/v1"
-// export const baseUrl = "http://10.10.20.26:6080/api/v1"
+// export const baseUrl = "https://paulina-e-learning-platform.vercel.app/api/v1"
+export const baseUrl = "http://10.10.20.26:6080/api/v1"
 
 
 const baseQuery = fetchBaseQuery({

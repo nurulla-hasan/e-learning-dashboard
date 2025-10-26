@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useNavigate } from "react-router-dom"
 import { Textarea } from "@/components/ui/textarea"
 import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
-import { useForm, useFieldArray } from "react-hook-form"
+import { useForm, useFieldArray, type SubmitErrorHandler } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { TestCreateSchema, type TTestCreateForm } from "@/schema/test.schema"
 import { ErrorToast, SuccessToast } from "@/helper/ValidationHelper"
@@ -33,6 +33,61 @@ const CreateTestForm = () => {
     control: form.control,
     name: "questions",
   })
+
+  const firstError = (errors: any, path: string[] = []): { path?: string; message?: string } => {
+    for (const key in errors) {
+      const e = errors[key];
+      if (!e) continue;
+      const currentPath = [...path, key];
+      if (typeof e.message === "string" && e.message) {
+        return { path: currentPath.join("."), message: e.message };
+      }
+      if (typeof e === "object") {
+        const nested = firstError(e, currentPath);
+        if (nested.path || nested.message) return nested;
+      }
+    }
+    return {};
+  };
+
+  const prettyFieldLabel = (p: string) => {
+    const parts = p.split(".");
+    const cap = (s: string) => s.split("_").map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
+    if (parts[0] === "questions") {
+      const qi = Number(parts[1] ?? 0) + 1;
+      if (parts[2] === "options") {
+        const oi = Number(parts[3] ?? 0) + 1;
+        const field = parts[4] ?? "";
+        return `Question ${qi} Option ${oi} ${cap(field)}`;
+      }
+      if (parts[2] === "answers") {
+        const ai = Number(parts[3] ?? 0) + 1;
+        const field = parts[4] ?? "";
+        return `Question ${qi} Answer ${ai} ${cap(field)}`;
+      }
+      const field = parts[2] ?? "";
+      return `Question ${qi} ${cap(field)}`;
+    }
+    const topMap: Record<string, string> = {
+      title: "Test Title",
+      description: "Description",
+      passingScore: "Passing Score",
+      totalMarks: "Total Marks",
+      timeLimit: "Time Limit",
+    };
+    return topMap[parts[0]] || cap(parts[0]);
+  };
+
+  const onInvalid: SubmitErrorHandler<TTestCreateForm> = (errors) => {
+    const { path, message } = firstError(errors);
+    let finalMessage = message || "Please fix the validation errors and try again";
+    if (path) {
+      // @ts-ignore
+      form.setFocus(path as any, { shouldSelect: true });
+      finalMessage = `${prettyFieldLabel(path)}: ${finalMessage}`;
+    }
+    ErrorToast(finalMessage);
+  };
 
   const addQuestion = (type: "MCQ" | "TRUE_FALSE" | "SHORT_ANSWER") => {
     const base = {
@@ -127,7 +182,7 @@ const CreateTestForm = () => {
         </div>
 
         <Form {...form}>
-          <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
+          <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit, onInvalid)}>
             <Card>
               <CardHeader>
                 <CardTitle>Fill in details</CardTitle>

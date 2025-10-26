@@ -51,14 +51,43 @@ const UpdateTestForm = ({ testId }: { testId?: string }) => {
     }
     return {};
   };
+  const prettyFieldLabel = (p: string) => {
+    const parts = p.split(".");
+    const cap = (s: string) => s.split("_").map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
+    if (parts[0] === "questions") {
+      const qi = Number(parts[1] ?? 0) + 1;
+      if (parts[2] === "options") {
+        const oi = Number(parts[3] ?? 0) + 1;
+        const field = parts[4] ?? "";
+        return `Question ${qi} Option ${oi} ${cap(field)}`;
+      }
+      if (parts[2] === "answers") {
+        const ai = Number(parts[3] ?? 0) + 1;
+        const field = parts[4] ?? "";
+        return `Question ${qi} Answer ${ai} ${cap(field)}`;
+      }
+      const field = parts[2] ?? "";
+      return `Question ${qi} ${cap(field)}`;
+    }
+    const topMap: Record<string, string> = {
+      title: "Test Title",
+      description: "Description",
+      passingScore: "Passing Score",
+      totalMarks: "Total Marks",
+      timeLimit: "Time Limit",
+    };
+    return topMap[parts[0]] || cap(parts[0]);
+  };
   const onInvalid: SubmitErrorHandler<TTestUpdateValues> = (errors) => {
     const { path, message } = firstError(errors);
+    let finalMessage = message || "Please fix the validation errors and try again";
     if (path) {
       // react-hook-form expects dot-paths
       // @ts-ignore
       form.setFocus(path as any, { shouldSelect: true });
+      finalMessage = `${prettyFieldLabel(path)}: ${finalMessage}`;
     }
-    ErrorToast(message || "Please fix the validation errors and try again");
+    ErrorToast(finalMessage);
   };
 
   const {
@@ -87,7 +116,7 @@ const UpdateTestForm = ({ testId }: { testId?: string }) => {
             ? {
                 options: (() => {
                   const base = (q.options ?? []).map((op: any, idx: number) => ({
-                    text: op.text ?? "",
+                    text: (op.text ?? "").toString().trim().length > 0 ? op.text : `Option ${idx + 1}`,
                     isCorrect: !!op.isCorrect,
                     order: Number(op.order ?? idx + 1),
                   }));
@@ -113,15 +142,14 @@ const UpdateTestForm = ({ testId }: { testId?: string }) => {
               }
             : {}),
           ...(q.type === "SHORT_ANSWER"
-            ? {
-                answers: (() => {
-                  const arr = (q.answers ?? []).map((ans: any) => ({
-                    text: ans.text ?? "",
-                    isCorrect: ans.isCorrect ?? true,
-                  }));
-                  return arr.length ? arr : [{ text: "", isCorrect: true }];
-                })(),
-              }
+            ? (() => {
+                const arr = (q.answers ?? []).map((ans: any) => ({
+                  text: ans.text ?? "",
+                  isCorrect: ans.isCorrect ?? true,
+                }));
+                const cleaned = arr.filter((a: any) => (a.text ?? "").trim().length > 0);
+                return cleaned.length ? { answers: cleaned } : {};
+              })()
             : {}),
         })),
       };
@@ -449,7 +477,7 @@ const UpdateTestForm = ({ testId }: { testId?: string }) => {
                             );
                           }
                           if (type === "SHORT_ANSWER") {
-                            return <AnswersEditor control={control} qIndex={qi} />;
+                            return null; // Hide Acceptable Answers in update form
                           }
                           return null;
                         })()}
@@ -558,46 +586,6 @@ function OptionsEditor({ control, qIndex, type, setValue }: any) {
                   <Trash2 className="h-4 w-4" />
                 </Button>
               )}
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function AnswersEditor({ control, qIndex }: any) {
-  const { fields, append, remove } = useFieldArray({ control, name: `questions.${qIndex}.answers` as const });
-  return (
-    <div className="mt-4 space-y-3">
-      <div className="flex items-center justify-between">
-        <p className="font-medium">Acceptable Answers</p>
-        <Button type="button" size="sm" onClick={() => append({ text: "", isCorrect: true })}>
-          <Plus className="h-3 w-3 mr-1" /> Add Answer
-        </Button>
-      </div>
-      <div className="space-y-2">
-        {fields.map((f, ai) => (
-          <div key={f.id} className="grid grid-cols-1 md:grid-cols-12 gap-2 items-center">
-            <div className="md:col-span-9">
-              <FormField
-                control={control}
-                name={`questions.${qIndex}.answers.${ai}.text` as const}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Answer</FormLabel>
-                    <FormControl>
-                      <Input placeholder="Answer text" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <div className="md:col-span-3 flex justify-end">
-              <Button type="button" variant="outline" className="bg-red-500 hover:bg-red-600 text-white border-red-500" onClick={() => remove(ai)}>
-                <Trash2 className="h-4 w-4" />
-              </Button>
             </div>
           </div>
         ))}
