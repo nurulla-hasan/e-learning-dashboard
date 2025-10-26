@@ -3,32 +3,49 @@
 import ProfileForm from "@/components/profile/ProfileForm";
 import ProfilePic from "@/components/profile/ProfilePic";
 import { useState } from "react";
+import { useGetMeQuery } from "@/redux/features/user/userApi";
+import { Loader } from "lucide-react";
 
 const ProfilePage = () => {
   const [file, setFile] = useState<File | null>(null)
-  const user = {
-    "fullName": "Admin Admin",
-    "email": "admin@gmail.com",
-    "phone": "01793837035",
-    "profileImg": ""
+  const { isLoading } = useGetMeQuery({})
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-cyan-50 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <Loader size={24} className="animate-spin text-cyan-500" />
+          <div className="text-sm text-gray-600">Loading profile...</div>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="min-h-full bg-gray-50 py-8 px-4 sm:px-6 lg:px-8 flex items-center">
-      <div className="w-full md:w-2/3 lg:w-1/2 mx-auto">
-        <div className="bg-white rounded-lg shadow-sm p-6 sm:p-8">
-          <h1 className="text-2xl font-semibold text-gray-900 mb-8">Admin Profile</h1>
-          <div className="flex justify-center mb-8">
-            <div className="relative">
+    <div className="bg-gradient-to-br from-blue-50 to-cyan-50 py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-2xl mx-auto">
+        {/* Main Card */}
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+          {/* Profile Picture Section */}
+          <div className="bg-gradient-to-r from-cyan-500 to-blue-500 p-8 pb-12">
+            <div className="flex justify-center">
               <ProfilePic setFile={setFile} />
             </div>
           </div>
-          <ProfileForm user={user} file={file} />
+
+          {/* Form Section */}
+          <div className="p-8">
+            <div className="mb-6">
+              <h2 className="text-lg font-semibold text-gray-800 mb-1">Account Information</h2>
+              <div className="w-12 h-0.5 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-full"></div>
+            </div>
+
+            <ProfileForm file={file} />
+          </div>
         </div>
       </div>
     </div>
   )
-  //}
 }
 
 export default ProfilePage;

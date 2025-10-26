@@ -11,14 +11,6 @@ export const userApi = apiSlice.injectEndpoints({
 
     getUsers: builder.query({
       query: (args) => {
-        // const params = new URLSearchParams();
-        // if (args !== undefined && args.length > 0) {
-        //   args.forEach((item: IParam) => {
-        //     if (item.value) {
-        //       params.append(item.name, item.value);
-        //     }
-        //   });
-        // }
         const params = new URLSearchParams();
           if (args) {
                 Object.entries(args).forEach(([key, value]) => {
@@ -40,7 +32,7 @@ export const userApi = apiSlice.injectEndpoints({
     // 
     getMe: builder.query({
       query: () => ({
-        url: "/user/get-me",
+        url: "/users/me",
         method: "GET",
       }),
       keepUnusedDataFor: 600,
@@ -66,8 +58,8 @@ export const userApi = apiSlice.injectEndpoints({
     //
     updateProfile: builder.mutation({
       query: (data) => ({
-        url: `/user/edit-my-profile`,
-        method: "PATCH",
+        url: `/users/update-profile`,
+        method: "PUT",
         body: data,
       }),
       invalidatesTags: (result) => {
@@ -80,6 +72,36 @@ export const userApi = apiSlice.injectEndpoints({
         try {
           await queryFulfilled;
           SuccessToast("Profile is updated successfully");
+        } catch (err: any) {
+          const status = err?.error?.status;
+          const message = err?.error?.data?.message || "Something Went Wrong";
+          if (status === 500) {
+            ErrorToast("Something Went Wrong");
+          }
+          else {
+            ErrorToast(message);
+          }
+        }
+      },
+    }),
+
+    // Update profile image
+    updateProfileImage: builder.mutation({
+      query: (data) => ({
+        url: `/users/update-profile-image`,
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: (result) => {
+        if (result?.success) {
+          return [TagTypes.me];
+        }
+        return [];
+      },
+      async onQueryStarted(_arg, { queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          SuccessToast("Profile image is updated successfully");
         } catch (err: any) {
           const status = err?.error?.status;
           const message = err?.error?.data?.message || "Something Went Wrong";
@@ -124,4 +146,4 @@ export const userApi = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetUsersQuery, useGetMeQuery, useUpdateProfileMutation, useUpdateUserStatusMutation } = userApi;
+export const { useGetUsersQuery, useGetMeQuery, useUpdateProfileMutation, useUpdateUserStatusMutation, useUpdateProfileImageMutation } = userApi;

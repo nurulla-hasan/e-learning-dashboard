@@ -1,15 +1,27 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { IUser } from "../../../types/user.type";
 
+// User shape based on /user/me response
+export interface IUserProfile {
+  id: string;
+  fullName: string;
+  email: string;
+  role: string;
+  dateOfBirth: string | null;
+  phoneNumber: string | null;
+  address: string | null;
+  image: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
 
 type TInitialState = {
   CreateError: string;
-  user: IUser | null;
+  user: IUserProfile | null;
 }
 
 const initialState: TInitialState = {
   CreateError: "",
-  user: null
+  user: null,
 };
 
 const userSlice = createSlice({
