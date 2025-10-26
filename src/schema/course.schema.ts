@@ -14,6 +14,7 @@ export const courseSchema = z.object({
   discountPrice: z.coerce
     .number()
     .min(0, "Discount cannot be negative"),
+  vatPercentage: z.coerce.number().min(0, "VAT cannot be negative").max(100, "VAT cannot exceed 100%").optional(),
   skillLevel: z.enum(["BEGINNER", "INTERMEDIATE", "ADVANCED"], {
     required_error: "Select a skill level",
   }),
@@ -23,6 +24,17 @@ export const courseSchema = z.object({
   instructorName: z.string().min(1, "Instructor name is required"),
   instructorDesignation: z.string().min(1, "Designation is required"),
   instructorDescription: z.string().min(1, "Instructor description is required"),
+}).superRefine((data, ctx) => {
+  // Validate that discount price is not greater than course fee (numeric compare)
+  const price = Number(data.price ?? 0);
+  const discount = Number(data.discountPrice ?? 0);
+  if (discount > price) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: `Discount price ($${discount}) cannot be greater than course fee ($${price})`,
+      path: ["discountPrice"],
+    });
+  }
 });
 
 export type TCourseFormValues = z.infer<typeof courseSchema>;

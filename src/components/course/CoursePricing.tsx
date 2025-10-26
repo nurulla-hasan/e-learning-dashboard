@@ -37,7 +37,7 @@ const CoursePricing = ({ control }: CoursePricingProps) => {
           name="discountPrice"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Discount Price</FormLabel>
+              <FormLabel>Discount Price (Optional)</FormLabel>
               <FormControl>
                 <div className="relative">
                   <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
@@ -45,6 +45,31 @@ const CoursePricing = ({ control }: CoursePricingProps) => {
                 </div>
               </FormControl>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={control}
+          name="vatPercentage"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>VAT Percentage (Optional)</FormLabel>
+              <FormControl>
+                <div className="relative">
+                  <Input
+                    type="number"
+                    className="pr-8"
+                    placeholder="0"
+                    {...field}
+                  />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">%</span>
+                </div>
+              </FormControl>
+              <FormMessage />
+              <p className="text-xs text-gray-500 mt-1">
+                If VAT is added, VAT will be added to the main price.
+              </p>
             </FormItem>
           )}
         />

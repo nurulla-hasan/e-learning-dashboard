@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
 import { ErrorToast, SuccessToast } from "@/helper/ValidationHelper";
@@ -55,6 +55,8 @@ const CreateCourseForm = () => {
 
   const form = useForm<TCourseFormValues>({
     resolver: zodResolver(courseSchema) as any,
+    mode: "onChange",
+    reValidateMode: "onChange",
     defaultValues: {
       courseTitle: "",
       courseShortDescription: "",
@@ -63,6 +65,7 @@ const CreateCourseForm = () => {
       categoryId: "Select Category",
       price: 0,
       discountPrice: 0,
+      vatPercentage: 0,
       skillLevel: "BEGINNER",
       difficulty: "EASY",
       instructorName: "",
@@ -70,6 +73,12 @@ const CreateCourseForm = () => {
       instructorDescription: "",
     },
   });
+
+  const watchedPrice = form.watch("price");
+  const watchedDiscount = form.watch("discountPrice");
+  useEffect(() => {
+    form.trigger("discountPrice");
+  }, [watchedPrice, watchedDiscount, form]);
 
   const handleSectionsChange = (updated: ISection[]) => {
     setSections(updated);
@@ -165,11 +174,17 @@ const CreateCourseForm = () => {
       })),
     }));
 
+    // Build body: send price including VAT, discountPrice as entered, and vatPercentage
+    const basePrice = Number(values.price) || 0;
+    const vatPercent = Number(values.vatPercentage) || 0;
+    const priceWithVat = basePrice + (basePrice * vatPercent / 100);
+
     const finalBodyData = {
       ...values,
       sections: cleanedSections,
-      price: Number(values.price) || 0,
+      price: priceWithVat,
       discountPrice: Number(values.discountPrice) || 0,
+      vatPercentage: vatPercent,
     };
 
     apiFormData.append("bodyData", JSON.stringify(finalBodyData));
