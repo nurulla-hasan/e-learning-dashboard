@@ -3,51 +3,61 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import type { z } from "zod";
 import CustomQuilEditor from "../form/CustomQuilEditor";
 import { certificateTemplateSchema } from "@/schema/certificate.template.schema";
-import { useUpdateCertificateMutation, useCreateCertificateMutation, useGetSingleCertificateQuery } from "@/redux/features/certificate/certificateApi";
+import { useUpdateCertificateContentMutation, useGetSingleCertificateQuery } from "@/redux/features/certificate/certificateApi";
 import FormButton from "../form/FormButton";
 import { useEffect } from "react";
 
 type TFormValues = z.infer<typeof certificateTemplateSchema>;
 type TProps = {
-  id?: string;
+  id: string;
   content?: string;
   title?: string;
-  description?: string;
 }
 
-const UpdateCertificateTemplateForm = ({ id, content = "", title = "", description = "" }: TProps) => {
-  const [updateCertificate, { isLoading: updateLoading }] = useUpdateCertificateMutation();
-  const [createCertificate, { isLoading: createLoading }] = useCreateCertificateMutation();
-  const { data: certificateData } = useGetSingleCertificateQuery(id || "", { skip: !id });
+const UpdateCertificateTemplateForm = ({ id, content = "", title = "" }: TProps) => {
+  const [updateCertificate, { isLoading: updateLoading }] = useUpdateCertificateContentMutation();
+  const { data: certificateData } = useGetSingleCertificateQuery(id, { skip: !id });
 
-  const { handleSubmit, control, reset } = useForm({
+  const { handleSubmit, control, reset, watch } = useForm({
     resolver: zodResolver(certificateTemplateSchema),
     defaultValues: {
-      content,
+      htmlContent: content,
       title,
-      description,
+      placeholders: [],
     }
   });
+
+  // Extract placeholders from HTML content
+  const extractPlaceholders = (html: string): string[] => {
+    const placeholderRegex = /\{\{([^}]+)\}\}/g;
+    const matches = html.match(placeholderRegex);
+    return matches ? [...new Set(matches)] : [];
+  };
 
   useEffect(() => {
     if (certificateData?.data) {
       reset({
-        content: certificateData.data.content || "",
+        htmlContent: certificateData.data.content || "",
         title: certificateData.data.title || "",
-        description: certificateData.data.description || "",
+        placeholders: certificateData.data.placeholders || [],
       });
     }
   }, [certificateData, reset]);
 
-  const onSubmit: SubmitHandler<TFormValues> = (data) => {
-    if (id) {
-      updateCertificate({
-        id,
-        data
-      });
-    } else {
-      createCertificate(data);
-    }
+  const watchedContent = watch("htmlContent");
+  const placeholders = watchedContent ? extractPlaceholders(watchedContent) : [];
+
+  const onSubmit: SubmitHandler<TFormValues> = async (data) => {
+    const submitData = {
+      title: data.title,
+      htmlContent: data.htmlContent,
+      placeholders: placeholders,
+    };
+
+    await updateCertificate({
+      id,
+      data: submitData
+    });
   };
 
   return (
@@ -66,29 +76,38 @@ const UpdateCertificateTemplateForm = ({ id, content = "", title = "", descripti
           />
         </div>
 
-        <div>
-          <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
-            Description (Optional)
-          </label>
-          <textarea
-            id="description"
-            {...control.register("description")}
-            rows={3}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
-            placeholder="Enter certificate description"
-          />
-        </div>
+        {/* Display extracted placeholders */}
+        {placeholders.length > 0 && (
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Extracted Placeholders
+            </label>
+            <div className="flex flex-wrap gap-2">
+              {placeholders.map((placeholder, index) => (
+                <span
+                  key={index}
+                  className="px-3 py-1 text-sm bg-blue-100 text-blue-800 rounded-full border border-blue-200"
+                >
+                  {placeholder}
+                </span>
+              ))}
+            </div>
+            <p className="text-xs text-gray-500 mt-1">
+              These placeholders will be automatically replaced when generating certificates
+            </p>
+          </div>
+        )}
 
         <CustomQuilEditor
           label="Certificate Template Content"
-          name="content"
+          name="htmlContent"
           control={control}
           height={550}
-          placeholder="Design your certificate template here..."
+          placeholder="Design your certificate template here... Use {{placeholderName}} for dynamic content"
         />
 
-        <FormButton isLoading={updateLoading || createLoading}>
-          {id ? "Update Certificate" : "Create Certificate"}
+        <FormButton isLoading={updateLoading}>
+          Update Certificate
         </FormButton>
       </form>
     </>

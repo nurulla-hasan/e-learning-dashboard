@@ -23,6 +23,26 @@ export const certificateApi = apiSlice.injectEndpoints({
       providesTags: [TagTypes.certificates],
     }),
 
+    // Get all certificates content
+    getCertificatesContent: builder.query({
+      query: (args) => {
+        const params = new URLSearchParams();
+        if (args) {
+          Object.entries(args).forEach(([key, value]) => {
+            if (value) {
+              params.append(key, value as string);
+            }
+          });
+        }
+        return {
+          url: "/certificate-contents",
+          method: "GET",
+          params: params,
+        };
+      },
+      providesTags: [TagTypes.certificates],
+    }),
+
 
     // Get single certificate
     getSingleCertificate: builder.query({
@@ -33,26 +53,8 @@ export const certificateApi = apiSlice.injectEndpoints({
       providesTags: [TagTypes.certificates],
     }),
 
-    // Create certificate
-    createCertificate: builder.mutation({
-      query: (data) => ({
-        url: "/certificates",
-        method: "POST",
-        body: data,
-      }),
-      invalidatesTags: [TagTypes.certificates],
-    }),
-
-    // Update certificate
-    updateCertificate: builder.mutation({
-      query: ({data, id}) => ({
-        url: `/certificates/${id}`,
-        method: "PATCH",
-        body: data,
-      }),
-      invalidatesTags: [TagTypes.certificates],
-    }),
-
+    // =====================================================================================================
+    
     // Create certificate content
     createCertificateContent: builder.mutation({
       query: (data) => ({
@@ -64,14 +66,26 @@ export const certificateApi = apiSlice.injectEndpoints({
     }),
 
 
+    // Update certificate content
+    updateCertificateContent: builder.mutation({
+      query: ({data, id}) => ({
+        url: `/certificate-contents/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: [TagTypes.certificates],
+    }),
+
+
+
   }),
 });
 
 export const {
    useGetIssuedCertificatesQuery,
-   useCreateCertificateMutation,
-   useUpdateCertificateMutation,
+   useUpdateCertificateContentMutation,
    useGetSingleCertificateQuery,
    useCreateCertificateContentMutation,
+   useGetCertificatesContentQuery,
 } =
   certificateApi;
