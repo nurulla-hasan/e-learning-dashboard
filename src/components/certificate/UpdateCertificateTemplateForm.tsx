@@ -37,7 +37,7 @@ const UpdateCertificateTemplateForm = ({ id, content = "", title = "" }: TProps)
   useEffect(() => {
     if (certificateData?.data) {
       reset({
-        htmlContent: certificateData.data.content || "",
+        htmlContent: certificateData.data.htmlContent || "",
         title: certificateData.data.title || "",
         placeholders: certificateData.data.placeholders || [],
       });

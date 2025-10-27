@@ -47,7 +47,7 @@ export const certificateApi = apiSlice.injectEndpoints({
     // Get single certificate
     getSingleCertificate: builder.query({
       query: (id) => ({
-        url: `/certificates/${id}`,
+        url: `/certificate-contents/${id}`,
         method: "GET",
       }),
       providesTags: [TagTypes.certificates],

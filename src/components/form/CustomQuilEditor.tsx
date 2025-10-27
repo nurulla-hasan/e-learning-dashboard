@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import JoditEditor from "jodit-react";
+import { useMemo } from "react";
 import { Controller } from "react-hook-form";
 
 type TProps = {
@@ -10,43 +11,79 @@ type TProps = {
   placeholder?: string;
 };
 
-const CustomQuilEditor = ({ label, name, control, height = 200, placeholder= "Write here..", }: TProps) => {
-  const config = {
-    readonly: false,
-    height: height,
-    placeholder: placeholder,
-    buttons: [
-      "source",
-      "|",
-      "bold",
-      "italic",
-      "underline",
-      "strikethrough",
-      "|",
-      "ul",
-      "ol",
-      "|",
-      "font",
-      "fontsize",
-      "paragraph",
-      "|",
-      "table",
-      "link",
-      "|",
-      "undo",
-      "redo",
-      "|",
-      "hr",
-      "eraser",
-      "fullsize",
-    ],
-    toolbarAdaptive: false,
-  };
+const CustomQuilEditor = ({
+  label,
+  name,
+  control,
+  height = 200,
+  placeholder = "Write here..",
+}: TProps) => {
+  const config = useMemo(
+    () => ({
+      readonly: false,
+      height: height,
+      placeholder: placeholder,
+      buttons: [
+        "source",
+        "|",
+        "bold",
+        "italic",
+        "underline",
+        "strikethrough",
+        "|",
+        "ul",
+        "ol",
+        "|",
+        "font",
+        "fontsize",
+        "paragraph",
+        "|",
+        "table",
+        "link",
+        "image",
+        "video",
+        "file",
+        "|",
+        "undo",
+        "redo",
+        "|",
+        "hr",
+        "eraser",
+        "fullsize",
+        "|",
+        "justify",
+        "left",
+        "right",
+        "center",
+        "|",
+        "color",
+        "background",
+        "|",
+        "indent",
+        "outdent",
+        "|",
+        "superscript",
+        "subscript",
+        "|",
+        "symbols",
+        "find",
+        "|",
+        "preview",
+        "print",
+        "about",
+      ],
+      toolbarAdaptive: false,
+    }),
+    [height, placeholder]
+  );
 
   return (
     <>
       <div>
-        <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">
+        <label
+          htmlFor={name}
+          className="block text-sm font-medium text-gray-700 mb-1"
+        >
           {label}
         </label>
 
