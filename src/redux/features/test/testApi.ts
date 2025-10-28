@@ -23,6 +23,16 @@ export const testApi = apiSlice.injectEndpoints({
       providesTags: [TagTypes.tests],
     }),
 
+     // Get single test
+    getSingleTest: builder.query({
+      query: (id) => ({
+        url: `/tests/${id}`,
+        method: "GET",
+      }),
+      providesTags: [TagTypes.tests],
+    }),
+
+
     // Get all test attempts
     getTestAttempts: builder.query({
       query: (args) => {
@@ -43,14 +53,16 @@ export const testApi = apiSlice.injectEndpoints({
       providesTags: [TagTypes.tests],
     }),
 
-    // Get single test
-    getSingleTest: builder.query({
+    // Get single test attempt
+    getSingleTestAttempt: builder.query({
       query: (id) => ({
-        url: `/tests/${id}`,
+        url: `/attempt-test/${id}`,
         method: "GET",
       }),
       providesTags: [TagTypes.tests],
     }),
+
+    //======================================================================
 
     // Create test
     createTest: builder.mutation({
@@ -64,6 +76,16 @@ export const testApi = apiSlice.injectEndpoints({
 
     // Update test
     updateTest: builder.mutation({
+      query: ({data, id}) => ({
+        url: `/tests/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: [TagTypes.tests],
+    }),
+
+    // Update test attempt
+    updateTestAttempt: builder.mutation({
       query: ({data, id}) => ({
         url: `/tests/${id}`,
         method: "PATCH",
@@ -91,5 +113,7 @@ export const {
    useUpdateTestMutation,
    useGetSingleTestQuery,
    useGetTestAttemptsQuery,
+   useGetSingleTestAttemptQuery,
+   useUpdateTestAttemptMutation
 } =
   testApi;

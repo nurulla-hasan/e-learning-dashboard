@@ -8,7 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Download, Eye, Search } from "lucide-react";
+import { Eye, Search } from "lucide-react";
 import { Button } from "../ui/button";
 import CustomPagination2 from "../../../tools/CustomPagination2";
 import { useGetIssuedCertificatesQuery } from "@/redux/features/certificate/certificateApi";
@@ -16,6 +16,7 @@ import useSmartFetchHook from "@/hooks/useSmartFetchHook";
 import ListLoading from "../loader/ListLoading";
 import ServerErrorCard from "../card/ServerErrorCard";
 import type { Certificate } from "@/types/certificate.type";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 const CertificateList = () => {
   const {
@@ -82,19 +83,19 @@ const CertificateList = () => {
               <TableHeader className="sticky top-0 z-10 bg-yellow-50 border-b">
                 <TableRow className="hover:bg-yellow-50">
                   <TableHead className="w-16 bg-yellow-50">S.N.</TableHead>
-                  <TableHead className="min-w-32 bg-yellow-50">
+                  <TableHead className=" bg-yellow-50">
                     Issued Date
                   </TableHead>
-                  <TableHead className="min-w-32 bg-yellow-50">
+                  <TableHead className=" bg-yellow-50">
                     Student
                   </TableHead>
-                  <TableHead className="min-w-32 bg-yellow-50">
+                  <TableHead className=" bg-yellow-50">
                     Course Name
                   </TableHead>
-                  <TableHead className="min-w-32 bg-yellow-50">
+                  <TableHead className=" bg-yellow-50">
                     Certificate Type
                   </TableHead>
-                  <TableHead className="min-w-24 bg-yellow-50">
+                  <TableHead className=" bg-yellow-50">
                     Action
                   </TableHead>
                 </TableRow>
@@ -109,10 +110,10 @@ const CertificateList = () => {
                       <TableCell className="w-16 text-muted-foreground">
                         {index + 1 + (page - 1) * limit}
                       </TableCell>
-                      <TableCell className="min-w-32 font-medium text-foreground">
+                      <TableCell className=" font-medium text-foreground">
                         {certificate?.issueDate ? new Date(certificate.issueDate).toLocaleDateString() : "-"}
                       </TableCell>
-                      <TableCell className="min-w-32 font-medium text-foreground">
+                      <TableCell className=" font-medium text-foreground">
                         <div className="flex items-center space-x-3 px-3 rounded-xl transition">
                           <img
                             src={certificate?.userImage}
@@ -129,7 +130,7 @@ const CertificateList = () => {
                           </div>
                         </div>
                       </TableCell>
-                      <TableCell className="min-w-32 font-medium text-foreground">
+                      <TableCell className=" font-medium text-foreground">
                         <div className="flex flex-col">
                           <span>{certificate?.courseTitle}</span>
                           <span className="text-sm text-muted-foreground">
@@ -137,25 +138,76 @@ const CertificateList = () => {
                           </span>
                         </div>
                       </TableCell>
-                      <TableCell className="min-w-32 font-medium text-foreground">
+                      <TableCell className=" font-medium text-foreground">
                         {certificate?.certificateTitle}
                       </TableCell>
-                      <TableCell className="min-w-24">
+                      <TableCell className="">
                         <div className="flex gap-x-2 items-center">
-                          <Button
-                            size="icon"
-                            className="bg-cyan-600 hover:bg-cyan-700 text-white rounded-full"
-                            title="View Certificate"
-                          >
-                            <Eye className="h-3 w-3" />
-                          </Button>
-                          <Button
-                            size="icon"
-                            className="bg-yellow-600 hover:bg-yellow-700 text-white rounded-full"
-                            title="Download Certificate"
-                          >
-                            <Download className="h-3 w-3" />
-                          </Button>
+                          <Dialog>
+                            <DialogTrigger asChild>
+                              <Button
+                                size="icon"
+                                className="bg-cyan-600 hover:bg-cyan-700 text-white"
+                                title="View Certificate"
+                              >
+                                <Eye />
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent className="max-w-3xl">
+                              <DialogHeader>
+                                <DialogTitle>{certificate?.certificateTitle || "Certificate Details"}</DialogTitle>
+                              </DialogHeader>
+                              <div className="space-y-4">
+                                {/* Top: Student + Basic Info */}
+                                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                                  <div className="flex items-center gap-3">
+                                    {certificate?.userImage && (
+                                      <img src={certificate.userImage} alt={certificate?.userFullName || "Student"} className="w-12 h-12 rounded-lg object-cover" />
+                                    )}
+                                    <div>
+                                      <div className="text-gray-900 font-medium">{certificate?.userFullName}</div>
+                                      <div className="text-xs text-gray-500">{certificate?.userEmail}</div>
+                                    </div>
+                                  </div>
+                                  <div className="grid grid-cols-2 gap-3 text-sm">
+                                    <div className="text-gray-500">Certificate ID</div>
+                                    <div className="text-gray-900 font-medium">{certificate?.certificateId}</div>
+                                    <div className="text-gray-500">Issued</div>
+                                    <div className="text-gray-900 font-medium">{certificate?.issueDate ? new Date(certificate.issueDate).toLocaleString() : "-"}</div>
+                                  </div>
+                                </div>
+
+                                {/* Course */}
+                                <div className="border rounded-lg p-3">
+                                  <div className="text-sm font-semibold text-gray-700 mb-2">Course</div>
+                                  <div className="flex items-center gap-3">
+                                    {certificate?.courseThumbnail && (
+                                      <img src={certificate.courseThumbnail} alt={certificate?.courseTitle || "Course"} className="w-16 h-16 rounded object-cover" />
+                                    )}
+                                    <div className="flex-1">
+                                      <div className="text-gray-900 font-medium">{certificate?.courseTitle}</div>
+                                      <div className="text-xs text-gray-500">{certificate?.categoryName} • {certificate?.courseLevel} • {certificate?.instructorName}</div>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Main Contents */}
+                                {certificate?.mainContents && (
+                                  <div className="border rounded-lg p-3">
+                                    <div className="text-sm font-semibold text-gray-700 mb-2">Main Contents</div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                      {Object.entries(certificate.mainContents as Record<string, string | number>).map(([k, v]) => (
+                                        <div key={k} className="flex flex-wrap items-center justify-between text-sm">
+                                          <span className="text-gray-500">{k}</span>
+                                          <span className="text-gray-900 font-medium">{String(v)}</span>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </DialogContent>
+                          </Dialog>
                         </div>
                       </TableCell>
                     </TableRow>

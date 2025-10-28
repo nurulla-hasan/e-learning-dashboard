@@ -8,6 +8,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import { useGetTestAttemptsQuery } from "@/redux/features/test/testApi";
 import ListLoading from "../loader/ListLoading";
 import ServerErrorCard from "../card/ServerErrorCard";
@@ -16,6 +18,7 @@ import type { TTestAttempt } from "@/types/test.attempt.type";
 import CustomPagination2 from "../../../tools/CustomPagination2";
 
 const TestResultList = () => {
+  const navigate = useNavigate();
   const {
     searchTerm,
     setSearchTerm,
@@ -78,17 +81,18 @@ const TestResultList = () => {
               <TableHeader className="sticky top-0 z-10 bg-yellow-50 border-b">
                 <TableRow className="hover:bg-yellow-50">
                   <TableHead className="w-16 bg-yellow-50">S.N.</TableHead>
-                  <TableHead className="min-w-32 bg-yellow-50">
+                  <TableHead className="bg-yellow-50">
                     Student
                   </TableHead>
-                  <TableHead className="min-w-32 bg-yellow-50">
+                  <TableHead className="bg-yellow-50">
                     Course Name
                   </TableHead>
-                  <TableHead className="min-w-32 bg-yellow-50">Date</TableHead>
-                  <TableHead className="min-w-32 bg-yellow-50">Score</TableHead>
-                  <TableHead className="min-w-32 bg-yellow-50">
+                  <TableHead className="bg-yellow-50">Date</TableHead>
+                  <TableHead className="bg-yellow-50">Score</TableHead>
+                  <TableHead className="bg-yellow-50">
                     Result
                   </TableHead>
+                  <TableHead className="min-w-24 bg-yellow-50 text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -101,7 +105,7 @@ const TestResultList = () => {
                       <TableCell className="w-16 text-muted-foreground">
                         {index + 1 + (page - 1) * limit}
                       </TableCell>
-                      <TableCell className="min-w-32 font-medium text-foreground">
+                      <TableCell className="font-medium text-foreground">
                         <div className="flex items-center space-x-3 px-3 rounded-xl transition">
                           <img
                             src={attempt?.userImage}
@@ -118,27 +122,36 @@ const TestResultList = () => {
                           </div>
                         </div>
                       </TableCell>
-                      <TableCell className="min-w-32 font-medium text-foreground">
+                      <TableCell className="font-medium text-foreground">
                         {attempt?.courseTitle}
                       </TableCell>
-                      <TableCell className="min-w-32 font-medium text-foreground">
+                      <TableCell className="font-medium text-foreground">
                         {attempt?.completedAt ? new Date(attempt.completedAt).toLocaleString() : "-"}
                       </TableCell>
-                      <TableCell className="min-w-32 font-medium text-foreground">
+                      <TableCell className="font-medium text-foreground">
                         {`${attempt?.score ?? 0}/${attempt?.totalMarks ?? 0}`} {typeof attempt?.percentage === "number" ? `(${attempt.percentage}%)` : ""}
                       </TableCell>
-                      <TableCell className="min-w-32 font-medium text-foreground">
+                      <TableCell className="font-medium text-foreground">
                         <span
                           className={`px-2 py-1 rounded-full text-xs font-semibold ${attempt?.isPassed ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}
                         >
                           {attempt?.isPassed ? "Passed" : "Failed"}
                         </span>
                       </TableCell>
+                      <TableCell className="min-w-24 text-right">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => attempt?.id && navigate(`/test-attempts/${attempt.id}`)}
+                        >
+                          Edit
+                        </Button>
+                      </TableCell>
                     </TableRow>
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                    <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
                       No results found.
                     </TableCell>
                   </TableRow>
