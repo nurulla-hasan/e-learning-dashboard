@@ -27,7 +27,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
             <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
               <div className="flex items-center flex-shrink-0 px-6">
                 <div className="flex items-center">
-                    <img src="./../../../public/logo.png" alt="job" className="w-12 h-12" />
+                    <img src="/logo.png" alt="job" className="w-12 h-12" />
                   <span className="ml-3 text-xl font-semibold text-gray-900">
                     Dashboard
                   </span>
