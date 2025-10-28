@@ -6,6 +6,15 @@ import { certificateTemplateSchema } from "@/schema/certificate.template.schema"
 import { useUpdateCertificateContentMutation, useGetSingleCertificateQuery } from "@/redux/features/certificate/certificateApi";
 import FormButton from "../form/FormButton";
 import { useEffect } from "react";
+import { ErrorToast, SuccessToast } from "@/helper/ValidationHelper";
+
+const FIXED_PLACEHOLDERS = [
+  "{{fullName}}",
+  "{{dob}}",
+  "{{startDate}}",
+  "{{endDate}}",
+  "{{certificateNumber}}",
+] as const;
 
 type TFormValues = z.infer<typeof certificateTemplateSchema>;
 type TProps = {
@@ -18,7 +27,7 @@ const UpdateCertificateTemplateForm = ({ id, content = "", title = "" }: TProps)
   const [updateCertificate, { isLoading: updateLoading }] = useUpdateCertificateContentMutation();
   const { data: certificateData } = useGetSingleCertificateQuery(id, { skip: !id });
 
-  const { handleSubmit, control, reset, watch } = useForm({
+  const { handleSubmit, control, reset, watch, setValue } = useForm({
     resolver: zodResolver(certificateTemplateSchema),
     defaultValues: {
       htmlContent: content,
@@ -54,10 +63,15 @@ const UpdateCertificateTemplateForm = ({ id, content = "", title = "" }: TProps)
       placeholders: placeholders,
     };
 
-    await updateCertificate({
+    try{
+      await updateCertificate({
       id,
       data: submitData
-    });
+    }).unwrap();
+    SuccessToast("Certificate template updated successfully");
+    }catch(error){
+      ErrorToast("Failed to update certificate template");
+    }
   };
 
   return (
@@ -77,7 +91,7 @@ const UpdateCertificateTemplateForm = ({ id, content = "", title = "" }: TProps)
         </div>
 
         {/* Display extracted placeholders */}
-        {placeholders.length > 0 && (
+        {/* {placeholders.length > 0 && (
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Extracted Placeholders
@@ -96,7 +110,35 @@ const UpdateCertificateTemplateForm = ({ id, content = "", title = "" }: TProps)
               These placeholders will be automatically replaced when generating certificates
             </p>
           </div>
-        )}
+        )} */}
+
+        {/* Drag-and-drop placeholders into the editor or click to insert */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Placeholders (drag into editor or click to insert)
+          </label>
+          <div className="flex flex-wrap gap-2">
+            {FIXED_PLACEHOLDERS.map((ph) => (
+              <button
+                key={ph}
+                type="button"
+                draggable
+                onDragStart={(e) => {
+                  e.dataTransfer.setData('text/plain', ph);
+                }}
+                onClick={() => {
+                  const current = (watch('htmlContent') as string) || '';
+                  const next = current + (current.endsWith(' ') ? '' : ' ') + ph + ' ';
+                  setValue('htmlContent' as any, next);
+                }}
+                className="px-3 py-1 text-sm rounded-full border bg-gray-50 hover:bg-gray-100"
+                title="Drag into the editor or click to insert"
+              >
+                {ph}
+              </button>
+            ))}
+          </div>
+        </div>
 
         <CustomQuilEditor
           label="Certificate Template Content"

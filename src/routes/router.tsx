@@ -26,6 +26,7 @@ import CreateTestPage from "@/pages/test/CreateTestPage";
 import TestBuilderPage from "@/pages/test/TestBuilderPage";
 import TestResultsPage from "@/pages/test/TestResultsPage";
 import UpdateTestPage from "@/pages/test/UpdateTestPage";
+import CreateCertificateTemplatePage from "@/pages/test/CreateCertificateTemplatePage";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import PublicRoute from "./PublicRoute";
 import PrivateRoute from "./PrivateRoute";
@@ -121,6 +122,10 @@ const router = createBrowserRouter([
       {
         path: "certificate-template",
         element: <CertificateTemplatePage />,
+      },
+      {
+        path: "certificate-template/create",
+        element: <CreateCertificateTemplatePage />,
       },
       {
         path: "certificate-issued",

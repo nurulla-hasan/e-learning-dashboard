@@ -44,6 +44,27 @@ export const certificateApi = apiSlice.injectEndpoints({
     }),
 
 
+    // Get all certificates content
+    getCourseForCreateCertificate: builder.query({
+      query: (args) => {
+        const params = new URLSearchParams();
+        if (args) {
+          Object.entries(args).forEach(([key, value]) => {
+            if (value) {
+              params.append(key, value as string);
+            }
+          });
+        }
+        return {
+          url: "/certificate-contents/courses-without-certificate-content",
+          method: "GET",
+          params: params,
+        };
+      },
+      providesTags: [TagTypes.certificates],
+    }),
+
+
     // Get single certificate
     getSingleCertificate: builder.query({
       query: (id) => ({
@@ -87,5 +108,6 @@ export const {
    useGetSingleCertificateQuery,
    useCreateCertificateContentMutation,
    useGetCertificatesContentQuery,
+   useGetCourseForCreateCertificateQuery,
 } =
   certificateApi;
