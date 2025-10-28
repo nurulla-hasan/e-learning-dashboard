@@ -3,37 +3,29 @@ import TagTypes from "../../../constant/tagType.constant.js";
 
 export const dashboardApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getStats: builder.query({
+    getDashboardData: builder.query({
       query: () => {
         return {
-          url: `/user/get-stats`,
+          url: `/admin/dashboard-stats`,
           method: "GET",
         };
       },
       keepUnusedDataFor: 600,
       providesTags: [TagTypes.stats],
     }),
-    getUserGrowth: builder.query({
-      query: (year) => {
+
+    getContactData: builder.query({
+      query: () => {
         return {
-          url: `/user/get-user-overview/${year}`,
+          url: `/support`,
           method: "GET",
         };
       },
       keepUnusedDataFor: 600,
-      providesTags: [TagTypes.userGrowth],
+      providesTags: [TagTypes.stats],
     }),
-    getIncomeGrowth: builder.query({
-      query: (year) => {
-        return {
-          url: `/order/get-income-overview/${year}`,
-          method: "GET",
-        };
-      },
-      keepUnusedDataFor: 600,
-      providesTags: [TagTypes.incomeGrowth],
-    }),
+
   }),
 });
 
-export const { useGetStatsQuery, useGetUserGrowthQuery, useGetIncomeGrowthQuery } = dashboardApi;
+export const { useGetDashboardDataQuery, useGetContactDataQuery } = dashboardApi;

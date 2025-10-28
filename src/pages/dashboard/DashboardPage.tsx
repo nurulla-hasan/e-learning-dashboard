@@ -5,7 +5,7 @@ import RecentOrderList from "@/components/order/RecentOrderList";
 
 
 const DashboardPage = () => {
-  return (
+  return ( 
     <>
       <div>
         <StatsSection/>

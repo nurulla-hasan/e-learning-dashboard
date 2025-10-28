@@ -1,22 +1,30 @@
 "use client"
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Download } from "lucide-react";
-import { Button } from "../ui/button";
-import OrderDetailsModal from "../modal/order/OrderDetailsModal"
-import { recentOrderData } from "@/data/order.data"
+import { useGetContactDataQuery } from "@/redux/features/dashboard/dashboardApi";
+import { ScrollArea } from "../ui/scroll-area";
 
 
 
 
 const RecentOrderList = () => {
+    const { data, isLoading, isError } = useGetContactDataQuery(undefined);
+    const contacts = (data?.data || []) as Array<{
+        id: string;
+        message: string;
+        userEmail: string;
+        userPhone: string;
+        status: string;
+        createdAt: string;
+        totalReplies?: number;
+    }>;
     return (
         <div className="w-full mx-auto relative bg-white p-4 rounded-md mt-4 shadow">
             {/* Header Section */}
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                 {/* Left Section: Title + Total Count */}
                 <div className="flex justify-between items-center gap-3 w-full sm:w-auto">
-                    <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">Recent Order List</h1>
+                    <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">Recent Contact List</h1>
                 </div>
             </div>
 
@@ -25,57 +33,59 @@ const RecentOrderList = () => {
             <div className="border border-border rounded-lg bg-card overflow-hidden">
                 <div className="relative">
                     {/* Single table container with synchronized scrolling */}
-                    <div className="overflow-auto max-h-[500px]">
+                    <ScrollArea className="overflow-auto max-h-[500px]">
                         <Table className="min-w-[800px]">
                             <TableHeader className="sticky top-0 z-10 bg-yellow-50 border-b">
                                 <TableRow className="hover:bg-yellow-50">
                                     <TableHead className="w-16 bg-yellow-50">S.N.</TableHead>
-                                    <TableHead className="min-w-32 bg-yellow-50">Order No.</TableHead>
-                                    <TableHead className="min-w-32 bg-yellow-50">Student/Company Name</TableHead>
-                                    <TableHead className="min-w-32 bg-yellow-50">Date</TableHead>
-                                    <TableHead className="min-w-32 bg-yellow-50">Amount</TableHead>
-                                    <TableHead className="min-w-32 bg-yellow-50">Invoice</TableHead>
-                                    <TableHead className="min-w-32 bg-yellow-50">Payment Status</TableHead>
-                                    <TableHead className="min-w-24 bg-yellow-50">Actions</TableHead>
+                                    <TableHead className="min-w-48 bg-yellow-50">Email</TableHead>
+                                    <TableHead className="min-w-40 bg-yellow-50">Phone</TableHead>
+                                    <TableHead className="min-w-64 bg-yellow-50">Message</TableHead>
+                                    <TableHead className="min-w-40 bg-yellow-50">Created</TableHead>
+                                    <TableHead className="min-w-32 bg-yellow-50">Status</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {recentOrderData.length > 0 ? (
-                                    recentOrderData?.map((order, index) => (
-                                        <TableRow key={index} className={index % 2 === 0 ? "bg-gray-50" : "bg-muted/30"}>
+                                {isLoading ? (
+                                    [...Array(6)].map((_, i) => (
+                                        <TableRow key={i}>
+                                            <TableCell className="w-16 text-muted-foreground">
+                                                <div className="h-4 w-6 bg-gray-100 animate-pulse rounded" />
+                                            </TableCell>
+                                            <TableCell><div className="h-4 w-48 bg-gray-100 animate-pulse rounded" /></TableCell>
+                                            <TableCell><div className="h-4 w-32 bg-gray-100 animate-pulse rounded" /></TableCell>
+                                            <TableCell><div className="h-4 w-64 bg-gray-100 animate-pulse rounded" /></TableCell>
+                                            <TableCell><div className="h-4 w-40 bg-gray-100 animate-pulse rounded" /></TableCell>
+                                            <TableCell><div className="h-6 w-20 bg-gray-100 animate-pulse rounded-xl" /></TableCell>
+                                        </TableRow>
+                                    ))
+                                ) : isError ? (
+                                    <TableRow>
+                                        <TableCell colSpan={6} className="text-center py-8 text-red-500">Failed to load contacts</TableCell>
+                                    </TableRow>
+                                ) : contacts.length > 0 ? (
+                                    contacts.map((c, index) => (
+                                        <TableRow key={c.id} className={index % 2 === 0 ? "bg-gray-50" : "bg-muted/30"}>
                                             <TableCell className="w-16 text-muted-foreground">{index + 1}</TableCell>
-                                            <TableCell className="min-w-32 font-medium text-foreground">{order.orderNo}</TableCell>
-                                            <TableCell className="min-w-32 font-medium text-foreground">{order.name}</TableCell>
-                                            <TableCell className="min-w-32 font-medium text-foreground">{order.date}</TableCell>
-                                            <TableCell className="min-w-32 font-medium text-foreground">${order.amount}</TableCell>
-                                            <TableCell className="min-w-32 font-medium text-foreground">
-                                                <Button
-                                                    variant="ghost"
-                                                    size="sm"
-                                                    className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 p-0 h-auto font-normal"
-                                                >
-                                                    <Download className="h-4 w-4 mr-1" />
-                                                    Download
-                                                </Button>
-                                            </TableCell>
-                                              <TableCell className="min-w-24">
-                                                <button className={`px-3 py-1.5 border w-20 rounded-xl ${order?.paymentStatus==="Paid" ? "border-green-200 text-green-500" : "border-red-200 text-red-500"}`}>{order?.paymentStatus}</button>
-                                            </TableCell>
-                                            <TableCell className="min-w-24">
-                                               <OrderDetailsModal/>
+                                            <TableCell className="min-w-48 font-medium text-foreground">{c.userEmail}</TableCell>
+                                            <TableCell className="min-w-40 font-medium text-foreground">{c.userPhone || '-'}</TableCell>
+                                            <TableCell className="min-w-64 font-medium text-foreground truncate">{c.message}</TableCell>
+                                            <TableCell className="min-w-40 font-medium text-foreground">{new Date(c.createdAt).toLocaleString()}</TableCell>
+                                            <TableCell className="min-w-32">
+                                                <button className={`px-3 py-1.5 border w-28 rounded-xl ${c.status === "CLOSED" ? "border-gray-200 text-gray-600" : c.status === "IN_PROGRESS" ? "border-yellow-200 text-yellow-600" : "border-green-200 text-green-500"}`}>{c.status}</button>
                                             </TableCell>
                                         </TableRow>
                                     ))
                                 ) : (
                                     <TableRow>
-                                        <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
-                                            No Orders found matching your search.
+                                        <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
+                                            No contacts found.
                                         </TableCell>
                                     </TableRow>
                                 )}
                             </TableBody>
                         </Table>
-                    </div>
+                    </ScrollArea>
                 </div>
             </div>
         </div>

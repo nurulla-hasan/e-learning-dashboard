@@ -8,29 +8,35 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { yearOptions } from '../../data/options.data';
-import { incomeBarData } from '../../data/dashboard.data';
-
-
-
-
+import { useGetDashboardDataQuery } from '@/redux/features/dashboard/dashboardApi';
 
 const IncomeOverviewChart = () => {
   const date = new Date();
   const currentYear = date.getFullYear().toString();
   const [selectedYear, setSelectedYear] = useState(currentYear);
-  //const {data, isLoading, isError} = useGetIncomeGrowthQuery(selectedYear);
-  //const barData = data?.data;
+  const { data, isLoading, isError } = useGetDashboardDataQuery(undefined);
+  const growth = (data?.data?.earningGrowth || []) as Array<{ label: string; total: number }>;
+  const filtered = growth.filter((g) => g.label.includes(selectedYear));
+  const barData = filtered.map((g) => ({
+    month: g.label.split(' ')[0],
+    income: g.total,
+  }));
 
+  if (isLoading) {
+    return (
+      <div className="md:p-6 bg-white rounded-lg shadow-sm">
+        <div className="h-80 animate-pulse bg-gray-100 rounded" />
+      </div>
+    );
+  }
 
-  // if(isLoading){
-  //     return <IncomeOverviewLoading/>
-  //   }
-  
-  //   if (!isLoading && isError) {
-  //     return <h1 className="text-lg text-red-500">Server Error Occured</h1>;
-  //   }
-
-
+  if (isError) {
+    return (
+      <div className="md:p-6 bg-white rounded-lg shadow-sm">
+        <div className="text-red-500 p-4">Failed to load income overview</div>
+      </div>
+    );
+  }
 
   return (
     <div className="md:p-6 bg-white rounded-lg shadow-sm">
@@ -48,10 +54,9 @@ const IncomeOverviewChart = () => {
           ))}
         </select>
       </div>
-
       <div className="h-80">
-        <ResponsiveContainer width="100%" height={300}>
-          <AreaChart data={incomeBarData}>
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart data={barData}>
             <defs>
               <linearGradient id="colorBookings" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#007bff" stopOpacity={0.8} />
@@ -59,7 +64,7 @@ const IncomeOverviewChart = () => {
               </linearGradient>
             </defs>
             <XAxis dataKey="month" />
-            <YAxis/>
+            <YAxis />
             <Tooltip />
             <Area
               type="monotone"
