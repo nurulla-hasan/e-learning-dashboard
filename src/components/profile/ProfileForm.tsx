@@ -26,14 +26,15 @@ const ProfileForm = ({ file }: TProps) => {
       fullName: user?.fullName || "",
       email: user?.email || "",
       phone: (user as any)?.phoneNumber || "",
-    }
+      address: (user as any)?.address || "",
+      vatId: (user as any)?.vatId || "",}
   });
   const { handleSubmit, control } = form as any;
 
 
   const onSubmit: SubmitHandler<z.infer<typeof updateAdminSchema>> = async (data) => {
     // Update basic profile fields as JSON
-    await updateProfile({ fullName: data.fullName, phoneNumber: data.phone } as any);
+    await updateProfile({ fullName: data.fullName, phoneNumber: data.phone, address: (data as any)?.address, vatId: (data as any)?.vatId } as any);
 
     // If a file is selected, upload profile image separately with field name 'profileImage'
     if (file) {
@@ -49,6 +50,8 @@ const ProfileForm = ({ file }: TProps) => {
         fullName: user?.fullName || "",
         email: user?.email || "",
         phone: (user as any)?.phoneNumber || "",
+        address: (user as any)?.address || "",
+        vatId: (user as any)?.vatId || "",
       });
     }
   }, [user, form]);
@@ -112,6 +115,48 @@ const ProfileForm = ({ file }: TProps) => {
                   <FormControl>
                     <Input
                       placeholder="Enter your phone number"
+                      className="h-11 border-gray-300 focus:border-cyan-500 focus:ring-cyan-500/20 rounded-lg"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-red-500 text-xs mt-1" />
+                </FormItem>
+              )}
+            />
+
+
+            <FormField
+              control={control}
+              name="address"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-medium text-gray-700">
+                    Address
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter your address"
+                      className="h-11 border-gray-300 focus:border-cyan-500 focus:ring-cyan-500/20 rounded-lg"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage className="text-red-500 text-xs mt-1" />
+                </FormItem>
+              )}
+            />
+
+
+            <FormField
+              control={control}
+              name="vatId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="text-sm font-medium text-gray-700">
+                    NIP ID
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Enter your NIP ID"
                       className="h-11 border-gray-300 focus:border-cyan-500 focus:ring-cyan-500/20 rounded-lg"
                       {...field}
                     />

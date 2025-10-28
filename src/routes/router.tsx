@@ -30,6 +30,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import PublicRoute from "./PublicRoute";
 import PrivateRoute from "./PrivateRoute";
 import CompaniesPage from "@/pages/dashboard/CompaniesPage";
+import TrainingPage from "@/pages/training/TrainingPage";
 
 
 const router = createBrowserRouter([
@@ -56,6 +57,10 @@ const router = createBrowserRouter([
       {
         path: "orders",
         element: <OrdersPage />,
+      },
+      {
+        path: "trainings",
+        element: <TrainingPage />,
       },
       {
         path: "courses",

@@ -1,0 +1,140 @@
+{
+    "success": true,
+    "statusCode": 200,
+    "message": "InPersonTraining list retrieved successfully",
+    "data": [
+        {
+            "id": "68fc941bfec58bbd747dc5e8",
+            "userId": "68c656890ce5ec82b3563b35",
+            "courseId": "68f9eee9eeddf70b6670b30a",
+            "status": "PENDING",
+            "createdAt": "2025-10-25T09:10:51.194Z",
+            "updatedAt": "2025-10-25T09:10:51.194Z",
+            "user": {
+                "id": "68c656890ce5ec82b3563b35",
+                "fullName": "Efaz Khondhoker",
+                "email": "efazkh@gmail.com",
+                "phoneNumber": "01700000000"
+            },
+            "course": {
+                "id": "68f9eee9eeddf70b6670b30a",
+                "courseTitle": "Backend",
+                "courseLevel": "Beginner",
+                "instructorName": "Charles Puth",
+                "price": 250,
+                "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1761210083265_nick-morrison-FHnnjk1Yj7Y-unsplash.jpg",
+                "category": {
+                    "name": "Development"
+                }
+            }
+        },
+        {
+            "id": "68f09c1c992e74ae611d524c",
+            "userId": "68c656890ce5ec82b3563b35",
+            "courseId": "68e0f56752af379cf34c9622",
+            "status": "PENDING",
+            "createdAt": "2025-10-16T07:17:48.611Z",
+            "updatedAt": "2025-10-16T07:17:48.611Z",
+            "user": {
+                "id": "68c656890ce5ec82b3563b35",
+                "fullName": "Efaz Khondhoker",
+                "email": "efazkh@gmail.com",
+                "phoneNumber": "01700000000"
+            },
+            "course": {
+                "id": "68e0f56752af379cf34c9622",
+                "courseTitle": "Design Mastery1",
+                "courseLevel": "Beginner",
+                "instructorName": "John Doe",
+                "price": 200,
+                "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1759573334207_nick-morrison-FHnnjk1Yj7Y-unsplash.jpg",
+                "category": {
+                    "name": "Development"
+                }
+            }
+        },
+        {
+            "id": "68f09c04992e74ae611d524b",
+            "userId": "68c656890ce5ec82b3563b35",
+            "courseId": "68ca2e049043bcfafae98e9b",
+            "status": "PENDING",
+            "createdAt": "2025-10-16T07:17:24.442Z",
+            "updatedAt": "2025-10-16T07:17:24.442Z",
+            "user": {
+                "id": "68c656890ce5ec82b3563b35",
+                "fullName": "Efaz Khondhoker",
+                "email": "efazkh@gmail.com",
+                "phoneNumber": "01700000000"
+            },
+            "course": {
+                "id": "68ca2e049043bcfafae98e9b",
+                "courseTitle": "Design Mastery",
+                "courseLevel": "Beginner",
+                "instructorName": "John Doe",
+                "price": 150,
+                "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1758082948594_nick-morrison-FHnnjk1Yj7Y-unsplash.jpg",
+                "category": {
+                    "name": "Development"
+                }
+            }
+        },
+        {
+            "id": "68f095ccd373dc796ed8c4e8",
+            "userId": "68c656890ce5ec82b3563b35",
+            "courseId": "68e4bf6681b141f1ff4a69f3",
+            "status": "PENDING",
+            "createdAt": "2025-10-16T06:50:52.508Z",
+            "updatedAt": "2025-10-16T06:50:52.508Z",
+            "user": {
+                "id": "68c656890ce5ec82b3563b35",
+                "fullName": "Efaz Khondhoker",
+                "email": "efazkh@gmail.com",
+                "phoneNumber": "01700000000"
+            },
+            "course": {
+                "id": "68e4bf6681b141f1ff4a69f3",
+                "courseTitle": "Design Mastery123",
+                "courseLevel": "Beginner",
+                "instructorName": "John Doe",
+                "price": 100,
+                "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1759821665911_Online-Career-Counselling-course.jpg",
+                "category": {
+                    "name": "New category"
+                }
+            }
+        },
+        {
+            "id": "68e20a4b2b1881195117a686",
+            "userId": "68c656890ce5ec82b3563b35",
+            "courseId": "68e0f8de4e2e1554687454a0",
+            "status": "CONFIRMED",
+            "createdAt": "2025-10-05T06:03:55.116Z",
+            "updatedAt": "2025-10-05T06:14:50.898Z",
+            "user": {
+                "id": "68c656890ce5ec82b3563b35",
+                "fullName": "Efaz Khondhoker",
+                "email": "efazkh@gmail.com",
+                "phoneNumber": "01700000000"
+            },
+            "course": {
+                "id": "68e0f8de4e2e1554687454a0",
+                "courseTitle": "Design Mastery12",
+                "courseLevel": "Beginner",
+                "instructorName": "John Doe",
+                "price": 200,
+                "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1759574235590_nick-morrison-FHnnjk1Yj7Y-unsplash.jpg",
+                "category": {
+                    "name": "IT & Software"
+                }
+            }
+        }
+    ],
+    "meta": {
+        "page": 1,
+        "limit": 10,
+        "total": 5,
+        "totalPages": 1,
+        "hasNextPage": false,
+        "hasPrevPage": false
+    }
+}

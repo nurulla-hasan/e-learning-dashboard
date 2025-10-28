@@ -59,5 +59,7 @@ export const updateAdminSchema = z
         invalid_type_error: "Phone Number must be string",
         required_error: "Phone number is required",
       })
-      .min(1, "Phone number is required")
+      .min(1, "Phone number is required"),
+    address: z.string().optional(),
+    vatId: z.string().optional(),
   })

@@ -5,6 +5,7 @@ import { MdContactPhone } from "react-icons/md";
 export const menuItems: IMenuItem[] = [
   { name: 'Dashboard', icon: LayoutDashboard, href: '/' },
   { name: 'Orders', icon: BookImage, href: '/orders' },
+  { name: 'Training', icon: GraduationCap, href: '/trainings' },
   { name: 'Users', icon: Users, href: '/users' },
   { name: 'Companies', icon: Users, href: '/companies' },
   { name: 'Category', icon: ChartBarStacked , href: '/categories' },
