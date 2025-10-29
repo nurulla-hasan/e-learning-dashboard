@@ -2,8 +2,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import type { IContact } from "@/types/contact.type"
 import ViewContactModal from "../modal/contact/ViewContactModal"
 import CustomPagination from "../form/CustomPagination"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import type { IMeta } from "@/types/global.type"
+import { Button } from "../ui/button"
 
 type TProps = {
     contacts: IContact[],
@@ -14,7 +14,7 @@ type TProps = {
     setPageSize: React.Dispatch<React.SetStateAction<number>>
 }
 
-const ContactTable = ({ contacts, meta, currentPage, setCurrentPage, pageSize, setPageSize }: TProps) => {
+const ContactTable = ({ contacts, meta, currentPage, setCurrentPage, pageSize }: TProps) => {
 
   return (
     <>
@@ -42,7 +42,13 @@ const ContactTable = ({ contacts, meta, currentPage, setCurrentPage, pageSize, s
                       </TableCell>
                       <TableCell className="min-w-24">
                         <div className="flex gap-2">
-                          <ViewContactModal contact={contact} />
+                          {contact.status === "CLOSED" ? (
+                            <Button disabled variant="outline" size="sm">
+                              Closed
+                            </Button>
+                          ) : (
+                            <ViewContactModal contact={contact} />
+                          )}
                         </div>
                       </TableCell>
                     </TableRow>
@@ -61,27 +67,7 @@ const ContactTable = ({ contacts, meta, currentPage, setCurrentPage, pageSize, s
       </div>
       <div className="fixed bottom-0 flex left-0 w-full bg-white border-t py-3">
         <CustomPagination currentPage={currentPage} setCurrentPage={setCurrentPage} totalPages={meta?.totalPages} dataLength={contacts?.length} />
-        {meta?.total > 50 && (
-          <div className="flex flex-1 justify-end">
-            <Select value={pageSize.toString()} aria-label="Results per page" onValueChange={(val) => {
-              setCurrentPage(1)
-              setPageSize(Number(val));
-            }}>
-              <SelectTrigger
-                id="results-per-page"
-                className="w-fit whitespace-nowrap"
-              >
-                <SelectValue placeholder="Select number of results" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="10">10 / page</SelectItem>
-                <SelectItem value="20">20 / page</SelectItem>
-                <SelectItem value="50">50 / page</SelectItem>
-                <SelectItem value="100">100 / page</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        )}
+       
       </div>
     </>
   )

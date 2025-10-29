@@ -80,9 +80,9 @@ const OrderList = () => {
     const invoiceNumber = inv['Invoice Number'] || order?.invoiceId || order?.id || '-';
     const invoiceDate = inv['Invoice Date'] || (order?.enrolledAt ? new Date(order.enrolledAt).toLocaleDateString() : new Date().toLocaleDateString());
     const seller = inv['Seller'] || 'E-Learning';
-    const sellerEmail = inv['Email'] || '';
-    const sellerContact = inv['Contact Number'] || '';
-    const sellerAddress = inv['Address'] || '';
+    const sellerEmail = inv['Email'] || 'support@e-learning.com';
+    const sellerContact = inv['Contact Number'] || '+1234567890';
+    const sellerAddress = inv['Address'] || '123 Learning St, Education City';
     const buyer = inv['Buyer'] || order?.user?.fullName || '-';
     const buyerEmail = inv['Buyer Email'] || '';
     const buyerContact = inv['Buyer Contact Number'] || '';
@@ -90,53 +90,87 @@ const OrderList = () => {
     const courseName = inv['Course(s) Purchased'] || order?.course?.title || 'Course';
     const courseIds = inv['Course ID(s)'] || order?.courseId || '';
     const coursePrice = inv['Course Price(s)'] || (typeof order?.totalAmount === 'number' ? order.totalAmount.toFixed(2) : order?.totalAmount || '0.00');
-    const vatRate = inv['Course vat rate(s) included '] || '';
+    const vatRate = inv['Course vat rate(s) included '] || '20%';
     const totalAmount = inv['Total Amount'] || coursePrice || '0.00';
 
     const html = `<!doctype html>
 <html>
 <head>
-  <meta charset="utf-8" />
+  <meta charset=\"utf-8\" />
   <title>Invoice ${invoiceNumber}</title>
   <style>
-    body{font-family:Arial, sans-serif; padding:24px; color:#111}
-    .hdr{display:flex; justify-content:space-between; align-items:center; margin-bottom:16px}
-    .title{font-size:20px; font-weight:700}
-    table{width:100%; border-collapse:collapse; margin-top:16px}
-    td,th{border:1px solid #ddd; padding:8px; text-align:left}
-    .grid{display:grid; grid-template-columns:1fr 1fr; gap:12px}
-    .muted{color:#666}
+    body { font-family: Arial, sans-serif; padding: 40px; color: #333; }
+    .company-info { text-align: center; margin-bottom: 40px; }
+    .company-name { font-size: 28px; font-weight: bold; }
+    .company-details { font-size: 14px; color: #777; }
+    .invoice-header { display: flex; gap: 12px; justify-content: space-between; margin-bottom: 30px; }
+    .party-info { width: 48%; border: 1px solid #ddd; padding: 20px; border-radius: 8px; }
+    .party-info h3 { font-size: 18px; font-weight: bold; border-bottom: 2px solid #eee; padding-bottom: 8px; margin-bottom: 10px; }
+    .party-info div { margin-bottom: 5px; }
+    .invoice-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    .invoice-table th, .invoice-table td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+    .invoice-table th { background-color: #f7f7f7; }
+    .invoice-details { margin-top: 20px; text-align: right; }
+    .total { font-size: 18px; font-weight: bold; }
   </style>
-  </head>
-  <body>
-    <div class="hdr">
-      <div class="title">Invoice</div>
-      <div># ${invoiceNumber}</div>
+</head>
+<body>
+  <div class="company-info">
+    <div class="company-name">${seller}</div>
+    <div class="company-details">${sellerAddress} · ${sellerEmail} · ${sellerContact}</div>
+  </div>
+
+  <div class="invoice-header">
+    <div class="party-info">
+      <h3>Seller</h3>
+      <div><strong>${seller}</strong></div>
+      <div>${sellerAddress}</div>
+      <div>${sellerEmail}</div>
+      <div>${sellerContact}</div>
     </div>
-    <div class="grid">
-      <div>
-        <div><strong>Seller:</strong> ${seller}</div>
-        <div class="muted">${sellerEmail}${sellerContact ? ' · '+sellerContact : ''}${sellerAddress ? ' · '+sellerAddress : ''}</div>
-      </div>
-      <div>
-        <div><strong>Buyer:</strong> ${buyer}</div>
-        <div class="muted">${buyerEmail}${buyerContact ? ' · '+buyerContact : ''}${buyerAddress ? ' · '+buyerAddress : ''}</div>
-      </div>
+    <div class="party-info">
+      <h3>Buyer</h3>
+      <div><strong>${buyer}</strong></div>
+      <div>${buyerAddress}</div>
+      <div>${buyerEmail}</div>
+      <div>${buyerContact}</div>
     </div>
-    <div style="margin-top:8px">Date: ${invoiceDate}</div>
-    <table>
-      <thead><tr><th>Description</th><th>Course ID(s)</th><th>VAT</th><th>Amount</th></tr></thead>
-      <tbody>
-        <tr><td>${courseName}</td><td>${courseIds}</td><td>${vatRate}</td><td>${totalAmount}</td></tr>
-      </tbody>
-    </table>
-  </body>
-  </html>`;
+  </div>
+
+  <div class="invoice-details">
+    <div><strong>Invoice Number:</strong> ${invoiceNumber}</div>
+    <div><strong>Invoice Date:</strong> ${invoiceDate}</div>
+  </div>
+
+  <table class="invoice-table">
+    <thead>
+      <tr>
+        <th>Description</th>
+        <th>Course ID(s)</th>
+        <th>VAT</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>${courseName}</td>
+        <td>${courseIds}</td>
+        <td>${vatRate}</td>
+        <td>${totalAmount}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="invoice-details">
+    <div class="total">Total: ${totalAmount}</div>
+  </div>
+</body>
+</html>`;
 
     const w = window.open("", "_blank", "width=900,height=1000");
     if (!w) return;
     w.document.open();
-    w.document.write(html);
+w.document.write(html);
     w.document.close();
     w.focus();
     w.print();
