@@ -33,6 +33,7 @@ import PublicRoute from "./PublicRoute";
 import PrivateRoute from "./PrivateRoute";
 import CompaniesPage from "@/pages/dashboard/CompaniesPage";
 import EmployeesPage from "@/pages/dashboard/EmployeesPage";
+import CreateEmployeePage from "@/pages/dashboard/CreateEmployeePage";
 import TrainingPage from "@/pages/training/TrainingPage";
 
 
@@ -60,6 +61,10 @@ const router = createBrowserRouter([
       {
         path: "employees",
         element: <EmployeesPage />,
+      },
+      {
+        path: "employees/create",
+        element: <CreateEmployeePage />,
       },
       {
         path: "orders",

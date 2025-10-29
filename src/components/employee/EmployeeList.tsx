@@ -13,7 +13,8 @@ import useSmartFetchHook from "@/hooks/useSmartFetchHook";
 import { useGetCompanyOrdersQuery } from "@/redux/features/order/orderApi";
 import ListLoading from "@/components/loader/ListLoading";
 import ServerErrorCard from "@/components/card/ServerErrorCard";
-import CreateEmployeeModal from "@/components/modal/employee/CreateEmployeeModal";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 
 // Response shape based on provided example
 interface IEmployeeEnrollment {
@@ -36,6 +37,7 @@ interface IEmployeeEnrollment {
 }
 
 const EmployeeList = () => {
+  const navigate = useNavigate();
   const {
     searchTerm,
     setSearchTerm,
@@ -79,7 +81,9 @@ const EmployeeList = () => {
               className="pl-10"
             />
           </div>
-          <CreateEmployeeModal />
+          <Button className="bg-cyan-600 hover:bg-cyan-700 text-white" onClick={() => navigate("/employees/create")}>
+            Create Employee
+          </Button>
         </div>
       </div>
 

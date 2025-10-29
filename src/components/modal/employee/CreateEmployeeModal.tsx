@@ -12,8 +12,15 @@ interface TFormValues {
   fullName: string;
   email: string;
   password: string;
+  status: string;
   dateOfBirth: string;
+  address: string;
   phoneNumber: string;
+  companyName: string;
+  companyEmail: string;
+  companyAddress: string;
+  companyVatId: string;
+  companyPassword: string;
   courseId: string;
 }
 
@@ -34,8 +41,15 @@ const CreateEmployeeModal = () => {
       fullName: "",
       email: "",
       password: "",
+      status: "active",
       dateOfBirth: "",
+      address: "",
       phoneNumber: "",
+      companyName: "",
+      companyEmail: "",
+      companyAddress: "",
+      companyVatId: "",
+      companyPassword: "",
       courseId: "",
     },
   });
@@ -107,6 +121,28 @@ const CreateEmployeeModal = () => {
                 />
                 <FormField
                   control={form.control}
+                  name="status"
+                  rules={{ required: "Status is required" }}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Status</FormLabel>
+                      <FormControl>
+                        <Select value={field.value} onValueChange={field.onChange}>
+                          <SelectTrigger className="w-full">
+                            <SelectValue placeholder="Select status" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="active">active</SelectItem>
+                            <SelectItem value="inactive">inactive</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
                   name="dateOfBirth"
                   rules={{ required: "Date of birth is required" }}
                   render={({ field }) => (
@@ -121,13 +157,97 @@ const CreateEmployeeModal = () => {
                 />
                 <FormField
                   control={form.control}
+                  name="address"
+                  rules={{ required: "Address is required" }}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Address</FormLabel>
+                      <FormControl>
+                        <Input placeholder="123 Main Street, City" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
                   name="phoneNumber"
                   rules={{ required: "Phone number is required" }}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Phone Number</FormLabel>
                       <FormControl>
-                        <Input placeholder="0123456789" {...field} />
+                        <Input placeholder="+1-555-123-4567" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="companyName"
+                  rules={{ required: "Company name is required" }}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Company Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Tech Solutions Ltd." {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="companyEmail"
+                  rules={{ required: "Company email is required" }}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Company Email</FormLabel>
+                      <FormControl>
+                        <Input type="email" placeholder="contact@company.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="companyPassword"
+                  rules={{ required: "Company password is required", minLength: { value: 8, message: "Minimum 8 characters" } }}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Company Password</FormLabel>
+                      <FormControl>
+                        <Input type="password" placeholder="********" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="companyAddress"
+                  rules={{ required: "Company address is required" }}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Company Address</FormLabel>
+                      <FormControl>
+                        <Input placeholder="456 Business Ave, City" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="companyVatId"
+                  rules={{ required: "VAT ID is required" }}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Company VAT ID</FormLabel>
+                      <FormControl>
+                        <Input placeholder="US123456789" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
