@@ -48,15 +48,35 @@ export const orderApi = apiSlice.injectEndpoints({
     }),
 
     // Single Order
-    getSingleOrder: builder.query({
-      query: (id) => ({
-        url: `/order/get-single-order/${id}`,
+    // getSingleOrder: builder.query({
+    //   query: (id) => ({
+    //     url: `/order/get-single-order/${id}`,
+    //     method: "GET",
+    //   }),
+    //   keepUnusedDataFor: 600,
+    //   providesTags: (_result, _error, arg) => [
+    //     { type: TagTypes.order, id: arg },
+    //   ],
+    // }),
+
+    // Get all courses
+    getAllCoursesAdmin: builder.query({
+      query: () => ({
+        url: "/admin/courses?limit=1000",
         method: "GET",
       }),
-      keepUnusedDataFor: 600,
-      providesTags: (_result, _error, arg) => [
-        { type: TagTypes.order, id: arg },
-      ],
+      keepUnusedDataFor: 120,
+      providesTags: [TagTypes.orders],
+    }),
+
+    // Create employee
+    addEmployee: builder.mutation({
+      query: (data) => ({
+        url: "admin/users-with-course-access",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: [TagTypes.orders],
     }),
 
     // Update Order
@@ -94,6 +114,8 @@ export const orderApi = apiSlice.injectEndpoints({
 export const { 
   useGetEnrolledStudentOrdersQuery,
   useGetCompanyOrdersQuery,
-   useGetSingleOrderQuery,
-    useUpdateOrderMutation
+  //  useGetSingleOrderQuery,
+    useUpdateOrderMutation,
+    useGetAllCoursesAdminQuery,
+    useAddEmployeeMutation
    } = orderApi;

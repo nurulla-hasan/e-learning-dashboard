@@ -32,6 +32,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import PublicRoute from "./PublicRoute";
 import PrivateRoute from "./PrivateRoute";
 import CompaniesPage from "@/pages/dashboard/CompaniesPage";
+import EmployeesPage from "@/pages/dashboard/EmployeesPage";
 import TrainingPage from "@/pages/training/TrainingPage";
 
 
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
       {
         path: "companies",
         element: <CompaniesPage />,
+      },
+      {
+        path: "employees",
+        element: <EmployeesPage />,
       },
       {
         path: "orders",

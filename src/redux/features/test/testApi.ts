@@ -87,7 +87,7 @@ export const testApi = apiSlice.injectEndpoints({
     // Update test attempt
     updateTestAttempt: builder.mutation({
       query: ({data, id}) => ({
-        url: `/tests/${id}`,
+        url: `/attempt-test/${id}`,
         method: "PATCH",
         body: data,
       }),

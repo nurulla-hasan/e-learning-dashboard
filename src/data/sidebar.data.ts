@@ -8,6 +8,7 @@ export const menuItems: IMenuItem[] = [
   { name: 'Training', icon: GraduationCap, href: '/trainings' },
   { name: 'Users', icon: Users, href: '/users' },
   { name: 'Companies', icon: Users, href: '/companies' },
+  { name: 'Employees', icon: Users, href: '/employees' },
   { name: 'Category', icon: ChartBarStacked , href: '/categories' },
   { name: 'Courses', icon: Ratio , href: '/courses' },
   {
