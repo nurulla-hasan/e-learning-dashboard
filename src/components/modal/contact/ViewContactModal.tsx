@@ -1,6 +1,9 @@
 import { useState } from "react";
-import { Eye } from "lucide-react";
+import { Reply } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { useReplyContactMutation } from "@/redux/features/contact/contactApi";
 import type { IContact } from "@/types/contact.type";
 
 type TProps = {
@@ -9,6 +12,19 @@ type TProps = {
 
 const ViewContactModal = ({ contact }: TProps) => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [replyMessage, setReplyMessage] = useState("");
+  const [replyContact, { isLoading: isReplying }] = useReplyContactMutation();
+
+  const handleSendReply = async () => {
+    try {
+      const userId = (contact as any)?.userId;
+      await replyContact({ id: contact.id, data: { userId, message: replyMessage } } as any).unwrap();
+      setReplyMessage("");
+      setModalOpen(false);
+    } catch (_e) {
+      // toasts handled in API slice
+    }
+  };
 
   return (
     <>
@@ -16,7 +32,7 @@ const ViewContactModal = ({ contact }: TProps) => {
         onClick={() => setModalOpen(true)}
         className="bg-gray-600 hover:bg-gray-700 cursor-pointer p-2 text-white rounded-full"
       >
-        <Eye size={18} />
+        <Reply size={18} />
       </button>
 
 
@@ -40,17 +56,29 @@ const ViewContactModal = ({ contact }: TProps) => {
 
               {/* Reply Message */}
               <div className="p-6 bg-gray-50">
-                <div className="ml-8">
-                  <div className="flex items-center gap-2 mb-2">
+                <div className="ml-8 space-y-3">
+                  <div className="flex items-center gap-2">
                     <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                       Reply
                     </span>
                   </div>
-                  {/* <div className={`${contact?.replyText ? 'border-green-400 bg-green-50' : 'bg-red-50 border-red-400'} border-l-4  rounded-lg p-4`}>
-                    <p className="text-gray-800 leading-relaxed">
-                      {contact?.replyText ? contact?.replyText : "There is no reply message"}
-                    </p>
-                  </div> */}
+
+                  <Textarea
+                    placeholder="Write your reply..."
+                    value={replyMessage}
+                    onChange={(e) => setReplyMessage(e.target.value)}
+                    className="min-h-24"
+                  />
+
+                  <div className="flex justify-end">
+                    <Button
+                      onClick={handleSendReply}
+                      disabled={!replyMessage.trim() || isReplying}
+                      className="bg-green-600 hover:bg-green-700 text-white"
+                    >
+                      {isReplying ? "Sending..." : "Send Reply"}
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>

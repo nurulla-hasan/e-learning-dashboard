@@ -26,9 +26,11 @@ export const contactApi = apiSlice.injectEndpoints({
       keepUnusedDataFor: 600,
       providesTags: [TagTypes.contacts],
     }),
+
+
     replyContact: builder.mutation({
       query: ({id, data }) => ({
-        url: `/contact/reply/${id}`,
+        url: `/support/${id}`,
         method: "PATCH",
         body: data,
       }),

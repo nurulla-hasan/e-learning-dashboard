@@ -43,13 +43,6 @@ const ContactTable = ({ contacts, meta, currentPage, setCurrentPage, pageSize, s
                       <TableCell className="min-w-24">
                         <div className="flex gap-2">
                           <ViewContactModal contact={contact} />
-                          {/* {contact?.replyText ? (
-                            <button className="bg-blue-300 hover:bg-blue-400 p-2 text-white rounded-full cursor-not-allowed">
-                              <Reply size={18} />
-                            </button>
-                          ) : (
-                            <ReplyModal contactId={contact?._id.toString()} />
-                          )} */}
                         </div>
                       </TableCell>
                     </TableRow>
