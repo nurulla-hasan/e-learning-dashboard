@@ -31,6 +31,7 @@ interface IEmployeeEnrollment {
   enrolledAt?: string;
   userId?: string;
   userFullName?: string;
+  companyName?: string
   userEmail?: string;
   userImage?: string | null;
   userPhoneNumber?: string;
@@ -96,6 +97,7 @@ const EmployeeList = () => {
                 <TableRow className="hover:bg-yellow-50">
                   <TableHead className="w-16 bg-yellow-50">S.N.</TableHead>
                   <TableHead className="bg-yellow-50">Employee</TableHead>
+                  <TableHead className="bg-yellow-50">Company</TableHead>
                   <TableHead className="bg-yellow-50">Course</TableHead>
                   <TableHead className="bg-yellow-50">Enrolled</TableHead>
                   <TableHead className="bg-yellow-50">Payment</TableHead>
@@ -107,11 +109,11 @@ const EmployeeList = () => {
                 {Array.isArray(items) && items.length > 0 ? (
                   (items as IEmployeeEnrollment[]).map((row, index) => (
                     <TableRow key={row.id || index} className={index % 2 === 0 ? "bg-gray-50" : "bg-muted/30"}>
-                      <TableCell className="w-16 text-muted-foreground">
+                      <TableCell className="text-muted-foreground">
                         {index + 1 + (page - 1) * limit}
                       </TableCell>
                       <TableCell className="font-medium text-foreground">
-                        <div className="flex items-center space-x-3 px-3 rounded-xl">
+                        <div className="flex items-center gap-2">
                           {row.userImage ? (
                             <img src={row.userImage} alt={row.userFullName || "Employee"} className="w-10 h-10 rounded-lg object-cover" />
                           ) : (
@@ -122,6 +124,9 @@ const EmployeeList = () => {
                             <span className="text-sm text-muted-foreground">{row.userEmail}</span>
                           </div>
                         </div>
+                      </TableCell>
+                      <TableCell className="font-medium text-foreground">
+                          {row.companyName}
                       </TableCell>
                       <TableCell className="font-medium text-foreground">
                         <div className="flex flex-col">
