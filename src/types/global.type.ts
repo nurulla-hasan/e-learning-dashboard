@@ -4,6 +4,7 @@ export interface IMenuItem {
   name: string;
   icon: any;
   href?: string;
+  labelKey?: string;
   submenu?: IMenuItem[];
 }
 

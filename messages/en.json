@@ -1,0 +1,41 @@
+{
+  "common": {
+    "language": "Language",
+    "english": "English",
+    "polish": "Polish",
+    "ukrainian": "Ukrainian",
+    "sidebar": {
+      "title": "Dashboard",
+      "menu": {
+        "dashboard": "Dashboard",
+        "orders": "Orders",
+        "training": "Training",
+        "users": "Users",
+        "companies": "Companies",
+        "employees": "Employees",
+        "category": "Category",
+        "courses": "Courses",
+        "testCertificate": "Tests & Certificates",
+        "testBuilder": "Test Builder",
+        "testResults": "Test Results",
+        "certificateTemplate": "Certificate Template",
+        "issuedCertificates": "Issued Certificates",
+        "contactList": "Contact List",
+        "subscriberList": "Subscriber List",
+        "helpSupport": "Help & Support",
+        "helpCenter": "Help Center",
+        "faqs": "FAQs",
+        "settings": "Settings",
+        "profile": "Profile",
+        "changePassword": "Change Password",
+        "aboutUs": "About Us",
+        "privacyPolicy": "Privacy Policy",
+        "termsCondition": "Terms & Conditions"
+      }
+    },
+    "userMenu": {
+      "profile": "Profile",
+      "logout": "Log out"
+    }
+  }
+}

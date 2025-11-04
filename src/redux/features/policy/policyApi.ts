@@ -15,6 +15,7 @@ export const policyApi = apiSlice.injectEndpoints({
       keepUnusedDataFor: 600,
       providesTags: [TagTypes.privacy]
     }),
+
     getTermsCondition: builder.query({
       query: () => {
         return {
@@ -25,6 +26,7 @@ export const policyApi = apiSlice.injectEndpoints({
       keepUnusedDataFor: 600,
       providesTags: [TagTypes.terms]
     }),
+
     getAboutUs: builder.query({
       query: () => {
         return {
@@ -35,6 +37,7 @@ export const policyApi = apiSlice.injectEndpoints({
       keepUnusedDataFor: 600,
       providesTags: [TagTypes.about]
     }),
+
     getHelpCenter: builder.query({
       query: () => {
         return {
@@ -45,6 +48,7 @@ export const policyApi = apiSlice.injectEndpoints({
       keepUnusedDataFor: 600,
       providesTags: [TagTypes.help]
     }),
+
     updatePrivacyPolicy: builder.mutation({
       query: ({data, id}) => ({
         url: `/privacy-policy/${id}`,
@@ -73,6 +77,7 @@ export const policyApi = apiSlice.injectEndpoints({
         }
       },
     }),
+
     updateTermsCondition: builder.mutation({
       query: ({data, id}) => ({
         url: `/terms-&-conditions/${id}`,
@@ -101,6 +106,7 @@ export const policyApi = apiSlice.injectEndpoints({
         }
       },
     }),
+
     updateAboutUs: builder.mutation({
       query: ({data, id}) => ({
         url: `/about-us/${id}`,
@@ -129,6 +135,7 @@ export const policyApi = apiSlice.injectEndpoints({
         }
       },
     }),
+    
     updateHelpCenter: builder.mutation({
       query: ({data, id}) => ({
         url: `/help-and-support/${id}`,

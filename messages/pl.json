@@ -1,0 +1,41 @@
+{
+  "common": {
+    "language": "Język",
+    "english": "Angielski",
+    "polish": "Polski",
+    "ukrainian": "Ukraiński",
+    "sidebar": {
+      "title": "Panel",
+      "menu": {
+        "dashboard": "Panel",
+        "orders": "Zamówienia",
+        "training": "Szkolenia",
+        "users": "Użytkownicy",
+        "companies": "Firmy",
+        "employees": "Pracownicy",
+        "category": "Kategorie",
+        "courses": "Kursy",
+        "testCertificate": "Testy i certyfikaty",
+        "testBuilder": "Kreator testów",
+        "testResults": "Wyniki testów",
+        "certificateTemplate": "Szablony certyfikatów",
+        "issuedCertificates": "Wydane certyfikaty",
+        "contactList": "Lista kontaktów",
+        "subscriberList": "Lista subskrybentów",
+        "helpSupport": "Pomoc i wsparcie",
+        "helpCenter": "Centrum pomocy",
+        "faqs": "FAQ",
+        "settings": "Ustawienia",
+        "profile": "Profil",
+        "changePassword": "Zmień hasło",
+        "aboutUs": "O nas",
+        "privacyPolicy": "Polityka prywatności",
+        "termsCondition": "Regulamin"
+      }
+    },
+    "userMenu": {
+      "profile": "Profil",
+      "logout": "Wyloguj się"
+    }
+  }
+}

@@ -8,6 +8,7 @@ import { ChevronDown, ChevronRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useLocation, useNavigate } from "react-router-dom"
 import type { IMenuItem } from "@/types/global.type"
+import { useTranslation } from "react-i18next"
 
 interface SidebarNavItemProps {
   item: any;
@@ -16,10 +17,13 @@ interface SidebarNavItemProps {
 }
 
 const MenuItem: React.FC<SidebarNavItemProps> = ({ item, level = 0, setSidebarOpen }) => {
+  const { t } = useTranslation("common")
   const [isExpanded, setIsExpanded] = useState(item.title === "Analytics")
   const hasSubMenu = item.submenu && item.submenu.length > 0
   const navigate = useNavigate();
   const { pathname } = useLocation();
+
+  const getLabel = (menuItem: IMenuItem) => menuItem.labelKey ? t(menuItem.labelKey) : menuItem.name
 
   const handleNavigate = (path: string) => {
     navigate(path);
@@ -39,12 +43,13 @@ const MenuItem: React.FC<SidebarNavItemProps> = ({ item, level = 0, setSidebarOp
             )}
           >
             <item.icon className="h-4 w-4 flex-shrink-0" />
-            <span className="flex-1 text-left">{item.name}</span>
+            <span className="flex-1 text-left">{getLabel(item)}</span>
             {isExpanded ? (
               <ChevronDown className="h-4 w-4 flex-shrink-0" />
             ) : (
               <ChevronRight className="h-4 w-4 flex-shrink-0" />
             )}
+
           </Button>
         </CollapsibleTrigger>
         <CollapsibleContent className="space-y-1">
@@ -60,12 +65,13 @@ const MenuItem: React.FC<SidebarNavItemProps> = ({ item, level = 0, setSidebarOp
               )}
             >
               <child.icon className="h-4 w-4 flex-shrink-0" />
-              <span className="flex-1 text-left">{child.name}</span>
+              <span className="flex-1 text-left">{getLabel(child)}</span>
             </Button>
           ))}
         </CollapsibleContent>
       </Collapsible>
     )
+
   }
 
 
@@ -79,7 +85,7 @@ const MenuItem: React.FC<SidebarNavItemProps> = ({ item, level = 0, setSidebarOp
       )}
     >
       <item.icon className="h-4 w-4 flex-shrink-0" />
-      <span className="flex-1 text-left">{item.name}</span>
+      <span className="flex-1 text-left">{getLabel(item)}</span>
     </Button>
   )
 }

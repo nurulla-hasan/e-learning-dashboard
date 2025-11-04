@@ -1,0 +1,41 @@
+{
+  "common": {
+    "language": "Мова",
+    "english": "Англійська",
+    "polish": "Польська",
+    "ukrainian": "Українська",
+    "sidebar": {
+      "title": "Панель",
+      "menu": {
+        "dashboard": "Панель",
+        "orders": "Замовлення",
+        "training": "Тренінги",
+        "users": "Користувачі",
+        "companies": "Компанії",
+        "employees": "Співробітники",
+        "category": "Категорії",
+        "courses": "Курси",
+        "testCertificate": "Тести та сертифікати",
+        "testBuilder": "Конструктор тестів",
+        "testResults": "Результати тестів",
+        "certificateTemplate": "Шаблони сертифікатів",
+        "issuedCertificates": "Видані сертифікати",
+        "contactList": "Список контактів",
+        "subscriberList": "Список підписників",
+        "helpSupport": "Допомога та підтримка",
+        "helpCenter": "Центр допомоги",
+        "faqs": "Поширені запитання",
+        "settings": "Налаштування",
+        "profile": "Профіль",
+        "changePassword": "Змінити пароль",
+        "aboutUs": "Про нас",
+        "privacyPolicy": "Політика конфіденційності",
+        "termsCondition": "Правила та умови"
+      }
+    },
+    "userMenu": {
+      "profile": "Профіль",
+      "logout": "Вийти"
+    }
+  }
+}
