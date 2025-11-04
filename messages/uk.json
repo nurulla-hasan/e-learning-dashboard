@@ -36,6 +36,139 @@
     "userMenu": {
       "profile": "Профіль",
       "logout": "Вийти"
+    },
+    "dashboard": {
+      "stats": {
+        "error": "Не вдалося завантажити статистику панелі.",
+        "totalUsers": "Користувачів",
+        "totalCompanies": "Компаній",
+        "totalCourses": "Курсів",
+        "totalTests": "Тестів",
+        "totalIncome": "Дохід",
+        "totalIncomeValue": "${{value}}"
+      },
+      "income": {
+        "title": "Огляд доходів",
+        "yearSelect": "Оберіть рік",
+        "error": "Не вдалося завантажити дані про доходи."
+      },
+      "user": {
+        "title": "Огляд користувачів",
+        "yearSelect": "Оберіть рік",
+        "error": "Не вдалося завантажити дані про користувачів.",
+        "tooltipUsers": "Користувачі"
+      },
+      "contacts": {
+        "title": "Останні контакти",
+        "columns": {
+          "sn": "№",
+          "email": "Email",
+          "phone": "Телефон",
+          "message": "Повідомлення",
+          "created": "Створено"
+        },
+        "error": "Не вдалося завантажити контакти.",
+        "empty": "Контактів не знайдено."
+      }
+    },
+    "orders": {
+      "tabs": {
+        "student": "Замовлення студентів",
+        "company": "Замовлення компаній"
+      },
+      "common": {
+        "totalLabel": "Всього:",
+        "searchPlaceholder": "Пошук...",
+        "download": "Завантажити",
+        "status": {
+          "unknown": "Невідомо",
+          "paid": "Оплачено",
+          "completed": "Завершено",
+          "pending": "В очікуванні",
+          "cancelled": "Скасовано"
+        }
+      },
+      "student": {
+        "heading": "Замовлення студентів",
+        "empty": "За вашим запитом замовлень не знайдено.",
+        "table": {
+          "sn": "№",
+          "orderNo": "№ замовлення",
+          "name": "Ім'я та прізвище",
+          "date": "Дата",
+          "amount": "Сума",
+          "invoice": "Рахунок",
+          "status": "Статус оплати",
+          "actions": "Дії"
+        }
+      },
+      "company": {
+        "heading": "Замовлення компаній",
+        "empty": "За вашим запитом замовлень не знайдено.",
+        "table": {
+          "sn": "№",
+          "orderNo": "№ замовлення",
+          "employee": "Співробітник",
+          "date": "Дата",
+          "amount": "Сума",
+          "invoice": "Рахунок",
+          "status": "Статус оплати"
+        }
+      },
+      "invoice": {
+        "student": {
+          "title": "Рахунок",
+          "companyName": "E-Learning",
+          "companyDetails": "123 Learning St, Education City",
+          "seller": "Продавець",
+          "buyer": "Покупець",
+          "invoiceNumber": "Номер рахунку:",
+          "invoiceDate": "Дата рахунку:",
+          "description": "Опис",
+          "courseIds": "ID курсів",
+          "vat": "ПДВ",
+          "amount": "Сума",
+          "total": "Разом",
+          "defaultCourse": "Курс",
+          "defaultVat": "20%"
+        },
+        "company": {
+          "title": "Рахунок",
+          "date": "Дата",
+          "customer": "Клієнт",
+          "description": "Опис",
+          "amount": "Сума",
+          "defaultDescription": "Замовлення компанії"
+        }
+      },
+      "details": {
+        "open": "Переглянути деталі замовлення",
+        "title": "Деталі замовлення",
+        "aria": "Деталі замовлення {{id}}",
+        "orderId": "ID замовлення:",
+        "customerName": "Клієнт:",
+        "email": "Email:",
+        "phone": "Телефон:",
+        "orderDate": "Дата замовлення:",
+        "totalPrice": "Загальна сума:",
+        "paymentStatus": "Статус оплати:",
+        "progress": "Прогрес:",
+        "purchasedCourses": "Придбані курси:",
+        "courseName": "Назва курсу",
+        "price": "Ціна",
+        "total": "Разом",
+        "courseDetails": "Деталі курсу",
+        "titleLabel": "Назва:",
+        "category": "Категорія:",
+        "instructor": "Інструктор:",
+        "certificate": "Сертифікат:",
+        "lifetimeAccess": "Довічний доступ:",
+        "sections": "Розділи:",
+        "lessons": "Уроки:",
+        "duration": "Тривалість:",
+        "yes": "Так",
+        "no": "Ні"
+      }
     }
   }
 }

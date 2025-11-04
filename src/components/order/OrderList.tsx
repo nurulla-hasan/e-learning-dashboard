@@ -1,4 +1,5 @@
-import { useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useMemo, useState } from "react";
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -17,9 +18,10 @@ import useSmartFetchHook from "@/hooks/useSmartFetchHook";
 import ListLoading from "../loader/ListLoading";
 import ServerErrorCard from "../card/ServerErrorCard";
 import CompanyOrderList from "./CompanyOrderList";
+import { useTranslation } from "react-i18next";
 
 // Types for student orders based on provided schema
-interface StudentInvoice {
+export interface StudentInvoice {
   Seller?: string;
   Email?: string;
   NIP?: string | null;
@@ -37,9 +39,10 @@ interface StudentInvoice {
   "Course Price(s)"?: string;
   "Course vat rate(s) included "?: string;
   "Total Amount"?: string;
+  [key: string]: string | number | null | undefined;
 }
 
-interface StudentOrder {
+export interface StudentOrder {
   id: string;
   userId?: string;
   courseId?: string;
@@ -48,13 +51,27 @@ interface StudentOrder {
   totalAmount?: number;
   invoice?: StudentInvoice;
   invoiceId?: string;
-  user?: { fullName?: string };
-  course?: { title?: string; price?: number; discountPrice?: number };
+  user?: { fullName?: string; phoneNumber?: string };
+  course?: {
+    courseThumbnail?: string;
+    courseTitle?: string;
+    title?: string;
+    price?: number;
+    discountPrice?: number;
+    category?: { name?: string };
+    instructorName?: string;
+    certificate?: boolean;
+    lifetimeAccess?: boolean;
+    totalSections?: number;
+    totalLessons?: number;
+    totalDuration?: string;
+  };
   enrolledAt?: string;
 }
 
 const OrderList = () => {
   const [activeTab, setActiveTab] = useState<"student" | "company">("student");
+  const { t } = useTranslation("common");
 
   // Wrapper hooks so useSmartFetchHook can pass object params but order APIs receive array params
   const useStudentOrdersHook = (params: any, opts?: any) =>
@@ -74,30 +91,55 @@ const OrderList = () => {
     isLoading: studentLoading,
     isError: studentError,
   } = useSmartFetchHook<StudentOrder>(useStudentOrdersHook as any, {}, {}, { skip: activeTab !== "student" });
-  
+
+  const invoiceStrings = useMemo(() => ({
+    title: t("orders.invoice.student.title"),
+    companyName: t("orders.invoice.student.companyName"),
+    companyDetails: t("orders.invoice.student.companyDetails"),
+    sellerHeading: t("orders.invoice.student.seller"),
+    buyerHeading: t("orders.invoice.student.buyer"),
+    invoiceNumber: t("orders.invoice.student.invoiceNumber"),
+    invoiceDate: t("orders.invoice.student.invoiceDate"),
+    description: t("orders.invoice.student.description"),
+    courseIds: t("orders.invoice.student.courseIds"),
+    vat: t("orders.invoice.student.vat"),
+    amount: t("orders.invoice.student.amount"),
+    total: t("orders.invoice.student.total"),
+  }), [t]);
+
+  const getPaymentStatusLabel = (status?: string) => {
+    if (!status) return t("orders.common.status.unknown");
+    const normalized = status.toLowerCase();
+    if (normalized === "paid") return t("orders.common.status.paid");
+    if (normalized === "completed") return t("orders.common.status.completed");
+    if (normalized === "pending") return t("orders.common.status.pending");
+    if (normalized === "cancelled" || normalized === "canceled") return t("orders.common.status.cancelled");
+    return status;
+  };
+
   const handlePrintStudent = (order: any) => {
     const inv = order?.invoice || {};
     const invoiceNumber = inv['Invoice Number'] || order?.invoiceId || order?.id || '-';
     const invoiceDate = inv['Invoice Date'] || (order?.enrolledAt ? new Date(order.enrolledAt).toLocaleDateString() : new Date().toLocaleDateString());
-    const seller = inv['Seller'] || 'E-Learning';
+    const seller = inv['Seller'] || invoiceStrings.companyName;
     const sellerEmail = inv['Email'] || 'support@e-learning.com';
     const sellerContact = inv['Contact Number'] || '+1234567890';
-    const sellerAddress = inv['Address'] || '123 Learning St, Education City';
+    const sellerAddress = inv['Address'] || invoiceStrings.companyDetails;
     const buyer = inv['Buyer'] || order?.user?.fullName || '-';
     const buyerEmail = inv['Buyer Email'] || '';
     const buyerContact = inv['Buyer Contact Number'] || '';
     const buyerAddress = inv['Buyer Address'] || '';
-    const courseName = inv['Course(s) Purchased'] || order?.course?.title || 'Course';
+    const courseName = inv['Course(s) Purchased'] || order?.course?.title || t("orders.invoice.student.defaultCourse");
     const courseIds = inv['Course ID(s)'] || order?.courseId || '';
     const coursePrice = inv['Course Price(s)'] || (typeof order?.totalAmount === 'number' ? order.totalAmount.toFixed(2) : order?.totalAmount || '0.00');
-    const vatRate = inv['Course vat rate(s) included '] || '20%';
+    const vatRate = inv['Course vat rate(s) included '] || t("orders.invoice.student.defaultVat");
     const totalAmount = inv['Total Amount'] || coursePrice || '0.00';
 
     const html = `<!doctype html>
 <html>
 <head>
-  <meta charset=\"utf-8\" />
-  <title>Invoice ${invoiceNumber}</title>
+  <meta charset="utf-8" />
+  <title>${invoiceStrings.title} ${invoiceNumber}</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 40px; color: #333; }
     .company-info { text-align: center; margin-bottom: 40px; }
@@ -122,14 +164,14 @@ const OrderList = () => {
 
   <div class="invoice-header">
     <div class="party-info">
-      <h3>Seller</h3>
+      <h3>${invoiceStrings.sellerHeading}</h3>
       <div><strong>${seller}</strong></div>
       <div>${sellerAddress}</div>
       <div>${sellerEmail}</div>
       <div>${sellerContact}</div>
     </div>
     <div class="party-info">
-      <h3>Buyer</h3>
+      <h3>${invoiceStrings.buyerHeading}</h3>
       <div><strong>${buyer}</strong></div>
       <div>${buyerAddress}</div>
       <div>${buyerEmail}</div>
@@ -138,17 +180,17 @@ const OrderList = () => {
   </div>
 
   <div class="invoice-details">
-    <div><strong>Invoice Number:</strong> ${invoiceNumber}</div>
-    <div><strong>Invoice Date:</strong> ${invoiceDate}</div>
+    <div><strong>${invoiceStrings.invoiceNumber}</strong> ${invoiceNumber}</div>
+    <div><strong>${invoiceStrings.invoiceDate}</strong> ${invoiceDate}</div>
   </div>
 
   <table class="invoice-table">
     <thead>
       <tr>
-        <th>Description</th>
-        <th>Course ID(s)</th>
-        <th>VAT</th>
-        <th>Amount</th>
+        <th>${invoiceStrings.description}</th>
+        <th>${invoiceStrings.courseIds}</th>
+        <th>${invoiceStrings.vat}</th>
+        <th>${invoiceStrings.amount}</th>
       </tr>
     </thead>
     <tbody>
@@ -162,7 +204,7 @@ const OrderList = () => {
   </table>
 
   <div class="invoice-details">
-    <div class="total">Total: ${totalAmount}</div>
+    <div class="total">${invoiceStrings.total}: ${totalAmount}</div>
   </div>
 </body>
 </html>`;
@@ -170,7 +212,7 @@ const OrderList = () => {
     const w = window.open("", "_blank", "width=900,height=1000");
     if (!w) return;
     w.document.open();
-w.document.write(html);
+    w.document.write(html);
     w.document.close();
     w.focus();
     w.print();
@@ -186,14 +228,14 @@ w.document.write(html);
           className={activeTab === "student" ? "bg-cyan-600 text-white hover:bg-cyan-700" : "bg-muted text-foreground"}
           onClick={() => setActiveTab("student")}
         >
-          Student Orders
+          {t("orders.tabs.student")}
         </Button>
         <Button
           variant="ghost"
           className={activeTab === "company" ? "bg-cyan-600 text-white hover:bg-cyan-700" : "bg-muted text-foreground"}
           onClick={() => setActiveTab("company")}
         >
-          Company Orders
+          {t("orders.tabs.company")}
         </Button>
       </div>
 
@@ -204,9 +246,9 @@ w.document.write(html);
           {/* Student Header */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <div className="flex justify-between items-center gap-3 w-full sm:w-auto">
-              <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">Student Orders</h1>
+              <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">{t("orders.student.heading")}</h1>
               <div className="flex items-center">
-                <span className="text-sm sm:text-base text-gray-600">Total:</span>
+                <span className="text-sm sm:text-base text-gray-600">{t("orders.common.totalLabel")}</span>
                 <span className="ml-2 px-3 py-1 bg-blue-100 text-blue-800 font-semibold rounded-full text-sm">{studentTotal || 0}</span>
               </div>
             </div>
@@ -214,7 +256,7 @@ w.document.write(html);
               <div className="relative w-full sm:w-80">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                 <Input
-                  placeholder="Search here..."
+                  placeholder={t("orders.common.searchPlaceholder")}
                   value={studentSearchTerm}
                   onChange={(e) => setStudentSearchTerm(e.target.value)}
                   className="pl-10"
@@ -235,14 +277,14 @@ w.document.write(html);
                     <Table className="min-w-[800px]">
                       <TableHeader className="sticky top-0 z-10 bg-yellow-50 border-b">
                         <TableRow className="hover:bg-yellow-50">
-                          <TableHead className="w-16 bg-yellow-50">S.N.</TableHead>
-                          <TableHead className="min-w-32 bg-yellow-50">Order No.</TableHead>
-                          <TableHead className="min-w-40 bg-yellow-50">Student Name</TableHead>
-                          <TableHead className="min-w-32 bg-yellow-50">Date</TableHead>
-                          <TableHead className="min-w-32 bg-yellow-50">Amount</TableHead>
-                          <TableHead className="min-w-32 bg-yellow-50">Invoice</TableHead>
-                          <TableHead className="min-w-32 bg-yellow-50">Payment Status</TableHead>
-                          <TableHead className="min-w-24 bg-yellow-50">Actions</TableHead>
+                          <TableHead className="w-16 bg-yellow-50">{t("orders.student.table.sn")}</TableHead>
+                          <TableHead className="min-w-32 bg-yellow-50">{t("orders.student.table.orderNo")}</TableHead>
+                          <TableHead className="min-w-40 bg-yellow-50">{t("orders.student.table.name")}</TableHead>
+                          <TableHead className="min-w-32 bg-yellow-50">{t("orders.student.table.date")}</TableHead>
+                          <TableHead className="min-w-32 bg-yellow-50">{t("orders.student.table.amount")}</TableHead>
+                          <TableHead className="min-w-32 bg-yellow-50">{t("orders.student.table.invoice")}</TableHead>
+                          <TableHead className="min-w-32 bg-yellow-50">{t("orders.student.table.status")}</TableHead>
+                          <TableHead className="min-w-24 bg-yellow-50">{t("orders.student.table.actions")}</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -264,7 +306,7 @@ w.document.write(html);
                                   {order?.invoice ? (
                                     <Button variant="ghost" size="sm" className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 p-0 h-auto font-normal" onClick={() => handlePrintStudent(order)}>
                                       <Download className="h-4 w-4 mr-1" />
-                                      Download
+                                      {t("orders.common.download")}
                                     </Button>
                                   ) : (
                                     <span className="text-muted-foreground">—</span>
@@ -273,7 +315,7 @@ w.document.write(html);
                                 <TableCell className="min-w-24">
                                   <button className={`px-3 py-1.5 border w-28 rounded-xl ${
                                     (order?.paymentStatus?.toUpperCase?.() === 'PAID' || order?.paymentStatus?.toUpperCase?.() === 'COMPLETED')
-                                      ? 'border-green-200 text-green-600' : 'border-red-200 text-red-600'}`}>{order?.paymentStatus}
+                                      ? 'border-green-200 text-green-600' : 'border-red-200 text-red-600'}`}>{getPaymentStatusLabel(order?.paymentStatus)}
                                   </button>
                                 </TableCell>
                                 <TableCell className="min-w-24">
@@ -284,7 +326,7 @@ w.document.write(html);
                           })
                         ) : (
                           <TableRow>
-                            <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">No Orders found matching your search.</TableCell>
+                            <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">{t("orders.student.empty")}</TableCell>
                           </TableRow>
                         )}
                       </TableBody>

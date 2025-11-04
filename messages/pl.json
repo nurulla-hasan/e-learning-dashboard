@@ -36,6 +36,139 @@
     "userMenu": {
       "profile": "Profil",
       "logout": "Wyloguj się"
+    },
+    "dashboard": {
+      "stats": {
+        "error": "Nie udało się wczytać statystyk pulpitu.",
+        "totalUsers": "Łącznie użytkowników",
+        "totalCompanies": "Łącznie firm",
+        "totalCourses": "Łącznie kursów",
+        "totalTests": "Łącznie testów",
+        "totalIncome": "Łączne przychody",
+        "totalIncomeValue": "${{value}}"
+      },
+      "income": {
+        "title": "Przychody",
+        "yearSelect": "Wybierz rok",
+        "error": "Nie udało się wczytać danych przychodów."
+      },
+      "user": {
+        "title": "Użytkownicy",
+        "yearSelect": "Wybierz rok",
+        "error": "Nie udało się wczytać danych użytkowników.",
+        "tooltipUsers": "Użytkownicy"
+      },
+      "contacts": {
+        "title": "Ostatnie kontakty",
+        "columns": {
+          "sn": "Lp.",
+          "email": "Email",
+          "phone": "Telefon",
+          "message": "Wiadomość",
+          "created": "Utworzono"
+        },
+        "error": "Nie udało się wczytać kontaktów.",
+        "empty": "Brak kontaktów."
+      }
+    },
+    "orders": {
+      "tabs": {
+        "student": "Zamówienia indywidualne",
+        "company": "Zamówienia firmowe"
+      },
+      "common": {
+        "totalLabel": "Razem:",
+        "searchPlaceholder": "Szukaj...",
+        "download": "Pobierz",
+        "status": {
+          "unknown": "Nieznany",
+          "paid": "Opłacone",
+          "completed": "Zrealizowane",
+          "pending": "Oczekujące",
+          "cancelled": "Anulowane"
+        }
+      },
+      "student": {
+        "heading": "Zamówienia indywidualne",
+        "empty": "Brak zamówień spełniających kryteria wyszukiwania.",
+        "table": {
+          "sn": "Lp.",
+          "orderNo": "Nr zamówienia",
+          "name": "Imię i nazwisko",
+          "date": "Data",
+          "amount": "Kwota",
+          "invoice": "Faktura",
+          "status": "Status płatności",
+          "actions": "Akcje"
+        }
+      },
+      "company": {
+        "heading": "Zamówienia firmowe",
+        "empty": "Brak zamówień spełniających kryteria wyszukiwania.",
+        "table": {
+          "sn": "Lp.",
+          "orderNo": "Nr zamówienia",
+          "employee": "Pracownik",
+          "date": "Data",
+          "amount": "Kwota",
+          "invoice": "Faktura",
+          "status": "Status płatności"
+        }
+      },
+      "invoice": {
+        "student": {
+          "title": "Faktura",
+          "companyName": "E-Learning",
+          "companyDetails": "123 Learning St, Education City",
+          "seller": "Sprzedawca",
+          "buyer": "Nabywca",
+          "invoiceNumber": "Numer faktury:",
+          "invoiceDate": "Data faktury:",
+          "description": "Opis",
+          "courseIds": "ID kursów",
+          "vat": "VAT",
+          "amount": "Kwota",
+          "total": "Razem",
+          "defaultCourse": "Kurs",
+          "defaultVat": "20%"
+        },
+        "company": {
+          "title": "Faktura",
+          "date": "Data",
+          "customer": "Klient",
+          "description": "Opis",
+          "amount": "Kwota",
+          "defaultDescription": "Zamówienie firmowe"
+        }
+      },
+      "details": {
+        "open": "Pokaż szczegóły zamówienia",
+        "title": "Szczegóły zamówienia",
+        "aria": "Szczegóły zamówienia {{id}}",
+        "orderId": "ID zamówienia:",
+        "customerName": "Klient:",
+        "email": "Email:",
+        "phone": "Telefon:",
+        "orderDate": "Data zamówienia:",
+        "totalPrice": "Łączna kwota:",
+        "paymentStatus": "Status płatności:",
+        "progress": "Postęp:",
+        "purchasedCourses": "Zakupione kursy:",
+        "courseName": "Nazwa kursu",
+        "price": "Cena",
+        "total": "Razem",
+        "courseDetails": "Szczegóły kursu",
+        "titleLabel": "Tytuł:",
+        "category": "Kategoria:",
+        "instructor": "Instruktor:",
+        "certificate": "Certyfikat:",
+        "lifetimeAccess": "Dostęp bez limitu:",
+        "sections": "Sekcje:",
+        "lessons": "Lekcje:",
+        "duration": "Czas trwania:",
+        "yes": "Tak",
+        "no": "Nie"
+      }
     }
   }
 }

@@ -3,12 +3,14 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { useGetContactDataQuery } from "@/redux/features/dashboard/dashboardApi";
 import { ScrollArea } from "../ui/scroll-area";
+import { useTranslation } from "react-i18next";
 
 
 
 
 const RecentOrderList = () => {
     const { data, isLoading, isError } = useGetContactDataQuery(undefined);
+    const { t } = useTranslation("common");
     const contacts = (data?.data || []) as Array<{
         id: string;
         message: string;
@@ -24,7 +26,7 @@ const RecentOrderList = () => {
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
                 {/* Left Section: Title + Total Count */}
                 <div className="flex justify-between items-center gap-3 w-full sm:w-auto">
-                    <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">Recent Contact List</h1>
+                    <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">{t("dashboard.contacts.title")}</h1>
                 </div>
             </div>
 
@@ -37,11 +39,11 @@ const RecentOrderList = () => {
                         <Table className="min-w-[800px]">
                             <TableHeader className="sticky top-0 z-10 bg-yellow-50 border-b">
                                 <TableRow className="hover:bg-yellow-50">
-                                    <TableHead className="w-16 bg-yellow-50">S.N.</TableHead>
-                                    <TableHead className="min-w-48 bg-yellow-50">Email</TableHead>
-                                    <TableHead className="min-w-40 bg-yellow-50">Phone</TableHead>
-                                    <TableHead className="min-w-64 bg-yellow-50">Message</TableHead>
-                                    <TableHead className="min-w-40 bg-yellow-50">Created</TableHead>
+                                    <TableHead className="w-16 bg-yellow-50">{t("dashboard.contacts.columns.sn")}</TableHead>
+                                    <TableHead className="min-w-48 bg-yellow-50">{t("dashboard.contacts.columns.email")}</TableHead>
+                                    <TableHead className="min-w-40 bg-yellow-50">{t("dashboard.contacts.columns.phone")}</TableHead>
+                                    <TableHead className="min-w-64 bg-yellow-50">{t("dashboard.contacts.columns.message")}</TableHead>
+                                    <TableHead className="min-w-40 bg-yellow-50">{t("dashboard.contacts.columns.created")}</TableHead>
                                     {/* <TableHead className="min-w-32 bg-yellow-50">Status</TableHead> */}
                                 </TableRow>
                             </TableHeader>
@@ -61,7 +63,7 @@ const RecentOrderList = () => {
                                     ))
                                 ) : isError ? (
                                     <TableRow>
-                                        <TableCell colSpan={6} className="text-center py-8 text-red-500">Failed to load contacts</TableCell>
+                                        <TableCell colSpan={6} className="text-center py-8 text-red-500">{t("dashboard.contacts.error")}</TableCell>
                                     </TableRow>
                                 ) : contacts.length > 0 ? (
                                     contacts.slice(0,5).map((c, index) => (
@@ -79,7 +81,7 @@ const RecentOrderList = () => {
                                 ) : (
                                     <TableRow>
                                         <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
-                                            No contacts found.
+                                            {t("dashboard.contacts.empty")}
                                         </TableCell>
                                     </TableRow>
                                 )}

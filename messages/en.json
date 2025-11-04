@@ -36,6 +36,139 @@
     "userMenu": {
       "profile": "Profile",
       "logout": "Log out"
+    },
+    "dashboard": {
+      "stats": {
+        "error": "Failed to load dashboard stats.",
+        "totalUsers": "Total Users",
+        "totalCompanies": "Total Companies",
+        "totalCourses": "Total Courses",
+        "totalTests": "Total Tests",
+        "totalIncome": "Total Income",
+        "totalIncomeValue": "${{value}}"
+      },
+      "income": {
+        "title": "Income Overview",
+        "yearSelect": "Select year",
+        "error": "Failed to load income overview."
+      },
+      "user": {
+        "title": "User Overview",
+        "yearSelect": "Select year",
+        "error": "Failed to load user overview.",
+        "tooltipUsers": "Users"
+      },
+      "contacts": {
+        "title": "Recent Contact List",
+        "columns": {
+          "sn": "S.N.",
+          "email": "Email",
+          "phone": "Phone",
+          "message": "Message",
+          "created": "Created"
+        },
+        "error": "Failed to load contacts.",
+        "empty": "No contacts found."
+      }
+    },
+    "orders": {
+      "tabs": {
+        "student": "Student Orders",
+        "company": "Company Orders"
+      },
+      "common": {
+        "totalLabel": "Total:",
+        "searchPlaceholder": "Search here...",
+        "download": "Download",
+        "status": {
+          "unknown": "Unknown",
+          "paid": "Paid",
+          "completed": "Completed",
+          "pending": "Pending",
+          "cancelled": "Cancelled"
+        }
+      },
+      "student": {
+        "heading": "Student Orders",
+        "empty": "No orders found matching your search.",
+        "table": {
+          "sn": "S.N.",
+          "orderNo": "Order No.",
+          "name": "Student Name",
+          "date": "Date",
+          "amount": "Amount",
+          "invoice": "Invoice",
+          "status": "Payment Status",
+          "actions": "Actions"
+        }
+      },
+      "company": {
+        "heading": "Company Orders",
+        "empty": "No orders found matching your search.",
+        "table": {
+          "sn": "S.N.",
+          "orderNo": "Order No.",
+          "employee": "Employee Name",
+          "date": "Date",
+          "amount": "Amount",
+          "invoice": "Invoice",
+          "status": "Payment Status"
+        }
+      },
+      "invoice": {
+        "student": {
+          "title": "Invoice",
+          "companyName": "E-Learning",
+          "companyDetails": "123 Learning St, Education City",
+          "seller": "Seller",
+          "buyer": "Buyer",
+          "invoiceNumber": "Invoice Number:",
+          "invoiceDate": "Invoice Date:",
+          "description": "Description",
+          "courseIds": "Course ID(s)",
+          "vat": "VAT",
+          "amount": "Amount",
+          "total": "Total",
+          "defaultCourse": "Course",
+          "defaultVat": "20%"
+        },
+        "company": {
+          "title": "Invoice",
+          "date": "Date",
+          "customer": "Customer",
+          "description": "Description",
+          "amount": "Amount",
+          "defaultDescription": "Company Order"
+        }
+      },
+      "details": {
+        "open": "View order details",
+        "title": "Order Details",
+        "aria": "Order details for order {{id}}",
+        "orderId": "Order ID:",
+        "customerName": "Customer Name:",
+        "email": "Email:",
+        "phone": "Phone Number:",
+        "orderDate": "Order Date:",
+        "totalPrice": "Total Price:",
+        "paymentStatus": "Payment Status:",
+        "progress": "Progress:",
+        "purchasedCourses": "Purchased Courses:",
+        "courseName": "Course Name",
+        "price": "Price",
+        "total": "Total",
+        "courseDetails": "Course Details",
+        "titleLabel": "Title:",
+        "category": "Category:",
+        "instructor": "Instructor:",
+        "certificate": "Certificate:",
+        "lifetimeAccess": "Lifetime Access:",
+        "sections": "Sections:",
+        "lessons": "Lessons:",
+        "duration": "Duration:",
+        "yes": "Yes",
+        "no": "No"
+      }
     }
   }
 }

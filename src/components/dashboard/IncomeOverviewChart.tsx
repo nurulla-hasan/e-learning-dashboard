@@ -9,12 +9,14 @@ import {
 } from 'recharts';
 import { yearOptions } from '../../data/options.data';
 import { useGetDashboardDataQuery } from '@/redux/features/dashboard/dashboardApi';
+import { useTranslation } from 'react-i18next';
 
 const IncomeOverviewChart = () => {
   const date = new Date();
   const currentYear = date.getFullYear().toString();
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const { data, isLoading, isError } = useGetDashboardDataQuery(undefined);
+  const { t } = useTranslation('common');
   const growth = (data?.data?.earningGrowth || []) as Array<{ label: string; total: number }>;
   const filtered = growth.filter((g) => g.label.includes(selectedYear));
   const barData = filtered.map((g) => ({
@@ -33,7 +35,7 @@ const IncomeOverviewChart = () => {
   if (isError) {
     return (
       <div className="md:p-6 bg-white rounded-lg shadow-sm">
-        <div className="text-red-500 p-4">Failed to load income overview</div>
+        <div className="text-red-500 p-4">{t('dashboard.income.error')}</div>
       </div>
     );
   }
@@ -41,11 +43,12 @@ const IncomeOverviewChart = () => {
   return (
     <div className="md:p-6 bg-white rounded-lg shadow-sm">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold">Income Overview</h2>
+        <h2 className="text-xl font-bold">{t('dashboard.income.title')}</h2>
         <select
           className="border rounded px-2 py-1 bg-white"
           value={selectedYear}
           onChange={(e) => setSelectedYear(e.target.value)}
+          aria-label={t('dashboard.income.yearSelect')}
         >
           {yearOptions.map((year) => (
             <option key={year} value={year}>

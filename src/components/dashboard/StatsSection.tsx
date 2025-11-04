@@ -4,10 +4,20 @@ import user from "../../assets/images/dashboard/user.png";
 import course from "../../assets/images/dashboard/course.png";
 import certificates from "../../assets/images/dashboard/certificates.png";
 import { useGetDashboardDataQuery } from "@/redux/features/dashboard/dashboardApi";
+import { useTranslation } from "react-i18next";
+
+type DashboardStats = {
+  totalUsers?: number;
+  totalCompanies?: number;
+  totalCourses?: number;
+  totalTests?: number;
+  totalIncome?: number;
+};
 
 const StatsSection = () => {
+  const { t } = useTranslation("common");
   const { data, isLoading, isError } = useGetDashboardDataQuery(undefined);
-  const stats = data?.data || ({} as any);
+  const stats: DashboardStats = (data?.data ?? {}) as DashboardStats;
 
   if (isLoading) {
     return (
@@ -24,7 +34,7 @@ const StatsSection = () => {
   }
 
   if (!isLoading && isError) {
-    return <h1 className="text-lg text-red-500">Server Error Occured</h1>;
+    return <h1 className="text-lg text-red-500">{t("dashboard.stats.error")}</h1>;
   }
 
   return (
@@ -37,7 +47,7 @@ const StatsSection = () => {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats?.totalUsers ?? 0}</p>
-              <p className="text-sm text-gray-500">Total Users</p>
+              <p className="text-sm text-gray-500">{t("dashboard.stats.totalUsers")}</p>
             </div>
           </div>
 
@@ -47,7 +57,7 @@ const StatsSection = () => {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats?.totalCompanies ?? 0}</p>
-              <p className="text-sm text-gray-500">Total Companies</p>
+              <p className="text-sm text-gray-500">{t("dashboard.stats.totalCompanies")}</p>
             </div>
           </div>
 
@@ -57,7 +67,7 @@ const StatsSection = () => {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats?.totalCourses ?? 0}</p>
-              <p className="text-sm text-gray-500">Total Courses</p>
+              <p className="text-sm text-gray-500">{t("dashboard.stats.totalCourses")}</p>
             </div>
           </div>
 
@@ -67,7 +77,7 @@ const StatsSection = () => {
             </div>
             <div>
               <p className="text-2xl font-bold text-gray-800">{stats?.totalTests ?? 0}</p>
-              <p className="text-sm text-gray-500">Total Tests</p>
+              <p className="text-sm text-gray-500">{t("dashboard.stats.totalTests")}</p>
             </div>
           </div>
 
@@ -76,8 +86,10 @@ const StatsSection = () => {
               <img src={money} alt="money" className="w-6 h-6" />
             </div>
             <div>
-              <p className="text-2xl font-bold text-gray-800">${stats?.totalIncome ?? 0}</p>
-              <p className="text-sm text-gray-500">Total Income</p>
+              <p className="text-2xl font-bold text-gray-800">
+                {t("dashboard.stats.totalIncomeValue", { value: stats?.totalIncome ?? 0 })}
+              </p>
+              <p className="text-sm text-gray-500">{t("dashboard.stats.totalIncome")}</p>
             </div>
           </div>
         </div>
