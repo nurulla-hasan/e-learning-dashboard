@@ -3,12 +3,14 @@ import PolicyLoading from "@/components/loader/PolicyLoading";
 import { useGetTermsConditionQuery } from "@/redux/features/policy/policyApi"
 import { FileText } from "lucide-react"
 import { lazy, Suspense, type ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 
 const UpdateTermsForm = lazy(() => import("@/components/policy/UpdateTermsForm"));
 
-
 const TermsPage = () => {
   const { data, isLoading, isSuccess, isError } = useGetTermsConditionQuery(undefined);
+  const { t } = useTranslation("common")
+
   const terms = data?.data;
 
   let content: ReactNode;
@@ -29,7 +31,7 @@ const TermsPage = () => {
   }
 
   if (!isLoading && isError) {
-    content = <h1>Server Error Occured</h1>
+    content = <h1>{t("common:policies.error")}</h1>
   }
 
 
@@ -40,7 +42,7 @@ const TermsPage = () => {
           <div className="flex justify-between items-center">
             <h1 className="text-2xl font-bold text-white flex items-center">
               <FileText className="mr-2" size={24} />
-              Terms & Condition
+              {t("common:policies.terms.title")}
             </h1>
           </div>
         </div>

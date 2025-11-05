@@ -3,12 +3,14 @@ import PolicyLoading from "@/components/loader/PolicyLoading";
 import { useGetAboutUsQuery } from "@/redux/features/policy/policyApi";
 import { FileText } from "lucide-react"
 import { lazy, Suspense, type ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 
 const UpdateAboutForm = lazy(() => import("@/components/policy/UpdateAboutForm"));
 
-
 const AboutUsPage = () => {
   const { data, isLoading, isSuccess, isError } = useGetAboutUsQuery(undefined);
+  const { t } = useTranslation("common")
+
   const about = data?.data;
 
   let content: ReactNode;
@@ -26,10 +28,8 @@ const AboutUsPage = () => {
     )
   }
   if (!isLoading && isError) {
-    content = <h1>Server Error Occured</h1>
+    content = <h1>{t("common:policies.error")}</h1>
   }
-
-  
 
   return (
     <div className="min-h-full bg-white rounded-md py-8 px-4 sm:px-6 lg:px-8">
@@ -38,7 +38,7 @@ const AboutUsPage = () => {
           <div className="flex justify-between items-center">
             <h1 className="text-2xl font-bold text-white flex items-center">
               <FileText className="mr-2" size={24} />
-              About Us
+              {t("common:policies.about.title")}
             </h1>
           </div>
         </div>

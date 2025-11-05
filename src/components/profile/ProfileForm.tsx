@@ -9,57 +9,74 @@ import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from "
 import { useUpdateProfileImageMutation, useUpdateProfileMutation } from "@/redux/features/user/userApi";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store/store";
+import { useTranslation } from "react-i18next";
 
 type TProps = {
   file: File | null;
 }
 
+type ProfileUser = {
+  fullName?: string;
+  email?: string;
+  phoneNumber?: string;
+  address?: string;
+  vatId?: string;
+};
+
 const ProfileForm = ({ file }: TProps) => {
   const [updateProfile, { isLoading }] = useUpdateProfileMutation();
   const [updateProfileImage] = useUpdateProfileImageMutation();
+  const { t } = useTranslation("common");
 
   const user = useSelector((state: RootState) => state.user.user);
+  const profileUser: ProfileUser = (user ?? {}) as ProfileUser;
 
-  const form = useForm({
+  const form = useForm<z.infer<typeof updateAdminSchema>>({
     resolver: zodResolver(updateAdminSchema),
     defaultValues: {
-      fullName: user?.fullName || "",
-      email: user?.email || "",
-      phone: (user as any)?.phoneNumber || "",
-      address: (user as any)?.address || "",
-      vatId: (user as any)?.vatId || "",}
+      fullName: profileUser.fullName ?? "",
+      email: profileUser.email ?? "",
+      phone: profileUser.phoneNumber ?? "",
+      address: profileUser.address ?? "",
+      vatId: profileUser.vatId ?? "",
+    },
   });
-  const { handleSubmit, control } = form as any;
+  const { handleSubmit, control, reset } = form;
 
 
   const onSubmit: SubmitHandler<z.infer<typeof updateAdminSchema>> = async (data) => {
     // Update basic profile fields as JSON
-    await updateProfile({ fullName: data.fullName, phoneNumber: data.phone, address: (data as any)?.address, vatId: (data as any)?.vatId } as any);
+    await updateProfile({
+      fullName: data.fullName,
+      phoneNumber: data.phone ?? "",
+      address: data.address ?? "",
+      vatId: data.vatId ?? "",
+    });
 
     // If a file is selected, upload profile image separately with field name 'profileImage'
     if (file) {
       const fd = new FormData();
       fd.append("profileImage", file);
-      await updateProfileImage(fd as any);
+      await updateProfileImage(fd);
     }
   };
 
   useEffect(() => {
     if (user) {
-      (form as any).reset({
-        fullName: user?.fullName || "",
-        email: user?.email || "",
-        phone: (user as any)?.phoneNumber || "",
-        address: (user as any)?.address || "",
-        vatId: (user as any)?.vatId || "",
+      reset({
+        fullName: profileUser.fullName ?? "",
+        email: profileUser.email ?? "",
+        phone: profileUser.phoneNumber ?? "",
+        address: profileUser.address ?? "",
+        vatId: profileUser.vatId ?? "",
       });
     }
-  }, [user, form]);
+  }, [user, reset, profileUser.address, profileUser.email, profileUser.fullName, profileUser.phoneNumber, profileUser.vatId]);
 
 
   return (
     <>
-      <Form {...(form as any)}>
+      <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Form Fields */}
           <div className="space-y-5">
@@ -69,11 +86,11 @@ const ProfileForm = ({ file }: TProps) => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm font-medium text-gray-700">
-                    Full Name
+                    {t("common:profile.form.fullName.label")}
                   </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Enter your full name"
+                      placeholder={t("common:profile.form.fullName.placeholder")}
                       className="h-11 border-gray-300 focus:border-cyan-500 focus:ring-cyan-500/20 rounded-lg"
                       {...field}
                     />
@@ -89,11 +106,11 @@ const ProfileForm = ({ file }: TProps) => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm font-medium text-gray-700">
-                    Email Address
+                    {t("common:profile.form.email.label")}
                   </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Enter your email address"
+                      placeholder={t("common:profile.form.email.placeholder")}
                       disabled
                       className="h-11 border-gray-200 bg-gray-50 cursor-not-allowed rounded-lg"
                       {...field}
@@ -110,11 +127,11 @@ const ProfileForm = ({ file }: TProps) => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm font-medium text-gray-700">
-                    Phone Number
+                    {t("common:profile.form.phone.label")}
                   </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Enter your phone number"
+                      placeholder={t("common:profile.form.phone.placeholder")}
                       className="h-11 border-gray-300 focus:border-cyan-500 focus:ring-cyan-500/20 rounded-lg"
                       {...field}
                     />
@@ -131,11 +148,11 @@ const ProfileForm = ({ file }: TProps) => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm font-medium text-gray-700">
-                    Address
+                    {t("common:profile.form.address.label")}
                   </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Enter your address"
+                      placeholder={t("common:profile.form.address.placeholder")}
                       className="h-11 border-gray-300 focus:border-cyan-500 focus:ring-cyan-500/20 rounded-lg"
                       {...field}
                     />
@@ -152,11 +169,11 @@ const ProfileForm = ({ file }: TProps) => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm font-medium text-gray-700">
-                    NIP ID
+                    {t("common:profile.form.vat.label")}
                   </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Enter your NIP ID"
+                      placeholder={t("common:profile.form.vat.placeholder")}
                       className="h-11 border-gray-300 focus:border-cyan-500 focus:ring-cyan-500/20 rounded-lg"
                       {...field}
                     />
@@ -177,10 +194,10 @@ const ProfileForm = ({ file }: TProps) => {
               {isLoading ? (
                 <>
                   <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                  <span>Saving...</span>
+                  <span>{t("common:profile.form.saving")}</span>
                 </>
               ) : (
-                "Save Changes"
+                t("common:profile.form.submit")
               )}
             </button>
           </div>

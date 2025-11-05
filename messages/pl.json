@@ -686,6 +686,73 @@
     "help": {
       "title": "Centrum pomocy",
       "error": "Wystąpił błąd serwera."
+    },
+    "profile": {
+      "loading": "Ładowanie profilu...",
+      "accountSection": {
+        "title": "Informacje o koncie"
+      },
+      "picture": {
+        "alt": "Zdjęcie profilowe",
+        "cancel": "Anuluj",
+        "update": "Aktualizuj",
+        "updating": "Aktualizowanie..."
+      },
+      "form": {
+        "fullName": {
+          "label": "Imię i nazwisko",
+          "placeholder": "Wpisz imię i nazwisko"
+        },
+        "email": {
+          "label": "Adres e-mail",
+          "placeholder": "Wpisz adres e-mail"
+        },
+        "phone": {
+          "label": "Numer telefonu",
+          "placeholder": "Wpisz numer telefonu"
+        },
+        "address": {
+          "label": "Adres",
+          "placeholder": "Wpisz adres"
+        },
+        "vat": {
+          "label": "NIP",
+          "placeholder": "Wpisz numer NIP"
+        },
+        "submit": "Zapisz zmiany",
+        "saving": "Zapisywanie..."
+      }
+    },
+    "changePassword": {
+      "title": "Zmień hasło",
+      "form": {
+        "current": {
+          "label": "Aktualne hasło",
+          "placeholder": "Wpisz aktualne hasło"
+        },
+        "new": {
+          "label": "Nowe hasło",
+          "placeholder": "Wpisz nowe hasło"
+        },
+        "confirm": {
+          "label": "Potwierdź nowe hasło",
+          "placeholder": "Potwierdź nowe hasło"
+        },
+        "submit": "Zapisz zmiany",
+        "loading": "Zapisywanie..."
+      }
+    },
+    "policies": {
+      "error": "Wystąpił błąd serwera.",
+      "about": {
+        "title": "O nas"
+      },
+      "privacy": {
+        "title": "Polityka prywatności"
+      },
+      "terms": {
+        "title": "Regulamin"
+      }
     }
   }
 }
