@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks/hooks";
 import { useChangePasswordMutation } from "@/redux/features/auth/authApi";
 import { SetChangePasswordError } from "@/redux/features/auth/authSlice";
 import ErrorAlert from "../validation/ErrorAlert";
+import { useTranslation } from "react-i18next";
 
 type TFormValues = z.infer<typeof changePasswordSchema>;
 
@@ -19,6 +20,7 @@ const ChangePasswordForm = () => {
   const dispatch = useAppDispatch();
   const { ChangePasswordError } = useAppSelector((state) => state.auth)
   const [changePassword, { isLoading }] = useChangePasswordMutation();
+  const { t } = useTranslation("common");
   const { handleSubmit, control, watch, trigger } = useForm({
     resolver: zodResolver(changePasswordSchema),
   });
@@ -51,31 +53,33 @@ const ChangePasswordForm = () => {
       {ChangePasswordError && <ErrorAlert message={ChangePasswordError} />}
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-2">
         <CustomIconInput
-          label="Current Password"
+          label={t("common:changePassword.form.current.label")}
           name="oldPassword"
           type="password"
           control={control}
-          placeholder="Enter current password"
+          placeholder={t("common:changePassword.form.current.placeholder")}
           icon={Lock}
         />
         <CustomIconInput
-          label="New Password"
+          label={t("common:changePassword.form.new.label")}
           name="newPassword"
           type="password"
           control={control}
-          placeholder="Enter new password"
+          placeholder={t("common:changePassword.form.new.placeholder")}
           icon={Lock}
         />
         {newPassword && <PasswordStrength password={newPassword} />}
         <CustomIconInput
-          label="Confirm New Password"
+          label={t("common:changePassword.form.confirm.label")}
           name="confirmPassword"
           type="password"
           control={control}
-          placeholder="Enter confirm password"
+          placeholder={t("common:changePassword.form.confirm.placeholder")}
           icon={Lock}
         />
-        <FormButton isLoading={isLoading}>Save Changes</FormButton>
+        <FormButton isLoading={isLoading} loadingTitle={t("common:changePassword.form.loading")}>
+          {t("common:changePassword.form.submit")}
+        </FormButton>
       </form>
     </>
   );

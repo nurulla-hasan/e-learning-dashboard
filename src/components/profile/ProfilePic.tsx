@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useUpdateProfileImageMutation } from "@/redux/features/user/userApi";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store/store";
+import { useTranslation } from "react-i18next";
 
 type TProps = {
   setFile: React.Dispatch<React.SetStateAction<File | null>>;
@@ -15,6 +16,7 @@ const ProfilePic = ({ setFile }: TProps) => {
   const [pendingFile, setPendingFile] = useState<File | null>(null);
   const [updateProfileImage, { isLoading }] = useUpdateProfileImageMutation();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const { t } = useTranslation("common");
 
   const user = useSelector((state: RootState) => state.user.user);
 
@@ -45,9 +47,9 @@ const ProfilePic = ({ setFile }: TProps) => {
     const fd = new FormData();
     fd.append("profileImage", pendingFile);
     try {
-      await updateProfileImage(fd as any).unwrap();
+      await updateProfileImage(fd).unwrap();
       setPendingFile(null);
-    } catch (_e) {
+    } catch {
       // errors are toasted in API layer
     }
   };
@@ -67,7 +69,7 @@ const ProfilePic = ({ setFile }: TProps) => {
         <div className="relative w-28 h-28 rounded-full overflow-hidden border-4 border-white shadow-lg">
           <img
             src={user?.image || imageSrc}
-            alt="Profile"
+            alt={t("common:profile.picture.alt")}
             onError={() => setImageSrc(profile_placeholder)}
             className="w-full h-full object-cover transition-all duration-300 group-hover:scale-105"
           />
@@ -95,7 +97,7 @@ const ProfilePic = ({ setFile }: TProps) => {
       {pendingFile && (
         <div className="mt-3 ml-3 flex items-center gap-2 justify-center">
           <Button type="button" variant="outline" size="sm" onClick={handleCancel} disabled={isLoading} className="text-xs px-3 py-1">
-            Cancel
+            {t("common:profile.picture.cancel")}
           </Button>
           <Button
             type="button"
@@ -104,7 +106,7 @@ const ProfilePic = ({ setFile }: TProps) => {
             disabled={isLoading}
             className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white text-xs px-3 py-1"
           >
-            {isLoading ? "..." : "Update"}
+            {isLoading ? t("common:profile.picture.updating") : t("common:profile.picture.update")}
           </Button>
         </div>
       )}

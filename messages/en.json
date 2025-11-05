@@ -687,6 +687,73 @@
     "help": {
       "title": "Help Center",
       "error": "A server error occurred."
+    },
+    "profile": {
+      "loading": "Loading profile...",
+      "accountSection": {
+        "title": "Account Information"
+      },
+      "picture": {
+        "alt": "Profile picture",
+        "cancel": "Cancel",
+        "update": "Update",
+        "updating": "Updating..."
+      },
+      "form": {
+        "fullName": {
+          "label": "Full Name",
+          "placeholder": "Enter your full name"
+        },
+        "email": {
+          "label": "Email Address",
+          "placeholder": "Enter your email address"
+        },
+        "phone": {
+          "label": "Phone Number",
+          "placeholder": "Enter your phone number"
+        },
+        "address": {
+          "label": "Address",
+          "placeholder": "Enter your address"
+        },
+        "vat": {
+          "label": "VAT ID",
+          "placeholder": "Enter your VAT ID"
+        },
+        "submit": "Save Changes",
+        "saving": "Saving..."
+      }
+    },
+    "changePassword": {
+      "title": "Change Password",
+      "form": {
+        "current": {
+          "label": "Current Password",
+          "placeholder": "Enter current password"
+        },
+        "new": {
+          "label": "New Password",
+          "placeholder": "Enter new password"
+        },
+        "confirm": {
+          "label": "Confirm New Password",
+          "placeholder": "Confirm your new password"
+        },
+        "submit": "Save Changes",
+        "loading": "Saving..."
+      }
+    },
+    "policies": {
+      "error": "A server error occurred.",
+      "about": {
+        "title": "About Us"
+      },
+      "privacy": {
+        "title": "Privacy Policy"
+      },
+      "terms": {
+        "title": "Terms & Conditions"
+      }
     }
   }
 }

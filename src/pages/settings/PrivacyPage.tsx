@@ -3,12 +3,14 @@ import PolicyLoading from "@/components/loader/PolicyLoading";
 import { useGetPrivacyPolicyQuery } from "@/redux/features/policy/policyApi";
 import { FileText } from "lucide-react"
 import { lazy, Suspense, type ReactNode } from "react";
-
+import { useTranslation } from "react-i18next";
 
 const UpdatePrivacyForm = lazy(() => import("@/components/policy/UpdatePrivacyForm"));
 
 const PrivacyPage = () =>{
   const { data, isLoading, isSuccess, isError } = useGetPrivacyPolicyQuery(undefined);
+  const { t } = useTranslation("common")
+
   const privacy = data?.data;
   
     let content: ReactNode;
@@ -27,7 +29,7 @@ const PrivacyPage = () =>{
   }
 
     if (!isLoading && isError) {
-      content = <h1>Server Error occured</h1>
+      content = <h1>{t("common:policies.error")}</h1>
     }
   
     
@@ -39,7 +41,7 @@ const PrivacyPage = () =>{
           <div className="flex justify-between items-center">
             <h1 className="text-2xl font-bold text-white flex items-center">
               <FileText className="mr-2" size={24} />
-              Privacy Policy
+              {t("common:policies.privacy.title")}
             </h1>
           </div>
         </div>
