@@ -24,12 +24,27 @@ import { Eye, Pencil, Search, ArrowLeft } from "lucide-react";
 import CustomPagination2 from "../../../tools/CustomPagination2";
 import { useGetCertificatesContentQuery } from "@/redux/features/certificate/certificateApi";
 import useSmartFetchHook from "@/hooks/useSmartFetchHook";
+import { useTranslation } from "react-i18next";
+
+interface CertificateTemplateListItem {
+  id: string;
+  title?: string;
+  courseTitle?: string;
+  courseLevel?: string;
+  instructorName?: string;
+  categoryName?: string;
+  placeholderCount?: number;
+  placeholders?: string[];
+  createdAt?: string;
+  htmlContents?: string;
+}
 
 const UpdateCertificateTemplateForm = lazy(
   () => import("@/components/certificate/UpdateCertificateTemplateForm")
 );
 
 const CertificateTemplatePage = () => {
+  const { t } = useTranslation("common");
   const navigate = useNavigate();
   const [editing, setEditing] = useState<null | {
     id: string;
@@ -49,7 +64,7 @@ const CertificateTemplatePage = () => {
     items,
     isLoading,
     isError,
-  } = useSmartFetchHook<any>(useGetCertificatesContentQuery as any);
+  } = useSmartFetchHook<CertificateTemplateListItem>(useGetCertificatesContentQuery);
 
   if (isLoading) {
     return <ListLoading />;
@@ -75,7 +90,7 @@ const CertificateTemplatePage = () => {
                   <ArrowLeft className="h-4 w-4" />
                 </Button>
                 <h1 className="text-2xl font-bold text-white">
-                  Edit Certificate Template
+                  {t("common:certificates.edit.header")}
                 </h1>
               </div>
             </div>
@@ -102,10 +117,12 @@ const CertificateTemplatePage = () => {
         {/* Left: Title + Total */}
         <div className="flex justify-between items-center gap-3 lg:gap-12 w-full sm:w-auto">
           <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">
-            Certificate Templates
+            {t("common:certificates.list.title")}
           </h1>
           <div className="flex items-center">
-            <span className="text-sm sm:text-base text-gray-600">Total:</span>
+            <span className="text-sm sm:text-base text-gray-600">
+              {t("common:certificates.list.totalLabel")}
+            </span>
             <span className="ml-2 px-3 py-1 bg-blue-100 text-blue-800 font-semibold rounded-full text-sm">
               {total || 0}
             </span>
@@ -116,7 +133,7 @@ const CertificateTemplatePage = () => {
           <div className="relative w-full sm:w-80">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
             <Input
-              placeholder="Search here..."
+              placeholder={t("common:certificates.list.searchPlaceholder")}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
@@ -126,7 +143,7 @@ const CertificateTemplatePage = () => {
             className="bg-cyan-600 hover:bg-cyan-700 text-white"
             onClick={() => navigate("/certificate-template/create")}
           >
-            Create Template
+            {t("common:certificates.list.create")}
           </Button>
         </div>
       </div>
@@ -139,22 +156,38 @@ const CertificateTemplatePage = () => {
             <Table className="">
               <TableHeader className="sticky top-0 z-10 bg-yellow-50 border-b">
                 <TableRow className="hover:bg-yellow-50">
-                  <TableHead className="w-16 bg-yellow-50">S.N.</TableHead>
-                  <TableHead className="bg-yellow-50">Title</TableHead>
-                  <TableHead className="bg-yellow-50">Course</TableHead>
-                  <TableHead className="bg-yellow-50">Level</TableHead>
-                  <TableHead className="bg-yellow-50">Instructor</TableHead>
-                  <TableHead className="bg-yellow-50">Category</TableHead>
-                  <TableHead className="bg-yellow-50">Placeholders</TableHead>
-                  <TableHead className="bg-yellow-50">Created</TableHead>
+                  <TableHead className="w-16 bg-yellow-50">
+                    {t("common:certificates.table.headers.sn")}
+                  </TableHead>
+                  <TableHead className="bg-yellow-50">
+                    {t("common:certificates.table.headers.title")}
+                  </TableHead>
+                  <TableHead className="bg-yellow-50">
+                    {t("common:certificates.table.headers.course")}
+                  </TableHead>
+                  <TableHead className="bg-yellow-50">
+                    {t("common:certificates.table.headers.level")}
+                  </TableHead>
+                  <TableHead className="bg-yellow-50">
+                    {t("common:certificates.table.headers.instructor")}
+                  </TableHead>
+                  <TableHead className="bg-yellow-50">
+                    {t("common:certificates.table.headers.category")}
+                  </TableHead>
+                  <TableHead className="bg-yellow-50">
+                    {t("common:certificates.table.headers.placeholders")}
+                  </TableHead>
+                  <TableHead className="bg-yellow-50">
+                    {t("common:certificates.table.headers.created")}
+                  </TableHead>
                   <TableHead className="bg-yellow-50 text-right">
-                    Actions
+                    {t("common:certificates.table.headers.actions")}
                   </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {items?.length > 0 ? (
-                  items.map((item: any, index: number) => (
+                  items.map((item, index) => (
                     <TableRow
                       key={item?.id || index}
                       className={index % 2 === 0 ? "bg-gray-50" : "bg-muted/30"}
@@ -198,7 +231,7 @@ const CertificateTemplatePage = () => {
                               <Button
                                 variant="outline"
                                 size="icon"
-                                title="View"
+                                title={t("certificates.table.actions.view")}
                               >
                                 <Eye className="h-4 w-4" />
                               </Button>
@@ -250,7 +283,7 @@ const CertificateTemplatePage = () => {
                                 title: item?.title || "",
                               })
                             }
-                            title="Edit"
+                            title={t("common:certificates.table.actions.edit")}
                           >
                             <Pencil className="h-4 w-4" />
                           </Button>
@@ -264,7 +297,7 @@ const CertificateTemplatePage = () => {
                       colSpan={9}
                       className="text-center py-8 text-muted-foreground"
                     >
-                      No templates found.
+                      {t("common:certificates.table.empty")}
                     </TableCell>
                   </TableRow>
                 )}

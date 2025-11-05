@@ -169,6 +169,524 @@
         "yes": "Так",
         "no": "Ні"
       }
+    },
+    "training": {
+      "header": {
+        "title": "Управління тренінгами",
+        "totalLabel": "Всього:"
+      },
+      "search": {
+        "placeholder": "Пошук тренінгів..."
+      },
+      "table": {
+        "headers": {
+          "sn": "№",
+          "trainee": "Учасник",
+          "email": "Email",
+          "course": "Курс",
+          "price": "Ціна",
+          "created": "Створено",
+          "status": "Статус",
+          "actions": "Дії"
+        },
+        "empty": "За вашим запитом тренінгів не знайдено."
+      },
+      "status": {
+        "CONFIRMED": "Підтверджено",
+        "PENDING": "В очікуванні",
+        "REJECTED": "Відхилено",
+        "CANCELLED": "Скасовано",
+        "UNKNOWN": "Невідомо"
+      },
+      "actions": {
+        "accept": "Підтвердити",
+        "acceptAria": "Підтвердити запит на тренінг від {{name}}"
+      },
+      "details": {
+        "open": "Переглянути деталі тренінгу",
+        "title": "Деталі тренінгу",
+        "description": "Деталі тренінгу для {{name}}",
+        "info": {
+          "id": "ID тренінгу:",
+          "status": "Статус:",
+          "created": "Створено:"
+        },
+        "trainee": {
+          "title": "Учасник",
+          "name": "Ім'я та прізвище:",
+          "email": "Email:",
+          "phone": "Телефон:"
+        },
+        "course": {
+          "title": "Курс",
+          "name": "Назва:",
+          "category": "Категорія:",
+          "instructor": "Інструктор:",
+          "level": "Рівень:",
+          "price": "Ціна:"
+        }
+      }
+    },
+    "users": {
+      "header": {
+        "title": "Список користувачів",
+        "totalLabel": "Всього:"
+      },
+      "search": {
+        "placeholder": "Пошук користувачів..."
+      },
+      "table": {
+        "headers": {
+          "sn": "№",
+          "name": "Ім'я та прізвище",
+          "email": "Email",
+          "role": "Роль",
+          "created": "Створено",
+          "status": "Статус",
+          "action": "Дія"
+        },
+        "empty": "За вашим запитом користувачів не знайдено."
+      },
+      "status": {
+        "ACTIVE": "Активний",
+        "PENDING": "В очікуванні",
+        "BLOCKED": "Заблоковано",
+        "UNKNOWN": "Невідомо"
+      }
+    },
+    "companies": {
+      "header": {
+        "title": "Список компаній",
+        "totalLabel": "Всього:"
+      },
+      "search": {
+        "placeholder": "Пошук компаній..."
+      },
+      "common": {
+        "notAvailable": "Немає даних"
+      },
+      "table": {
+        "headers": {
+          "sn": "№",
+          "company": "Компанія",
+          "vat": "VAT ID",
+          "registration": "Дата реєстрації",
+          "address": "Адреса",
+          "role": "Роль"
+        },
+        "empty": "За вашим запитом компаній не знайдено."
+      },
+      "role": {
+        "COMPANY": "Компанія",
+        "UNKNOWN": "Невідомо"
+      }
+    },
+    "employees": {
+      "header": {
+        "title": "Працівники",
+        "totalLabel": "Всього:"
+      },
+      "search": {
+        "placeholder": "Пошук працівників..."
+      },
+      "actions": {
+        "create": "Додати працівника"
+      },
+      "common": {
+        "notAvailable": "Немає даних"
+      },
+      "table": {
+        "headers": {
+          "sn": "№",
+          "employee": "Працівник",
+          "company": "Компанія",
+          "course": "Курс",
+          "enrolled": "Дата запису",
+          "payment": "Платіж",
+          "access": "Доступ",
+          "certificate": "Сертифікат"
+        },
+        "defaults": {
+          "employeeImageAlt": "Аватар працівника"
+        },
+        "empty": "За вашим запитом працівників не знайдено."
+      },
+      "payment": {
+        "status": {
+          "COMPLETED": "Завершено",
+          "PAID": "Оплачено",
+          "PENDING": "В очікуванні",
+          "FAILED": "Помилка",
+          "UNKNOWN": "Невідомо"
+        }
+      },
+      "access": {
+        "LIFETIME": "Безстроковий",
+        "LIMITED": "Обмежений"
+      },
+      "certificate": {
+        "ENABLED": "Доступний",
+        "DISABLED": "Відсутній"
+      },
+      "form": {
+        "title": "Додати працівника",
+        "back": "Назад",
+        "defaults": {
+          "untitledCourse": "Без назви"
+        },
+        "notifications": {
+          "createSuccess": "Працівника успішно додано.",
+          "createError": "Щось пішло не так"
+        },
+        "fields": {
+          "fullName": {
+            "label": "ПІБ",
+            "placeholder": "Іван Петренко",
+            "required": "ПІБ є обов’язковим"
+          },
+          "email": {
+            "label": "Email",
+            "placeholder": "ivan@example.com",
+            "required": "Email є обов’язковим"
+          },
+          "password": {
+            "label": "Пароль",
+            "placeholder": "********",
+            "required": "Пароль є обов’язковим",
+            "minLength": "Мінімум 8 символів"
+          },
+          "dateOfBirth": {
+            "label": "Дата народження",
+            "required": "Дата народження є обов’язковою"
+          },
+          "address": {
+            "label": "Адреса",
+            "placeholder": "вул. Головна 123, Місто",
+            "required": "Адреса є обов’язковою"
+          },
+          "phoneNumber": {
+            "label": "Номер телефону",
+            "placeholder": "+380 67 123 45 67",
+            "required": "Номер телефону є обов’язковим"
+          },
+          "companyName": {
+            "label": "Назва компанії",
+            "placeholder": "Tech Solutions ТОВ",
+            "required": "Назва компанії є обов’язковою"
+          },
+          "companyEmail": {
+            "label": "Email компанії",
+            "placeholder": "contact@company.com",
+            "required": "Email компанії є обов’язковим"
+          },
+          "companyPassword": {
+            "label": "Пароль компанії",
+            "placeholder": "********",
+            "required": "Пароль компанії є обов’язковим",
+            "minLength": "Мінімум 8 символів"
+          },
+          "companyAddress": {
+            "label": "Адреса компанії",
+            "placeholder": "просп. Бізнесовий 456, Місто",
+            "required": "Адреса компанії є обов’язковою"
+          },
+          "companyVatId": {
+            "label": "ІПН",
+            "placeholder": "UA1234567890",
+            "required": "ІПН є обов’язковим"
+          },
+          "course": {
+            "label": "Курс",
+            "placeholder": "Оберіть курс",
+            "loading": "Завантаження курсів...",
+            "required": "Курс є обов’язковим"
+          }
+        },
+        "actions": {
+          "cancel": "Скасувати",
+          "submit": "Додати",
+          "submitting": "Додавання..."
+        }
+      }
+    }
+    ,
+    "categories": {
+      "header": {
+        "title": "Список категорій",
+        "totalLabel": "Всього:"
+      },
+      "table": {
+        "headers": {
+          "sn": "№",
+          "name": "Назва",
+          "actions": "Дії"
+        },
+        "empty": "Категорій не знайдено."
+      },
+      "actions": {
+        "add": "Додати категорію"
+      },
+      "form": {
+        "name": {
+          "label": "Назва",
+          "placeholder": "Введіть назву"
+        }
+      },
+      "modals": {
+        "create": {
+          "title": "Додати категорію",
+          "loading": "Додавання...",
+          "submit": "Додати"
+        },
+        "update": {
+          "title": "Оновити категорію",
+          "submit": "Зберегти зміни"
+        },
+        "delete": {
+          "title": "Ви впевнені, що хочете видалити?",
+          "cancel": "Ні",
+          "confirm": "Так",
+          "loading": "Видалення..."
+        }
+      }
+    },
+    "courses": {
+      "header": {
+        "title": "Список курсів",
+        "totalLabel": "Всього:"
+      },
+      "search": {
+        "placeholder": "Пошук курсу..."
+      },
+      "actions": {
+        "add": "Додати новий"
+      },
+      "table": {
+        "headers": {
+          "sn": "№",
+          "course": "Назва курсу",
+          "category": "Категорія",
+          "price": "Вартість курсу",
+          "instructor": "Інструктор",
+          "enrolled": "Зареєстровані студенти",
+          "actions": "Дії"
+        },
+        "empty": "Курсів за вашим запитом не знайдено."
+      },
+      "notifications": {
+        "deleteSuccess": "Курс успішно видалено.",
+        "deleteError": "Не вдалося видалити курс."
+      },
+      "modals": {
+        "delete": {
+          "title": "Ви впевнені, що хочете видалити?",
+          "cancel": "Ні",
+          "confirm": "Так",
+          "loading": "Видалення..."
+        }
+      }
+    },
+    "tests": {
+      "list": {
+        "title": "Список тестів",
+        "totalLabel": "Всього:",
+        "searchPlaceholder": "Пошук тестів...",
+        "addNew": "Додати новий"
+      },
+      "table": {
+        "headers": {
+          "sn": "№",
+          "testName": "Назва тесту",
+          "courseName": "Назва курсу",
+          "passingScore": "Прохідний бал",
+          "actions": "Дії"
+        },
+        "courseNotAssigned": "❌ Не додано до жодного курсу",
+        "empty": "Не знайдено тестів за вашим запитом."
+      },
+      "notifications": {
+        "deleteSuccess": "Тест успішно видалено.",
+        "deleteError": "Не вдалося видалити тест."
+      },
+      "modals": {
+        "delete": {
+          "title": "Ви впевнені, що хочете видалити цей тест?",
+          "cancel": "Ні",
+          "confirm": "Так",
+          "loading": "Видалення..."
+        }
+      }
+    },
+    "testResults": {
+      "list": {
+        "title": "Результати тестів",
+        "totalLabel": "Всього:",
+        "searchPlaceholder": "Пошук результатів..."
+      },
+      "table": {
+        "headers": {
+          "sn": "№",
+          "student": "Студент",
+          "courseName": "Назва курсу",
+          "date": "Дата",
+          "score": "Бал",
+          "result": "Результат",
+          "actions": "Дії"
+        },
+        "statuses": {
+          "passed": "Складено",
+          "failed": "Не складено"
+        },
+        "empty": "Результатів не знайдено."
+      },
+      "actions": {
+        "view": "Перегляд"
+      }
+    },
+    "certificates": {
+      "edit": {
+        "header": "Редагувати шаблон сертифіката"
+      },
+      "list": {
+        "title": "Шаблони сертифікатів",
+        "totalLabel": "Всього:",
+        "searchPlaceholder": "Пошук шаблонів...",
+        "create": "Створити шаблон"
+      },
+      "table": {
+        "headers": {
+          "sn": "№",
+          "title": "Заголовок",
+          "course": "Курс",
+          "level": "Рівень",
+          "instructor": "Інструктор",
+          "category": "Категорія",
+          "placeholders": "Заповнювачі",
+          "created": "Створено",
+          "actions": "Дії"
+        },
+        "actions": {
+          "view": "Перегляд",
+          "edit": "Редагувати"
+        },
+        "empty": "Шаблонів не знайдено."
+      }
+    },
+    "issuedCertificates": {
+      "list": {
+        "title": "Видані сертифікати",
+        "totalLabel": "Всього:",
+        "searchPlaceholder": "Пошук сертифікатів..."
+      },
+      "table": {
+        "headers": {
+          "sn": "№",
+          "issuedDate": "Дата видачі",
+          "student": "Студент",
+          "courseName": "Назва курсу",
+          "certificateType": "Тип сертифіката",
+          "actions": "Дії"
+        },
+        "actions": {
+          "view": "Перегляд"
+        },
+        "empty": "Сертифікатів не знайдено."
+      },
+      "dialog": {
+        "titleFallback": "Деталі сертифіката",
+        "certificateId": "ID сертифіката",
+        "issued": "Видано",
+        "courseSection": {
+          "title": "Курс"
+        },
+        "mainContents": {
+          "title": "Основна інформація",
+          "labels": {
+            "fullName": "Повне ім'я",
+            "dob": "Дата народження",
+            "startDate": "Дата початку",
+            "endDate": "Дата завершення",
+            "certificateNumber": "Номер сертифіката"
+          }
+        }
+      }
+    },
+    "contacts": {
+      "list": {
+        "title": "Список контактів",
+        "totalLabel": "Всього:",
+        "searchPlaceholder": "Пошук контактів...",
+        "error": "Щось пішло не так"
+      },
+      "table": {
+        "headers": {
+          "sn": "№",
+          "email": "Email",
+          "message": "Повідомлення",
+          "actions": "Дії"
+        },
+        "closed": "Закрито",
+        "empty": "Контактів за запитом не знайдено."
+      }
+    },
+    "faqs": {
+      "title": "Поширені запитання",
+      "create": {
+        "button": "+ Додати FAQ",
+        "title": "Додати FAQ",
+        "submit": "Додати",
+        "loading": "Додавання..."
+      },
+      "edit": {
+        "title": "Оновити FAQ",
+        "submit": "Зберегти зміни",
+        "loading": "Збереження..."
+      },
+      "delete": {
+        "title": "Ви впевнені, що хочете видалити?",
+        "cancel": "Ні",
+        "confirm": "Так",
+        "loading": "Видалення...",
+        "openAria": "Відкрити діалог видалення FAQ"
+      },
+      "form": {
+        "question": {
+          "label": "Питання",
+          "placeholder": "Введіть питання..."
+        },
+        "answer": {
+          "label": "Відповідь",
+          "placeholder": "Введіть відповідь..."
+        }
+      },
+      "actions": {
+        "cancel": "Скасувати"
+      }
+    },
+    "subscribers": {
+      "list": {
+        "title": "Список підписників",
+        "totalLabel": "Всього:",
+        "searchPlaceholder": "Пошук підписників...",
+        "error": "Щось пішло не так"
+      },
+      "table": {
+        "headers": {
+          "sn": "№",
+          "email": "Email",
+          "subscribeDate": "Дата підписки",
+          "actions": "Дії"
+        },
+        "empty": "Підписників за запитом не знайдено."
+      },
+      "pagination": {
+        "selectPlaceholder": "Оберіть кількість результатів",
+        "pageSize": "{{count}} / сторінку"
+      }
+    },
+    "help": {
+      "title": "Центр допомоги",
+      "error": "Сталася помилка сервера."
     }
   }
 }

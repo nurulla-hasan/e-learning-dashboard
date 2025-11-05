@@ -16,8 +16,10 @@ import ServerErrorCard from "../card/ServerErrorCard";
 import useSmartFetchHook from "@/hooks/useSmartFetchHook";
 import type { TTestAttempt } from "@/types/test.attempt.type";
 import CustomPagination2 from "../../../tools/CustomPagination2";
+import { useTranslation } from "react-i18next";
 
 const TestResultList = () => {
+  const { t } = useTranslation("common");
   const navigate = useNavigate();
   const {
     searchTerm,
@@ -31,7 +33,7 @@ const TestResultList = () => {
     items,
     isLoading,
     isError,
-  } = useSmartFetchHook<TTestAttempt>(useGetTestAttemptsQuery as any);
+  } = useSmartFetchHook<TTestAttempt>(useGetTestAttemptsQuery);
 
   if (isLoading) {
     return <ListLoading />;
@@ -48,10 +50,12 @@ const TestResultList = () => {
         {/* Left Section: Title + Total Count */}
         <div className="flex justify-between items-center gap-3 lg:gap-12 w-full sm:w-auto">
           <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">
-            Test Results
+            {t("common:testResults.list.title")}
           </h1>
           <div className="flex items-center">
-            <span className="text-sm sm:text-base text-gray-600">Total:</span>
+            <span className="text-sm sm:text-base text-gray-600">
+              {t("common:testResults.list.totalLabel")}
+            </span>
             <span className="ml-2 px-3 py-1 bg-blue-100 text-blue-800 font-semibold rounded-full text-sm">
               {total || 0}
             </span>
@@ -63,7 +67,7 @@ const TestResultList = () => {
           <div className="relative w-full sm:w-80">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
             <Input
-              placeholder="Search here..."
+              placeholder={t("common:testResults.list.searchPlaceholder")}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
@@ -80,19 +84,27 @@ const TestResultList = () => {
             <Table className="min-w-[800px]">
               <TableHeader className="sticky top-0 z-10 bg-yellow-50 border-b">
                 <TableRow className="hover:bg-yellow-50">
-                  <TableHead className="w-16 bg-yellow-50">S.N.</TableHead>
-                  <TableHead className="bg-yellow-50">
-                    Student
+                  <TableHead className="w-16 bg-yellow-50">
+                    {t("common:testResults.table.headers.sn")}
                   </TableHead>
                   <TableHead className="bg-yellow-50">
-                    Course Name
+                    {t("common:testResults.table.headers.student")}
                   </TableHead>
-                  <TableHead className="bg-yellow-50">Date</TableHead>
-                  <TableHead className="bg-yellow-50">Score</TableHead>
                   <TableHead className="bg-yellow-50">
-                    Result
+                    {t("common:testResults.table.headers.courseName")}
                   </TableHead>
-                  <TableHead className="min-w-24 bg-yellow-50 text-right">Actions</TableHead>
+                  <TableHead className="bg-yellow-50">
+                    {t("common:testResults.table.headers.date")}
+                  </TableHead>
+                  <TableHead className="bg-yellow-50">
+                    {t("common:testResults.table.headers.score")}
+                  </TableHead>
+                  <TableHead className="bg-yellow-50">
+                    {t("common:testResults.table.headers.result")}
+                  </TableHead>
+                  <TableHead className="min-w-24 bg-yellow-50 text-right">
+                    {t("common:testResults.table.headers.actions")}
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -135,7 +147,9 @@ const TestResultList = () => {
                         <span
                           className={`px-2 py-1 rounded-full text-xs font-semibold ${attempt?.isPassed ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}
                         >
-                          {attempt?.isPassed ? "Passed" : "Failed"}
+                          {attempt?.isPassed
+                            ? t("common:testResults.table.statuses.passed")
+                            : t("common:testResults.table.statuses.failed")}
                         </span>
                       </TableCell>
                       <TableCell className="min-w-24 text-right">
@@ -144,7 +158,7 @@ const TestResultList = () => {
                           size="sm"
                           onClick={() => attempt?.id && navigate(`/test-attempts/${attempt.id}`)}
                         >
-                          Edit
+                          {t("common:testResults.actions.view")}
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -152,7 +166,7 @@ const TestResultList = () => {
                 ) : (
                   <TableRow>
                     <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
-                      No results found.
+                      {t("common:testResults.table.empty")}
                     </TableCell>
                   </TableRow>
                 )}

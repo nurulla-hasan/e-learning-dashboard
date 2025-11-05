@@ -169,6 +169,523 @@
         "yes": "Tak",
         "no": "Nie"
       }
+    },
+    "training": {
+      "header": {
+        "title": "Zarządzanie szkoleniami",
+        "totalLabel": "Razem:"
+      },
+      "search": {
+        "placeholder": "Szukaj szkoleń..."
+      },
+      "table": {
+        "headers": {
+          "sn": "Lp.",
+          "trainee": "Uczestnik",
+          "email": "Email",
+          "course": "Kurs",
+          "price": "Cena",
+          "created": "Utworzono",
+          "status": "Status",
+          "actions": "Akcje"
+        },
+        "empty": "Brak szkoleń spełniających kryteria wyszukiwania."
+      },
+      "status": {
+        "CONFIRMED": "Potwierdzone",
+        "PENDING": "Oczekujące",
+        "REJECTED": "Odrzucone",
+        "CANCELLED": "Anulowane",
+        "UNKNOWN": "Nieznany"
+      },
+      "actions": {
+        "accept": "Akceptuj",
+        "acceptAria": "Akceptuj zgłoszenie szkoleniowe od {{name}}"
+      },
+      "details": {
+        "open": "Pokaż szczegóły szkolenia",
+        "title": "Szczegóły szkolenia",
+        "description": "Szczegóły szkolenia dla {{name}}",
+        "info": {
+          "id": "ID szkolenia:",
+          "status": "Status:",
+          "created": "Utworzono:"
+        },
+        "trainee": {
+          "title": "Uczestnik",
+          "name": "Imię i nazwisko:",
+          "email": "Email:",
+          "phone": "Telefon:"
+        },
+        "course": {
+          "title": "Kurs",
+          "name": "Tytuł:",
+          "category": "Kategoria:",
+          "instructor": "Instruktor:",
+          "level": "Poziom:",
+          "price": "Cena:"
+        }
+      }
+    },
+    "users": {
+      "header": {
+        "title": "Lista użytkowników",
+        "totalLabel": "Razem:"
+      },
+      "search": {
+        "placeholder": "Szukaj użytkowników..."
+      },
+      "table": {
+        "headers": {
+          "sn": "Lp.",
+          "name": "Imię i nazwisko",
+          "email": "Email",
+          "role": "Rola",
+          "created": "Utworzono",
+          "status": "Status",
+          "action": "Akcja"
+        },
+        "empty": "Brak użytkowników spełniających kryteria wyszukiwania."
+      },
+      "status": {
+        "ACTIVE": "Aktywny",
+        "PENDING": "Oczekujący",
+        "BLOCKED": "Zablokowany",
+        "UNKNOWN": "Nieznany"
+      }
+    },
+    "companies": {
+      "header": {
+        "title": "Lista firm",
+        "totalLabel": "Razem:"
+      },
+      "search": {
+        "placeholder": "Szukaj firm..."
+      },
+      "common": {
+        "notAvailable": "Brak danych"
+      },
+      "table": {
+        "headers": {
+          "sn": "Lp.",
+          "company": "Firma",
+          "vat": "NIP",
+          "registration": "Data rejestracji",
+          "address": "Adres",
+          "role": "Rola"
+        },
+        "empty": "Brak firm spełniających kryteria wyszukiwania."
+      },
+      "role": {
+        "COMPANY": "Firma",
+        "UNKNOWN": "Nieznany"
+      }
+    },
+    "employees": {
+      "header": {
+        "title": "Pracownicy",
+        "totalLabel": "Razem:"
+      },
+      "search": {
+        "placeholder": "Szukaj pracowników..."
+      },
+      "actions": {
+        "create": "Dodaj pracownika"
+      },
+      "common": {
+        "notAvailable": "Brak danych"
+      },
+      "table": {
+        "headers": {
+          "sn": "Lp.",
+          "employee": "Pracownik",
+          "company": "Firma",
+          "course": "Kurs",
+          "enrolled": "Zapisany",
+          "payment": "Płatność",
+          "access": "Dostęp",
+          "certificate": "Certyfikat"
+        },
+        "defaults": {
+          "employeeImageAlt": "Zdjęcie pracownika"
+        },
+        "empty": "Brak pracowników spełniających kryteria wyszukiwania."
+      },
+      "payment": {
+        "status": {
+          "COMPLETED": "Zrealizowana",
+          "PAID": "Opłacona",
+          "PENDING": "Oczekująca",
+          "FAILED": "Nieudana",
+          "UNKNOWN": "Nieznany"
+        }
+      },
+      "access": {
+        "LIFETIME": "Bez ograniczeń",
+        "LIMITED": "Ograniczony"
+      },
+      "certificate": {
+        "ENABLED": "Dostępny",
+        "DISABLED": "Brak"
+      },
+      "form": {
+        "title": "Dodaj pracownika",
+        "back": "Wstecz",
+        "defaults": {
+          "untitledCourse": "Bez nazwy"
+        },
+        "notifications": {
+          "createSuccess": "Pracownik został dodany pomyślnie.",
+          "createError": "Coś poszło nie tak"
+        },
+        "fields": {
+          "fullName": {
+            "label": "Imię i nazwisko",
+            "placeholder": "Jan Kowalski",
+            "required": "Imię i nazwisko jest wymagane"
+          },
+          "email": {
+            "label": "Email",
+            "placeholder": "jan@example.com",
+            "required": "Email jest wymagany"
+          },
+          "password": {
+            "label": "Hasło",
+            "placeholder": "********",
+            "required": "Hasło jest wymagane",
+            "minLength": "Minimum 8 znaków"
+          },
+          "dateOfBirth": {
+            "label": "Data urodzenia",
+            "required": "Data urodzenia jest wymagana"
+          },
+          "address": {
+            "label": "Adres",
+            "placeholder": "ul. Główna 123, Miasto",
+            "required": "Adres jest wymagany"
+          },
+          "phoneNumber": {
+            "label": "Numer telefonu",
+            "placeholder": "+48 555 123 456",
+            "required": "Numer telefonu jest wymagany"
+          },
+          "companyName": {
+            "label": "Nazwa firmy",
+            "placeholder": "Tech Solutions Sp. z o.o.",
+            "required": "Nazwa firmy jest wymagana"
+          },
+          "companyEmail": {
+            "label": "Email firmowy",
+            "placeholder": "kontakt@firma.com",
+            "required": "Email firmowy jest wymagany"
+          },
+          "companyPassword": {
+            "label": "Hasło firmowe",
+            "placeholder": "********",
+            "required": "Hasło firmowe jest wymagane",
+            "minLength": "Minimum 8 znaków"
+          },
+          "companyAddress": {
+            "label": "Adres firmy",
+            "placeholder": "ul. Biznesowa 456, Miasto",
+            "required": "Adres firmy jest wymagany"
+          },
+          "companyVatId": {
+            "label": "NIP",
+            "placeholder": "PL1234567890",
+            "required": "NIP jest wymagany"
+          },
+          "course": {
+            "label": "Kurs",
+            "placeholder": "Wybierz kurs",
+            "loading": "Ładowanie kursów...",
+            "required": "Kurs jest wymagany"
+          }
+        },
+        "actions": {
+          "cancel": "Anuluj",
+          "submit": "Dodaj",
+          "submitting": "Dodawanie..."
+        }
+      }
+    },
+    "categories": {
+      "header": {
+        "title": "Lista kategorii",
+        "totalLabel": "Razem:"
+      },
+      "table": {
+        "headers": {
+          "sn": "Lp.",
+          "name": "Nazwa",
+          "actions": "Akcje"
+        },
+        "empty": "Brak kategorii."
+      },
+      "actions": {
+        "add": "Dodaj kategorię"
+      },
+      "form": {
+        "name": {
+          "label": "Nazwa",
+          "placeholder": "Wpisz nazwę"
+        }
+      },
+      "modals": {
+        "create": {
+          "title": "Dodaj kategorię",
+          "loading": "Dodawanie...",
+          "submit": "Dodaj"
+        },
+        "update": {
+          "title": "Edytuj kategorię",
+          "submit": "Zapisz zmiany"
+        },
+        "delete": {
+          "title": "Czy na pewno chcesz usunąć?",
+          "cancel": "Nie",
+          "confirm": "Tak",
+          "loading": "Usuwanie..."
+        }
+      }
+    },
+    "courses": {
+      "header": {
+        "title": "Lista kursów",
+        "totalLabel": "Razem:"
+      },
+      "search": {
+        "placeholder": "Szukaj kursu..."
+      },
+      "actions": {
+        "add": "Dodaj nowy"
+      },
+      "table": {
+        "headers": {
+          "sn": "Lp.",
+          "course": "Nazwa kursu",
+          "category": "Kategoria",
+          "price": "Opłata za kurs",
+          "instructor": "Prowadzący",
+          "enrolled": "Zapisani kursanci",
+          "actions": "Akcje"
+        },
+        "empty": "Brak kursów spełniających kryteria wyszukiwania."
+      },
+      "notifications": {
+        "deleteSuccess": "Kurs został pomyślnie usunięty.",
+        "deleteError": "Nie udało się usunąć kursu."
+      },
+      "modals": {
+        "delete": {
+          "title": "Czy na pewno chcesz usunąć?",
+          "cancel": "Nie",
+          "confirm": "Tak",
+          "loading": "Usuwanie..."
+        }
+      }
+    },
+    "tests": {
+      "list": {
+        "title": "Lista testów",
+        "totalLabel": "Razem:",
+        "searchPlaceholder": "Szukaj testów...",
+        "addNew": "Dodaj nowy"
+      },
+      "table": {
+        "headers": {
+          "sn": "Lp.",
+          "testName": "Nazwa testu",
+          "courseName": "Nazwa kursu",
+          "passingScore": "Wynik zaliczający",
+          "actions": "Akcje"
+        },
+        "courseNotAssigned": "❌ Nie przypisano do żadnego kursu",
+        "empty": "Brak testów spełniających kryteria wyszukiwania."
+      },
+      "notifications": {
+        "deleteSuccess": "Test został pomyślnie usunięty.",
+        "deleteError": "Nie udało się usunąć testu."
+      },
+      "modals": {
+        "delete": {
+          "title": "Czy na pewno chcesz usunąć ten test?",
+          "cancel": "Nie",
+          "confirm": "Tak",
+          "loading": "Usuwanie..."
+        }
+      }
+    },
+    "testResults": {
+      "list": {
+        "title": "Wyniki testów",
+        "totalLabel": "Razem:",
+        "searchPlaceholder": "Szukaj wyników..."
+      },
+      "table": {
+        "headers": {
+          "sn": "Lp.",
+          "student": "Uczeń",
+          "courseName": "Nazwa kursu",
+          "date": "Data",
+          "score": "Wynik",
+          "result": "Rezultat",
+          "actions": "Akcje"
+        },
+        "statuses": {
+          "passed": "Zaliczone",
+          "failed": "Niezaliczone"
+        },
+        "empty": "Brak wyników."
+      },
+      "actions": {
+        "view": "Podgląd"
+      }
+    },
+    "certificates": {
+      "edit": {
+        "header": "Edytuj szablon certyfikatu"
+      },
+      "list": {
+        "title": "Szablony certyfikatów",
+        "totalLabel": "Razem:",
+        "searchPlaceholder": "Szukaj szablonów...",
+        "create": "Utwórz szablon"
+      },
+      "table": {
+        "headers": {
+          "sn": "Lp.",
+          "title": "Tytuł",
+          "course": "Kurs",
+          "level": "Poziom",
+          "instructor": "Prowadzący",
+          "category": "Kategoria",
+          "placeholders": "Sekcje zastępcze",
+          "created": "Utworzono",
+          "actions": "Akcje"
+        },
+        "actions": {
+          "view": "Podgląd",
+          "edit": "Edytuj"
+        },
+        "empty": "Brak szablonów."
+      }
+    },
+    "issuedCertificates": {
+      "list": {
+        "title": "Wydane certyfikaty",
+        "totalLabel": "Razem:",
+        "searchPlaceholder": "Szukaj certyfikatów..."
+      },
+      "table": {
+        "headers": {
+          "sn": "Lp.",
+          "issuedDate": "Data wydania",
+          "student": "Uczeń",
+          "courseName": "Nazwa kursu",
+          "certificateType": "Typ certyfikatu",
+          "actions": "Akcje"
+        },
+        "actions": {
+          "view": "Podgląd"
+        },
+        "empty": "Brak certyfikatów."
+      },
+      "dialog": {
+        "titleFallback": "Szczegóły certyfikatu",
+        "certificateId": "ID certyfikatu",
+        "issued": "Wydano",
+        "courseSection": {
+          "title": "Kurs"
+        },
+        "mainContents": {
+          "title": "Główna treść",
+          "labels": {
+            "fullName": "Imię i nazwisko",
+            "dob": "Data urodzenia",
+            "startDate": "Data rozpoczęcia",
+            "endDate": "Data zakończenia",
+            "certificateNumber": "Numer certyfikatu"
+          }
+        }
+      }
+    },
+    "contacts": {
+      "list": {
+        "title": "Lista kontaktów",
+        "totalLabel": "Razem:",
+        "searchPlaceholder": "Szukaj kontaktów...",
+        "error": "Coś poszło nie tak"
+      },
+      "table": {
+        "headers": {
+          "sn": "Lp.",
+          "email": "Email",
+          "message": "Wiadomość",
+          "actions": "Akcje"
+        },
+        "closed": "Zamknięte",
+        "empty": "Brak kontaktów spełniających kryteria wyszukiwania."
+      }
+    },
+    "faqs": {
+      "title": "FAQ",
+      "create": {
+        "button": "+ Dodaj FAQ",
+        "title": "Dodaj FAQ",
+        "submit": "Dodaj",
+        "loading": "Dodawanie..."
+      },
+      "edit": {
+        "title": "Edytuj FAQ",
+        "submit": "Zapisz zmiany",
+        "loading": "Zapisywanie..."
+      },
+      "delete": {
+        "title": "Czy na pewno chcesz usunąć?",
+        "cancel": "Nie",
+        "confirm": "Tak",
+        "loading": "Usuwanie...",
+        "openAria": "Otwórz okno usuwania FAQ"
+      },
+      "form": {
+        "question": {
+          "label": "Pytanie",
+          "placeholder": "Wpisz pytanie..."
+        },
+        "answer": {
+          "label": "Odpowiedź",
+          "placeholder": "Wpisz odpowiedź..."
+        }
+      },
+      "actions": {
+        "cancel": "Anuluj"
+      }
+    },
+    "subscribers": {
+      "list": {
+        "title": "Lista subskrybentów",
+        "totalLabel": "Razem:",
+        "searchPlaceholder": "Szukaj subskrybentów...",
+        "error": "Coś poszło nie tak"
+      },
+      "table": {
+        "headers": {
+          "sn": "Lp.",
+          "email": "Email",
+          "subscribeDate": "Data subskrypcji",
+          "actions": "Akcje"
+        },
+        "empty": "Brak subskrybentów spełniających kryteria wyszukiwania."
+      },
+      "pagination": {
+        "selectPlaceholder": "Wybierz liczbę wyników",
+        "pageSize": "{{count}} / stronę"
+      }
+    },
+    "help": {
+      "title": "Centrum pomocy",
+      "error": "Wystąpił błąd serwera."
     }
   }
 }

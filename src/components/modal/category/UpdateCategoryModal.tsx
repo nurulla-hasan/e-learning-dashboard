@@ -18,6 +18,7 @@ import CustomIconInput from "@/components/form/CustomIconInput";
 import ErrorAlert from "@/components/validation/ErrorAlert";
 import FormButton from "@/components/form/FormButton";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type TCategoryFormValues = z.infer<typeof categorySchema>;
 
@@ -36,7 +37,7 @@ const UpdateCategoryModal = ({ category } : TProps) => {
             name: category?.name
         }
     });
-
+    const { t } = useTranslation("common");
 
     //if success
     useEffect(() => {
@@ -53,7 +54,6 @@ const UpdateCategoryModal = ({ category } : TProps) => {
         })
     }
 
-
     return (
         <>
             <Button
@@ -67,18 +67,23 @@ const UpdateCategoryModal = ({ category } : TProps) => {
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogContent className="sm:max-w-md" onInteractOutside={(e) => e.preventDefault()} onOpenAutoFocus={(e)=>e.preventDefault()}>
                     <DialogHeader>
-                        <DialogTitle>Update Category</DialogTitle>
+                        <DialogTitle>{t("common:categories.modals.update.title")}</DialogTitle>
                     </DialogHeader>
                     {CategoryUpdateError && <ErrorAlert message={CategoryUpdateError} />}
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                        <CustomIconInput control={control} name="name" label="Name" placeholder="Enter name" icon={NotebookText} />
-                        <FormButton isLoading={isLoading}>Save Change</FormButton>
+                        <CustomIconInput
+                            control={control}
+                            name="name"
+                            label={t("common:categories.form.name.label")}
+                            placeholder={t("common:categories.form.name.placeholder")}
+                            icon={NotebookText}
+                        />
+                        <FormButton isLoading={isLoading}>{t("common:categories.modals.update.submit")}</FormButton>
                     </form>
                 </DialogContent>
             </Dialog>
         </>
     )
 }
-
 
 export default UpdateCategoryModal

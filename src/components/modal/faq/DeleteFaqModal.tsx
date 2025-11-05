@@ -12,6 +12,7 @@ import { useEffect, useState } from "react"
 import { FiTrash2 } from "react-icons/fi";
 import { useDeleteFaqMutation } from "@/redux/features/faq/faqApi";
 import DeleteButton from "@/components/form/DeleteButton";
+import { useTranslation } from "react-i18next";
 
 type TProps = {
   faqId: string;
@@ -20,35 +21,35 @@ type TProps = {
 const DeleteFaqModal = ({ faqId }: TProps) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [deleteFaq, { isLoading, isSuccess }] = useDeleteFaqMutation();
-  
+  const { t } = useTranslation("common");
+
   useEffect(() => {
-    if (!isLoading) {
+    if (isSuccess) {
       setModalOpen(false);
     }
-  }, [isLoading, isSuccess]);
+  }, [isSuccess]);
 
   const handleClick = () => {
     deleteFaq(faqId)
   }
 
-
   return (
     <>
-     <button onClick={()=> setModalOpen(true)} className="bg-white p-1.5 cursor-pointer rounded-full shadow hover:bg-gray-100 transition">
+      <button onClick={() => setModalOpen(true)} className="bg-white p-1.5 cursor-pointer rounded-full shadow hover:bg-gray-100 transition" aria-label={t("common:faqs.delete.openAria")}>
         <FiTrash2 className="text-red-500" size={20} />
       </button>
 
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
         <DialogContent className="sm:max-w-md" onInteractOutside={(e) => e.preventDefault()} showCloseButton={false}>
           <DialogHeader>
-            <DialogTitle>Are you sure, you want to delete?</DialogTitle>
+            <DialogTitle>{t("common:faqs.delete.title")}</DialogTitle>
           </DialogHeader>
 
           <DialogFooter className="flex justify-end gap-2">
             <Button variant="default" className="bg-black hover:bg-black/80" onClick={() => setModalOpen(false)}>
-              No
+              {t("common:faqs.delete.cancel")}
             </Button>
-           <DeleteButton onClick={handleClick} isLoading={isLoading}/>
+            <DeleteButton onClick={handleClick} isLoading={isLoading} label={t("common:faqs.delete.confirm")} loadingLabel={t("common:faqs.delete.loading")} />
           </DialogFooter>
         </DialogContent>
       </Dialog>

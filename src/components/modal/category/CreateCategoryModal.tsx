@@ -17,6 +17,7 @@ import { NotebookText } from "lucide-react";
 import ErrorAlert from "@/components/validation/ErrorAlert";
 import FormButton from "@/components/form/FormButton";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type TCategoryFormValues = z.infer<typeof categorySchema>;
 
@@ -28,7 +29,7 @@ const CreateCategoryModal = () => {
   const { handleSubmit, control, reset } = useForm({
     resolver: zodResolver(categorySchema)
   });
-
+  const { t } = useTranslation("common");
 
   useEffect(()=> {
     if(!isLoading && isSuccess){
@@ -45,25 +46,32 @@ const CreateCategoryModal = () => {
   return (
     <>
       <Button onClick={()=>setOpen(true)} className="bg-cyan-600 w-full sm:w-auto hover:bg-cyan-700 text-white">
-        Add Category
+        {t("common:categories.actions.add")}
       </Button>
 
       <Dialog open={open} onOpenChange={setOpen}>
         {/* Modal Content */}
         <DialogContent className="sm:max-w-md" onInteractOutside={(e) => e.preventDefault()}>
           <DialogHeader>
-            <DialogTitle>Add Category</DialogTitle>
+            <DialogTitle>{t("common:categories.modals.create.title")}</DialogTitle>
           </DialogHeader>
           {CategoryCreateError && <ErrorAlert message={CategoryCreateError} />}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            <CustomIconInput control={control} name="name" label="Name" placeholder="Enter name" icon={NotebookText} />
-            <FormButton isLoading={isLoading} loadingTitle="Adding...">Add</FormButton>
+            <CustomIconInput
+              control={control}
+              name="name"
+              label={t("common:categories.form.name.label")}
+              placeholder={t("common:categories.form.name.placeholder")}
+              icon={NotebookText}
+            />
+            <FormButton isLoading={isLoading} loadingTitle={t("common:categories.modals.create.loading")}>
+              {t("common:categories.modals.create.submit")}
+            </FormButton>
           </form>
         </DialogContent>
       </Dialog>
     </>
   )
 }
-
 
 export default CreateCategoryModal

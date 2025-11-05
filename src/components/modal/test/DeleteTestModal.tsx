@@ -12,8 +12,10 @@ import { useState } from "react";
 import { Trash2 } from "lucide-react";
 import { useDeleteTestMutation } from "@/redux/features/test/testApi";
 import { ErrorToast, SuccessToast } from "@/helper/ValidationHelper";
+import { useTranslation } from "react-i18next";
 
 const DeleteTestModal = ({ testId }: { testId: string }) => {
+  const { t } = useTranslation("common");
   const [open, setOpen] = useState(false);
   const [deleteTest, { isLoading: deleteLoading }] =
     useDeleteTestMutation();
@@ -22,10 +24,10 @@ const DeleteTestModal = ({ testId }: { testId: string }) => {
     try {
       await deleteTest(id).unwrap();
       setOpen(false);
-      SuccessToast("Test deleted successfully");
+      SuccessToast(t("common:tests.notifications.deleteSuccess"));
     } catch (error) {
       console.log(error);
-      ErrorToast("Failed to delete test");
+      ErrorToast(t("common:tests.notifications.deleteError"));
     }
   };
 
@@ -46,7 +48,7 @@ const DeleteTestModal = ({ testId }: { testId: string }) => {
           showCloseButton={false}
         >
           <DialogHeader>
-            <DialogTitle>Are you sure, you want to delete this test?</DialogTitle>
+            <DialogTitle>{t("common:tests.modals.delete.title")}</DialogTitle>
           </DialogHeader>
 
           <DialogFooter className="flex justify-end gap-2">
@@ -55,14 +57,16 @@ const DeleteTestModal = ({ testId }: { testId: string }) => {
               className="bg-black hover:bg-black/80"
               onClick={() => setOpen(false)}
             >
-              No
+              {t("common:tests.modals.delete.cancel")}
             </Button>
             <Button
               disabled={deleteLoading}
               variant="destructive"
               onClick={() => handleDelete(testId)}
             >
-              {deleteLoading ? "Deleting..." : "Yes"}
+              {deleteLoading
+                ? t("common:tests.modals.delete.loading")
+                : t("common:tests.modals.delete.confirm")}
             </Button>
           </DialogFooter>
         </DialogContent>

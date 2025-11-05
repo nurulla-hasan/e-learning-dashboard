@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -15,6 +16,8 @@ import ListLoading from "@/components/loader/ListLoading";
 import ServerErrorCard from "@/components/card/ServerErrorCard";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 // Response shape based on provided example
 interface IEmployeeEnrollment {
@@ -39,6 +42,7 @@ interface IEmployeeEnrollment {
 
 const EmployeeList = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation("common");
   const {
     searchTerm,
     setSearchTerm,
@@ -53,6 +57,42 @@ const EmployeeList = () => {
     isError,
   } = useSmartFetchHook<IEmployeeEnrollment>(useGetCompanyOrdersQuery as any);
 
+  const paymentBadgeMap = useMemo(
+    () => ({
+      COMPLETED: "bg-green-100 text-green-700",
+      PAID: "bg-green-100 text-green-700",
+      PENDING: "bg-yellow-100 text-yellow-700",
+      FAILED: "bg-red-100 text-red-700",
+      DEFAULT: "bg-gray-100 text-gray-700",
+    }),
+    []
+  );
+
+  const accessBadgeMap = {
+    LIFETIME: "bg-blue-100 text-blue-700",
+    LIMITED: "bg-gray-100 text-gray-700",
+  } as const;
+
+  const certificateBadgeMap = {
+    ENABLED: "bg-green-100 text-green-700",
+    DISABLED: "bg-red-100 text-red-700",
+  } as const;
+
+  const safeText = (value: string | number | undefined | null) =>
+    value ?? t("employees.common.notAvailable");
+
+  const formatDateTime = (value?: string) =>
+    value ? new Date(value).toLocaleString() : t("employees.common.notAvailable");
+
+  const getPaymentBadge = (status?: string) => {
+    const normalized = (status || "UNKNOWN").toUpperCase();
+    const className = paymentBadgeMap[normalized as keyof typeof paymentBadgeMap] ?? paymentBadgeMap.DEFAULT;
+    const label = t(`employees.payment.status.${normalized}`, {
+      defaultValue: status || t("employees.payment.status.UNKNOWN"),
+    });
+    return { className, label };
+  };
+
   if (isLoading) return <ListLoading />;
   if (isError) return <ServerErrorCard />;
 
@@ -62,9 +102,13 @@ const EmployeeList = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         {/* Left: Title + Total */}
         <div className="flex justify-between items-center gap-3 lg:gap-12 w-full sm:w-auto">
-          <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">Employees</h1>
+          <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">
+            {t("employees.header.title")}
+          </h1>
           <div className="flex items-center">
-            <span className="text-sm sm:text-base text-gray-600">Total:</span>
+            <span className="text-sm sm:text-base text-gray-600">
+              {t("employees.header.totalLabel")}
+            </span>
             <span className="ml-2 px-3 py-1 bg-blue-100 text-blue-800 font-semibold rounded-full text-sm">
               {total || 0}
             </span>
@@ -76,14 +120,17 @@ const EmployeeList = () => {
           <div className="relative w-full sm:w-80">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
             <Input
-              placeholder="Search employees..."
+              placeholder={t("employees.search.placeholder")}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
             />
           </div>
-          <Button className="bg-cyan-600 hover:bg-cyan-700 text-white" onClick={() => navigate("/employees/create")}>
-            Create Employee
+          <Button
+            className="bg-cyan-600 hover:bg-cyan-700 text-white"
+            onClick={() => navigate("/employees/create")}
+          >
+            {t("employees.actions.create")}
           </Button>
         </div>
       </div>
@@ -95,14 +142,30 @@ const EmployeeList = () => {
             <Table className="min-w-[900px]">
               <TableHeader className="sticky top-0 z-10 bg-yellow-50 border-b">
                 <TableRow className="hover:bg-yellow-50">
-                  <TableHead className="w-16 bg-yellow-50">S.N.</TableHead>
-                  <TableHead className="bg-yellow-50">Employee</TableHead>
-                  <TableHead className="bg-yellow-50">Company</TableHead>
-                  <TableHead className="bg-yellow-50">Course</TableHead>
-                  <TableHead className="bg-yellow-50">Enrolled</TableHead>
-                  <TableHead className="bg-yellow-50">Payment</TableHead>
-                  <TableHead className="bg-yellow-50">Access</TableHead>
-                  <TableHead className="bg-yellow-50">Certificate</TableHead>
+                  <TableHead className="w-16 bg-yellow-50">
+                    {t("employees.table.headers.sn")}
+                  </TableHead>
+                  <TableHead className="bg-yellow-50">
+                    {t("employees.table.headers.employee")}
+                  </TableHead>
+                  <TableHead className="bg-yellow-50">
+                    {t("employees.table.headers.company")}
+                  </TableHead>
+                  <TableHead className="bg-yellow-50">
+                    {t("employees.table.headers.course")}
+                  </TableHead>
+                  <TableHead className="bg-yellow-50">
+                    {t("employees.table.headers.enrolled")}
+                  </TableHead>
+                  <TableHead className="bg-yellow-50">
+                    {t("employees.table.headers.payment")}
+                  </TableHead>
+                  <TableHead className="bg-yellow-50">
+                    {t("employees.table.headers.access")}
+                  </TableHead>
+                  <TableHead className="bg-yellow-50">
+                    {t("employees.table.headers.certificate")}
+                  </TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -115,51 +178,84 @@ const EmployeeList = () => {
                       <TableCell className="font-medium text-foreground">
                         <div className="flex items-center gap-2">
                           {row.userImage ? (
-                            <img src={row.userImage} alt={row.userFullName || "Employee"} className="w-10 h-10 rounded-lg object-cover" />
+                            <img
+                              src={row.userImage}
+                              alt={row.userFullName || t("employees.table.defaults.employeeImageAlt")}
+                              className="w-10 h-10 rounded-lg object-cover"
+                            />
                           ) : (
                             <div className="w-10 h-10 rounded-lg bg-gray-200" />
                           )}
                           <div className="flex flex-col">
-                            <span className="text-gray-800 font-medium">{row.userFullName}</span>
-                            <span className="text-sm text-muted-foreground">{row.userEmail}</span>
+                            <span className="text-gray-800 font-medium">
+                              {safeText(row.userFullName)}
+                            </span>
+                            <span className="text-sm text-muted-foreground">
+                              {safeText(row.userEmail)}
+                            </span>
                           </div>
                         </div>
                       </TableCell>
                       <TableCell className="font-medium text-foreground">
-                          {row.companyName}
+                        {safeText(row.companyName)}
                       </TableCell>
                       <TableCell className="font-medium text-foreground">
                         <div className="flex flex-col">
-                          <span>{row.courseTitle}</span>
+                          <span>{safeText(row.courseTitle)}</span>
                           <span className="text-xs text-muted-foreground">
-                            {row.categoryName} • {row.courseLevel} • {row.instructorName}
+                            {[
+                              safeText(row.categoryName),
+                              safeText(row.courseLevel),
+                              safeText(row.instructorName),
+                            ]
+                              .filter((segment) => segment !== t("employees.common.notAvailable"))
+                              .join(" • ") || t("employees.common.notAvailable")}
                           </span>
                         </div>
                       </TableCell>
                       <TableCell className="font-medium text-foreground">
-                        {row.enrolledAt ? new Date(row.enrolledAt).toLocaleString() : "-"}
+                        {formatDateTime(row.enrolledAt)}
                       </TableCell>
                       <TableCell className="font-medium text-foreground">
-                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${row.paymentStatus === "COMPLETED" ? "bg-green-100 text-green-700" : "bg-yellow-100 text-yellow-700"}`}>
-                          {row.paymentStatus}
-                        </span>
+                        {(() => {
+                          const { className, label } = getPaymentBadge(row.paymentStatus);
+                          return (
+                            <span className={`px-2 py-1 rounded-full text-xs font-semibold ${className}`}>
+                              {label}
+                            </span>
+                          );
+                        })()}
                       </TableCell>
                       <TableCell className="font-medium text-foreground">
-                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${row.lifetimeAccess ? "bg-blue-100 text-blue-700" : "bg-gray-100 text-gray-700"}`}>
-                          {row.lifetimeAccess ? "Lifetime" : "Limited"}
-                        </span>
+                        {(() => {
+                          const key = row.lifetimeAccess ? "LIFETIME" : "LIMITED";
+                          const className = accessBadgeMap[key];
+                          const label = t(`employees.access.${key}`);
+                          return (
+                            <span className={`px-2 py-1 rounded-full text-xs font-semibold ${className}`}>
+                              {label}
+                            </span>
+                          );
+                        })()}
                       </TableCell>
                       <TableCell className="font-medium text-foreground">
-                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${row.certificate ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
-                          {row.certificate ? "Enabled" : "None"}
-                        </span>
+                        {(() => {
+                          const key = row.certificate ? "ENABLED" : "DISABLED";
+                          const className = certificateBadgeMap[key];
+                          const label = t(`employees.certificate.${key}`);
+                          return (
+                            <span className={`px-2 py-1 rounded-full text-xs font-semibold ${className}`}>
+                              {label}
+                            </span>
+                          );
+                        })()}
                       </TableCell>
                     </TableRow>
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
-                      No employees found.
+                    <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
+                      {t("employees.table.empty")}
                     </TableCell>
                   </TableRow>
                 )}

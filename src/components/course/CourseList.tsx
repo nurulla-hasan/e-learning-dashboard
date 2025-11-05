@@ -10,6 +10,7 @@ import {
 import { Pencil, Search } from "lucide-react";
 import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import DeleteCourseModal from "../modal/course/DeleteCourseModal";
 import useSmartFetchHook from "@/hooks/useSmartFetchHook";
 import { useGetCoursesQuery } from "@/redux/features/course/courseApi";
@@ -31,6 +32,7 @@ interface ICourse {
 
 const CourseList = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation("common");
 
   const {
     searchTerm,
@@ -59,10 +61,10 @@ const CourseList = () => {
         {/* Left Section: Title + Total Count */}
         <div className="flex justify-between items-center gap-3 w-full sm:w-auto">
           <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">
-            Course List
+            {t("common:courses.header.title")}
           </h1>
           <div className="flex items-center">
-            <span className="text-sm sm:text-base text-gray-600">Total:</span>
+            <span className="text-sm sm:text-base text-gray-600">{t("common:courses.header.totalLabel")}</span>
             <span className="ml-2 px-3 py-1 bg-blue-100 text-blue-800 font-semibold rounded-full text-sm">
               {total}
             </span>
@@ -74,7 +76,7 @@ const CourseList = () => {
           <div className="relative w-full sm:w-80">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
             <Input
-              placeholder="Search course..."
+              placeholder={t("common:courses.search.placeholder")}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
@@ -86,7 +88,7 @@ const CourseList = () => {
             onClick={() => navigate("/add-course")}
             className="bg-cyan-600 hover:bg-cyan-700 text-white"
           >
-            Add New
+            {t("common:courses.actions.add")}
           </Button>
         </div>
       </div>
@@ -99,24 +101,24 @@ const CourseList = () => {
             <Table className="">
               <TableHeader className="sticky top-0 z-10 bg-yellow-50 border-b">
                 <TableRow className="hover:bg-yellow-50">
-                  <TableHead className="w-16 bg-yellow-50">S.N.</TableHead>
+                  <TableHead className="w-16 bg-yellow-50">{t("common:courses.table.headers.sn")}</TableHead>
                   <TableHead className="min-w-32 bg-yellow-50">
-                    Course Name
+                    {t("common:courses.table.headers.course")}
                   </TableHead>
                   <TableHead className="min-w-32 bg-yellow-50">
-                    Category
+                    {t("common:courses.table.headers.category")}
                   </TableHead>
                   <TableHead className="min-w-32 bg-yellow-50">
-                    Course Fee
+                    {t("common:courses.table.headers.price")}
                   </TableHead>
                   <TableHead className="min-w-32 bg-yellow-50">
-                    Instructor
+                    {t("common:courses.table.headers.instructor")}
                   </TableHead>
                   <TableHead className="min-w-32 bg-yellow-50">
-                    Enrolled Students
+                    {t("common:courses.table.headers.enrolled")}
                   </TableHead>
                   <TableHead className="min-w-24 bg-yellow-50">
-                    Actions
+                    {t("common:courses.table.headers.actions")}
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -176,7 +178,7 @@ const CourseList = () => {
                       colSpan={7}
                       className="text-center py-8 text-muted-foreground"
                     >
-                      No courses found matching your search.
+                      {t("common:courses.table.empty")}
                     </TableCell>
                   </TableRow>
                 )}

@@ -9,10 +9,12 @@ import uk from "../messages/uk.json";
 // (tip move them in a JSON file and import them,
 // or even better, manage them separated from your code: https://react.i18next.com/guides/multiple-translation-files)
 const resources = {
-  en: { common: en.common },
-  pl: { common: pl.common },
-  uk: { common: uk.common },
+  en,
+  pl,
+  uk,
 };
+
+const namespaces = Object.keys(en);
 
 i18n
   .use(initReactI18next) // passes i18n down to react-i18next
@@ -20,8 +22,9 @@ i18n
     resources,
     lng: "en",
     fallbackLng: "en",
-    ns: ["common"],
+    ns: namespaces,
     defaultNS: "common",
+    fallbackNS: "common",
     interpolation: {
       escapeValue: false, // react already safes from xss
     },

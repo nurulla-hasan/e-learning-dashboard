@@ -17,8 +17,10 @@ import ServerErrorCard from "../card/ServerErrorCard";
 import type { Test } from "@/types/test.type";
 import { useGetTestsQuery } from "@/redux/features/test/testApi";
 import useSmartFetchHook from "@/hooks/useSmartFetchHook";
+import { useTranslation } from "react-i18next";
 
 const TestList = () => {
+  const { t } = useTranslation("common");
   const navigate = useNavigate();
   const {
     searchTerm,
@@ -51,10 +53,12 @@ const TestList = () => {
         {/* Left Section: Title + Total Count */}
         <div className="flex justify-between items-center gap-3 w-full sm:w-auto">
           <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">
-            Test Builder List
+            {t("common:tests.list.title")}
           </h1>
           <div className="flex items-center">
-            <span className="text-sm sm:text-base text-gray-600">Total:</span>
+            <span className="text-sm sm:text-base text-gray-600">
+              {t("common:tests.list.totalLabel")}
+            </span>
             <span className="ml-2 px-3 py-1 bg-blue-100 text-blue-800 font-semibold rounded-full text-sm">
               {total || 0}
             </span>
@@ -68,7 +72,7 @@ const TestList = () => {
             <Input
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search here..."
+              placeholder={t("common:tests.list.searchPlaceholder")}
               className="pl-10"
             />
           </div>
@@ -77,7 +81,7 @@ const TestList = () => {
             onClick={() => navigate("/add-test")}
             className="bg-cyan-600 hover:bg-cyan-700 text-white"
           >
-            Add New
+            {t("common:tests.list.addNew")}
           </Button>
         </div>
       </div>
@@ -90,18 +94,20 @@ const TestList = () => {
             <Table>
               <TableHeader className="sticky top-0 z-10 bg-yellow-50 border-b">
                 <TableRow className="hover:bg-yellow-50">
-                  <TableHead className="w-16 bg-yellow-50">S.N.</TableHead>
-                  <TableHead className="min-w-32 bg-yellow-50">
-                    Test Name
+                  <TableHead className="w-16 bg-yellow-50">
+                    {t("common:tests.table.headers.sn")}
                   </TableHead>
                   <TableHead className="min-w-32 bg-yellow-50">
-                    Course Name
+                    {t("common:tests.table.headers.testName")}
                   </TableHead>
                   <TableHead className="min-w-32 bg-yellow-50">
-                    Passing Score
+                    {t("common:tests.table.headers.courseName")}
+                  </TableHead>
+                  <TableHead className="min-w-32 bg-yellow-50">
+                    {t("common:tests.table.headers.passingScore")}
                   </TableHead>
                   <TableHead className="min-w-24 bg-yellow-50">
-                    Actions
+                    {t("common:tests.table.headers.actions")}
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -121,7 +127,7 @@ const TestList = () => {
                       <TableCell className="min-w-32 font-medium text-foreground">
                         {item.courseTitle
                           ? item.courseTitle
-                          : "❌ Not Added In Course"}
+                          : t("common:tests.table.courseNotAssigned")}
                       </TableCell>
                       <TableCell className="min-w-32 font-medium text-foreground">
                         {item.passingScore}
@@ -146,7 +152,7 @@ const TestList = () => {
                       colSpan={5}
                       className="text-center py-8 text-muted-foreground"
                     >
-                      No tests found matching your search.
+                      {t("common:tests.table.empty")}
                     </TableCell>
                   </TableRow>
                 )}

@@ -169,6 +169,524 @@
         "yes": "Yes",
         "no": "No"
       }
+    },
+    "training": {
+      "header": {
+        "title": "Training Management",
+        "totalLabel": "Total:"
+      },
+      "search": {
+        "placeholder": "Search trainings..."
+      },
+      "table": {
+        "headers": {
+          "sn": "S.N.",
+          "trainee": "Trainee",
+          "email": "Email",
+          "course": "Course",
+          "price": "Price",
+          "created": "Created",
+          "status": "Status",
+          "actions": "Actions"
+        },
+        "empty": "No trainings found matching your search."
+      },
+      "status": {
+        "CONFIRMED": "Confirmed",
+        "PENDING": "Pending",
+        "REJECTED": "Rejected",
+        "CANCELLED": "Cancelled",
+        "UNKNOWN": "Unknown"
+      },
+      "actions": {
+        "accept": "Accept",
+        "acceptAria": "Accept training request from {{name}}"
+      },
+      "details": {
+        "open": "View training details",
+        "title": "Training Details",
+        "description": "Training details for {{name}}",
+        "info": {
+          "id": "Training ID:",
+          "status": "Status:",
+          "created": "Created At:"
+        },
+        "trainee": {
+          "title": "Trainee",
+          "name": "Name:",
+          "email": "Email:",
+          "phone": "Phone:"
+        },
+        "course": {
+          "title": "Course",
+          "name": "Title:",
+          "category": "Category:",
+          "instructor": "Instructor:",
+          "level": "Level:",
+          "price": "Price:"
+        }
+      }
+    },
+    "users": {
+      "header": {
+        "title": "User List",
+        "totalLabel": "Total:"
+      },
+      "search": {
+        "placeholder": "Search users..."
+      },
+      "table": {
+        "headers": {
+          "sn": "S.N.",
+          "name": "Name",
+          "email": "Email",
+          "role": "Role",
+          "created": "Created At",
+          "status": "Status",
+          "action": "Action"
+        },
+        "empty": "No users found matching your search."
+      },
+      "status": {
+        "ACTIVE": "Active",
+        "PENDING": "Pending",
+        "BLOCKED": "Blocked",
+        "UNKNOWN": "Unknown"
+      }
+    },
+    "companies": {
+      "header": {
+        "title": "Company List",
+        "totalLabel": "Total:"
+      },
+      "search": {
+        "placeholder": "Search companies..."
+      },
+      "common": {
+        "notAvailable": "Not available"
+      },
+      "table": {
+        "headers": {
+          "sn": "S.N.",
+          "company": "Company",
+          "vat": "VAT ID",
+          "registration": "Registration Date",
+          "address": "Address",
+          "role": "Role"
+        },
+        "empty": "No companies found matching your search."
+      },
+      "role": {
+        "COMPANY": "Company",
+        "UNKNOWN": "Unknown"
+      }
+    },
+    "employees": {
+      "header": {
+        "title": "Employees",
+        "totalLabel": "Total:"
+      },
+      "search": {
+        "placeholder": "Search employees..."
+      },
+      "actions": {
+        "create": "Create Employee"
+      },
+      "common": {
+        "notAvailable": "Not available"
+      },
+      "table": {
+        "headers": {
+          "sn": "S.N.",
+          "employee": "Employee",
+          "company": "Company",
+          "course": "Course",
+          "enrolled": "Enrolled",
+          "payment": "Payment",
+          "access": "Access",
+          "certificate": "Certificate"
+        },
+        "defaults": {
+          "employeeImageAlt": "Employee avatar"
+        },
+        "empty": "No employees found."
+      },
+      "payment": {
+        "status": {
+          "COMPLETED": "Completed",
+          "PAID": "Paid",
+          "PENDING": "Pending",
+          "FAILED": "Failed",
+          "UNKNOWN": "Unknown"
+        }
+      },
+      "access": {
+        "LIFETIME": "Lifetime",
+        "LIMITED": "Limited"
+      },
+      "certificate": {
+        "ENABLED": "Enabled",
+        "DISABLED": "None"
+      },
+      "form": {
+        "title": "Create Employee",
+        "back": "Back",
+        "defaults": {
+          "untitledCourse": "Untitled course"
+        },
+        "notifications": {
+          "createSuccess": "Employee created successfully.",
+          "createError": "Something went wrong"
+        },
+        "fields": {
+          "fullName": {
+            "label": "Full Name",
+            "placeholder": "John Doe",
+            "required": "Full name is required"
+          },
+          "email": {
+            "label": "Email",
+            "placeholder": "john@example.com",
+            "required": "Email is required"
+          },
+          "password": {
+            "label": "Password",
+            "placeholder": "********",
+            "required": "Password is required",
+            "minLength": "Minimum 8 characters"
+          },
+          "dateOfBirth": {
+            "label": "Date of Birth",
+            "required": "Date of birth is required"
+          },
+          "address": {
+            "label": "Address",
+            "placeholder": "123 Main Street, City",
+            "required": "Address is required"
+          },
+          "phoneNumber": {
+            "label": "Phone Number",
+            "placeholder": "+1-555-123-4567",
+            "required": "Phone number is required"
+          },
+          "companyName": {
+            "label": "Company Name",
+            "placeholder": "Tech Solutions Ltd.",
+            "required": "Company name is required"
+          },
+          "companyEmail": {
+            "label": "Company Email",
+            "placeholder": "contact@company.com",
+            "required": "Company email is required"
+          },
+          "companyPassword": {
+            "label": "Company Password",
+            "placeholder": "********",
+            "required": "Company password is required",
+            "minLength": "Minimum 8 characters"
+          },
+          "companyAddress": {
+            "label": "Company Address",
+            "placeholder": "456 Business Ave, City",
+            "required": "Company address is required"
+          },
+          "companyVatId": {
+            "label": "Company VAT ID",
+            "placeholder": "US123456789",
+            "required": "VAT ID is required"
+          },
+          "course": {
+            "label": "Course",
+            "placeholder": "Select course",
+            "loading": "Loading courses...",
+            "required": "Course is required"
+          }
+        },
+        "actions": {
+          "cancel": "Cancel",
+          "submit": "Create",
+          "submitting": "Creating..."
+        }
+      }
+    }
+    ,
+    "categories": {
+      "header": {
+        "title": "Category List",
+        "totalLabel": "Total:"
+      },
+      "table": {
+        "headers": {
+          "sn": "S.N.",
+          "name": "Name",
+          "actions": "Actions"
+        },
+        "empty": "No categories found."
+      },
+      "actions": {
+        "add": "Add Category"
+      },
+      "form": {
+        "name": {
+          "label": "Name",
+          "placeholder": "Enter name"
+        }
+      },
+      "modals": {
+        "create": {
+          "title": "Add Category",
+          "loading": "Adding...",
+          "submit": "Add"
+        },
+        "update": {
+          "title": "Update Category",
+          "submit": "Save Changes"
+        },
+        "delete": {
+          "title": "Are you sure you want to delete?",
+          "cancel": "No",
+          "confirm": "Yes",
+          "loading": "Deleting..."
+        }
+      }
+    },
+    "courses": {
+      "header": {
+        "title": "Course List",
+        "totalLabel": "Total:"
+      },
+      "search": {
+        "placeholder": "Search course..."
+      },
+      "actions": {
+        "add": "Add New"
+      },
+      "table": {
+        "headers": {
+          "sn": "S.N.",
+          "course": "Course Name",
+          "category": "Category",
+          "price": "Course Fee",
+          "instructor": "Instructor",
+          "enrolled": "Enrolled Students",
+          "actions": "Actions"
+        },
+        "empty": "No courses found matching your search."
+      },
+      "notifications": {
+        "deleteSuccess": "Course deleted successfully.",
+        "deleteError": "Failed to delete course."
+      },
+      "modals": {
+        "delete": {
+          "title": "Are you sure you want to delete?",
+          "cancel": "No",
+          "confirm": "Yes",
+          "loading": "Deleting..."
+        }
+      }
+    },
+    "tests": {
+      "list": {
+        "title": "Test Builder List",
+        "totalLabel": "Total:",
+        "searchPlaceholder": "Search tests...",
+        "addNew": "Add New"
+      },
+      "table": {
+        "headers": {
+          "sn": "S.N.",
+          "testName": "Test Name",
+          "courseName": "Course Name",
+          "passingScore": "Passing Score",
+          "actions": "Actions"
+        },
+        "courseNotAssigned": "❌ Not added to any course",
+        "empty": "No tests found matching your search."
+      },
+      "notifications": {
+        "deleteSuccess": "Test deleted successfully.",
+        "deleteError": "Failed to delete test."
+      },
+      "modals": {
+        "delete": {
+          "title": "Are you sure you want to delete this test?",
+          "cancel": "No",
+          "confirm": "Yes",
+          "loading": "Deleting..."
+        }
+      }
+    },
+    "testResults": {
+      "list": {
+        "title": "Test Results",
+        "totalLabel": "Total:",
+        "searchPlaceholder": "Search results..."
+      },
+      "table": {
+        "headers": {
+          "sn": "S.N.",
+          "student": "Student",
+          "courseName": "Course Name",
+          "date": "Date",
+          "score": "Score",
+          "result": "Result",
+          "actions": "Actions"
+        },
+        "statuses": {
+          "passed": "Passed",
+          "failed": "Failed"
+        },
+        "empty": "No results found."
+      },
+      "actions": {
+        "view": "View"
+      }
+    },
+    "certificates": {
+      "edit": {
+        "header": "Edit Certificate Template"
+      },
+      "list": {
+        "title": "Certificate Templates",
+        "totalLabel": "Total:",
+        "searchPlaceholder": "Search templates...",
+        "create": "Create Template"
+      },
+      "table": {
+        "headers": {
+          "sn": "S.N.",
+          "title": "Title",
+          "course": "Course",
+          "level": "Level",
+          "instructor": "Instructor",
+          "category": "Category",
+          "placeholders": "Placeholders",
+          "created": "Created",
+          "actions": "Actions"
+        },
+        "actions": {
+          "view": "View",
+          "edit": "Edit"
+        },
+        "empty": "No templates found."
+      }
+    },
+    "issuedCertificates": {
+      "list": {
+        "title": "Issued Certificates",
+        "totalLabel": "Total:",
+        "searchPlaceholder": "Search certificates..."
+      },
+      "table": {
+        "headers": {
+          "sn": "S.N.",
+          "issuedDate": "Issued Date",
+          "student": "Student",
+          "courseName": "Course Name",
+          "certificateType": "Certificate Type",
+          "actions": "Actions"
+        },
+        "actions": {
+          "view": "View"
+        },
+        "empty": "No certificates found."
+      },
+      "dialog": {
+        "titleFallback": "Certificate Details",
+        "certificateId": "Certificate ID",
+        "issued": "Issued",
+        "courseSection": {
+          "title": "Course"
+        },
+        "mainContents": {
+          "title": "Main Contents",
+          "labels": {
+            "fullName": "Full Name",
+            "dob": "Date of Birth",
+            "startDate": "Start Date",
+            "endDate": "End Date",
+            "certificateNumber": "Certificate Number"
+          }
+        }
+      }
+    },
+    "contacts": {
+      "list": {
+        "title": "Contact List",
+        "totalLabel": "Total:",
+        "searchPlaceholder": "Search contacts...",
+        "error": "Something went wrong"
+      },
+      "table": {
+        "headers": {
+          "sn": "S.N.",
+          "email": "Email",
+          "message": "Message",
+          "actions": "Actions"
+        },
+        "closed": "Closed",
+        "empty": "No contacts found matching your search."
+      }
+    },
+    "faqs": {
+      "title": "FAQs",
+      "create": {
+        "button": "+ Add FAQ",
+        "title": "Add FAQ",
+        "submit": "Add",
+        "loading": "Adding..."
+      },
+      "edit": {
+        "title": "Update FAQ",
+        "submit": "Save Changes",
+        "loading": "Saving..."
+      },
+      "delete": {
+        "title": "Are you sure you want to delete?",
+        "cancel": "No",
+        "confirm": "Yes",
+        "loading": "Deleting...",
+        "openAria": "Open delete FAQ dialog"
+      },
+      "form": {
+        "question": {
+          "label": "Question",
+          "placeholder": "Write a question..."
+        },
+        "answer": {
+          "label": "Answer",
+          "placeholder": "Write an answer..."
+        }
+      },
+      "actions": {
+        "cancel": "Cancel"
+      }
+    },
+    "subscribers": {
+      "list": {
+        "title": "Subscriber List",
+        "totalLabel": "Total:",
+        "searchPlaceholder": "Search subscribers...",
+        "error": "Something went wrong"
+      },
+      "table": {
+        "headers": {
+          "sn": "S.N.",
+          "email": "Email",
+          "subscribeDate": "Subscribed On",
+          "actions": "Actions"
+        },
+        "empty": "No subscribers found matching your search."
+      },
+      "pagination": {
+        "selectPlaceholder": "Select number of results",
+        "pageSize": "{{count}} / page"
+      }
+    },
+    "help": {
+      "title": "Help Center",
+      "error": "A server error occurred."
     }
   }
 }

@@ -4,6 +4,7 @@ import ViewContactModal from "../modal/contact/ViewContactModal"
 import CustomPagination from "../form/CustomPagination"
 import type { IMeta } from "@/types/global.type"
 import { Button } from "../ui/button"
+import { useTranslation } from "react-i18next"
 
 type TProps = {
     contacts: IContact[],
@@ -15,7 +16,7 @@ type TProps = {
 }
 
 const ContactTable = ({ contacts, meta, currentPage, setCurrentPage, pageSize }: TProps) => {
-
+  const { t } = useTranslation("common")
   return (
     <>
        <div className="border border-border rounded-lg bg-card overflow-hidden">
@@ -25,10 +26,10 @@ const ContactTable = ({ contacts, meta, currentPage, setCurrentPage, pageSize }:
             <Table className="min-w-[800px]">
               <TableHeader className="sticky top-0 z-10 bg-yellow-50 border-b">
                 <TableRow className="hover:bg-yellow-50">
-                  <TableHead className="w-16 bg-yellow-50">S.N.</TableHead>
-                  <TableHead className="min-w-48 bg-yellow-50">Email</TableHead>
-                  <TableHead className="min-w-32 hidden sm:table-cell bg-yellow-50">Message</TableHead>
-                  <TableHead className="min-w-24 bg-yellow-50">Action</TableHead>
+                  <TableHead className="w-16 bg-yellow-50">{t("common:contacts.table.headers.sn")}</TableHead>
+                  <TableHead className="min-w-48 bg-yellow-50">{t("common:contacts.table.headers.email")}</TableHead>
+                  <TableHead className="min-w-32 hidden sm:table-cell bg-yellow-50">{t("common:contacts.table.headers.message")}</TableHead>
+                  <TableHead className="min-w-24 bg-yellow-50">{t("common:contacts.table.headers.actions")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -44,7 +45,7 @@ const ContactTable = ({ contacts, meta, currentPage, setCurrentPage, pageSize }:
                         <div className="flex gap-2">
                           {contact.status === "CLOSED" ? (
                             <Button disabled variant="outline" size="sm">
-                              Closed
+                              {t("common:contacts.table.closed")}
                             </Button>
                           ) : (
                             <ViewContactModal contact={contact} />
@@ -56,7 +57,7 @@ const ContactTable = ({ contacts, meta, currentPage, setCurrentPage, pageSize }:
                 ) : (
                   <TableRow>
                     <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
-                      No contacts found matching your search.
+                      {t("common:contacts.table.empty")}
                     </TableCell>
                   </TableRow>
                 )}

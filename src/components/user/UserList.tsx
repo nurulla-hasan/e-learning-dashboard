@@ -17,8 +17,17 @@ import CustomPagination2 from "../../../tools/CustomPagination2";
 import ListLoading from "../loader/ListLoading";
 import ServerErrorCard from "../card/ServerErrorCard";
 import ToggleButton from "./ToggleButton";
+import { useTranslation } from "react-i18next";
+
+const statusClassMap: Record<string, string> = {
+  ACTIVE: "bg-green-100 text-green-800 hover:bg-green-100 border-green-200",
+  PENDING: "bg-yellow-100 text-yellow-800 hover:bg-yellow-100 border-yellow-200",
+  BLOCKED: "bg-red-100 text-red-800 hover:bg-red-100 border-red-200",
+  DEFAULT: "bg-gray-100 text-gray-800 hover:bg-gray-100 border-gray-200",
+};
 
 const UserList = () => {
+  const { t } = useTranslation("common");
   const {
     searchTerm,
     setSearchTerm,
@@ -47,12 +56,14 @@ const UserList = () => {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div className="flex justify-between items-center gap-3">
           <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">
-            User List
+            {t("users.header.title")}
           </h1>
           <div className="flex items-center">
-            <span className="text-sm sm:text-base text-gray-600">Total:</span>
+            <span className="text-sm sm:text-base text-gray-600">
+              {t("users.header.totalLabel")}
+            </span>
             <span className="ml-2 px-3 py-1 bg-blue-100 text-blue-800 font-semibold rounded-full text-sm">
-              {total}
+              {total || 0}
             </span>
           </div>
         </div>
@@ -60,7 +71,7 @@ const UserList = () => {
         <div className="relative w-full sm:w-80">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
           <Input
-            placeholder="Search users..."
+            placeholder={t("users.search.placeholder")}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10"
@@ -76,20 +87,26 @@ const UserList = () => {
             <Table className="min-w-[800px]">
               <TableHeader className="sticky top-0 z-10 bg-yellow-50 border-b">
                 <TableRow className="hover:bg-yellow-50">
-                  <TableHead className="w-16 bg-yellow-50">S.N.</TableHead>
-                  <TableHead className="min-w-32 bg-yellow-50">Name</TableHead>
-                  <TableHead className="min-w-48 bg-yellow-50">Email</TableHead>
-                  <TableHead className="min-w-32 hidden sm:table-cell bg-yellow-50">
-                    Role
+                  <TableHead className="w-16 bg-yellow-50">
+                    {t("users.table.headers.sn")}
+                  </TableHead>
+                  <TableHead className="min-w-32 bg-yellow-50">
+                    {t("users.table.headers.name")}
+                  </TableHead>
+                  <TableHead className="min-w-48 bg-yellow-50">
+                    {t("users.table.headers.email")}
                   </TableHead>
                   <TableHead className="min-w-32 hidden sm:table-cell bg-yellow-50">
-                    Created At
+                    {t("users.table.headers.role")}
+                  </TableHead>
+                  <TableHead className="min-w-32 hidden sm:table-cell bg-yellow-50">
+                    {t("users.table.headers.created")}
                   </TableHead>
                   <TableHead className="min-w-24 bg-yellow-50">
-                    Status
+                    {t("users.table.headers.status")}
                   </TableHead>
                   <TableHead className="min-w-24 bg-yellow-50">
-                    Action
+                    {t("users.table.headers.action")}
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -117,18 +134,22 @@ const UserList = () => {
                       </TableCell>
                       <TableCell className="min-w-24">
                         <div className="flex items-center gap-2">
-                          <Badge
-                            variant="secondary"
-                            className={
-                              user.status === "BLOCKED"
-                                ? "bg-red-100 text-red-800 hover:bg-red-100 border-red-200"
-                                : user.status === "PENDING"
-                                ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100 border-yellow-200"
-                                : "bg-green-100 text-green-800 hover:bg-green-100 border-green-200"
-                            }
-                          >
-                            {user.status}
-                          </Badge>
+                          {(() => {
+                            const normalizedStatus = (user.status || "UNKNOWN").toUpperCase();
+                            const badgeClassName =
+                              statusClassMap[normalizedStatus] ?? statusClassMap.DEFAULT;
+                            const statusLabel = t(`users.status.${normalizedStatus}`, {
+                              defaultValue: user.status || t("users.status.UNKNOWN"),
+                            });
+                            return (
+                              <Badge
+                                variant="secondary"
+                                className={badgeClassName}
+                              >
+                                {statusLabel}
+                              </Badge>
+                            );
+                          })()}
                         </div>
                       </TableCell>
                       <TableCell className="min-w-24">
@@ -142,10 +163,10 @@ const UserList = () => {
                 ) : (
                   <TableRow>
                     <TableCell
-                      colSpan={5}
+                      colSpan={7}
                       className="text-center py-8 text-muted-foreground"
                     >
-                      No users found matching your search.
+                      {t("users.table.empty")}
                     </TableCell>
                   </TableRow>
                 )}

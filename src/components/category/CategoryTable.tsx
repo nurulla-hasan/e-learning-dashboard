@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next"
 import type { ICategory } from "@/types/category.type"
 import DeleteCategoryModal from "../modal/category/DeleteCategoryModal"
 import UpdateCategoryModal from "../modal/category/UpdateCategoryModal"
@@ -10,6 +11,7 @@ type TCategoryTableProps = {
 
 
 const CategoryTable = ({ categories }: TCategoryTableProps) => {
+  const { t } = useTranslation("common");
   return (
     <>
       <div className="border border-border rounded-lg bg-card overflow-hidden">
@@ -19,9 +21,9 @@ const CategoryTable = ({ categories }: TCategoryTableProps) => {
             <Table className="min-w-[800px]">
               <TableHeader className="sticky top-0 z-10 bg-yellow-50 border-b">
                 <TableRow className="hover:bg-yellow-50">
-                  <TableHead className="w-16 bg-yellow-50">S.N.</TableHead>
-                  <TableHead className="min-w-32 bg-yellow-50">Name</TableHead>
-                  <TableHead className="min-w-24 bg-yellow-50">Actions</TableHead>
+                  <TableHead className="w-16 bg-yellow-50">{t("common:categories.table.headers.sn")}</TableHead>
+                  <TableHead className="min-w-32 bg-yellow-50">{t("common:categories.table.headers.name")}</TableHead>
+                  <TableHead className="min-w-24 bg-yellow-50">{t("common:categories.table.headers.actions")}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -41,7 +43,7 @@ const CategoryTable = ({ categories }: TCategoryTableProps) => {
                 ) : (
                   <TableRow>
                     <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
-                      No categories found matching your search.
+                      {t("common:categories.table.empty")}
                     </TableCell>
                   </TableRow>
                 )}

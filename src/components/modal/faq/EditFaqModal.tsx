@@ -18,6 +18,7 @@ import CustomTextArea from "@/components/form/CustomTextArea";
 import FormButton from "@/components/form/FormButton";
 import type z from "zod";
 import { SetEditFaqError } from "@/redux/features/faq/faqSlice";
+import { useTranslation } from "react-i18next";
 
 type FormValues = z.infer<typeof faqSchema>;
 
@@ -30,6 +31,7 @@ const EditFaqModal = ({ faq }: TProps) => {
   const dispatch = useAppDispatch();
   const { EditFaqError } = useAppSelector((state) => state.faq);
   const [updateFaq, { isLoading, isSuccess }] = useUpdateFaqMutation();
+  const { t } = useTranslation("common");
   const { handleSubmit, control, reset } = useForm({
     resolver: zodResolver(faqSchema),
     defaultValues: {
@@ -64,12 +66,20 @@ const EditFaqModal = ({ faq }: TProps) => {
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
         <DialogContent className="sm:max-w-[500px] p-0" onInteractOutside={(e) => e.preventDefault()} showCloseButton={false}>
           <DialogHeader className="px-6 py-4 pb-2">
-            <DialogTitle className="text-lg font-semibold text-center">Update FAQ</DialogTitle>
+            <DialogTitle className="text-lg font-semibold text-center">{t("common:faqs.edit.title")}</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleSubmit(onSubmit)} className="px-6 pb-6 space-y-4">
             {EditFaqError && <ErrorAlert message={EditFaqError} />}
-            <CustomTextArea label="Question" name="question" control={control} placeholder="write a question..." rows={3} />
-            <CustomTextArea label="Answer" name="answer" control={control} placeholder="write an answer..." rows={3} />
+            <CustomTextArea label={t("common:faqs.form.question.label")}
+                            name="question"
+                            control={control}
+                            placeholder={t("common:faqs.form.question.placeholder")}
+                            rows={3} />
+            <CustomTextArea label={t("common:faqs.form.answer.label")}
+                            name="answer"
+                            control={control}
+                            placeholder={t("common:faqs.form.answer.placeholder")}
+                            rows={3} />
             <div className="flex gap-3 pt-2">
               <Button
                 type="button"
@@ -83,10 +93,10 @@ const EditFaqModal = ({ faq }: TProps) => {
                 variant="outline"
                 className="w-1/2 bg-transparent"
               >
-                Cancel
+                {t("common:faqs.actions.cancel")}
               </Button>
               <div className="w-1/2">
-                <FormButton isLoading={isLoading}>Save Changes</FormButton>
+                <FormButton isLoading={isLoading} loadingTitle={t("common:faqs.edit.loading")}>{t("common:faqs.edit.submit")}</FormButton>
               </div>
             </div>
           </form>

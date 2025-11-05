@@ -12,20 +12,22 @@ import { useState } from "react";
 import { Trash2 } from "lucide-react";
 import { useDeleteCourseMutation } from "@/redux/features/course/courseApi";
 import { ErrorToast, SuccessToast } from "@/helper/ValidationHelper";
+import { useTranslation } from "react-i18next";
 
 const DeleteCourseModal = ({ courseId }: { courseId: string }) => {
   const [open, setOpen] = useState(false);
   const [deleteCourse, { isLoading: deleteLoading }] =
     useDeleteCourseMutation();
+  const { t } = useTranslation("common");
 
   const handleDelete = async (id: string) => {
     try {
       await deleteCourse(id).unwrap();
       setOpen(false);
-      SuccessToast("Course deleted successfully");
+      SuccessToast(t("common:courses.notifications.deleteSuccess"));
     } catch (error) {
       console.log(error);
-      ErrorToast("Failed to delete course");
+      ErrorToast(t("common:courses.notifications.deleteError"));
     }
   };
 
@@ -47,7 +49,7 @@ const DeleteCourseModal = ({ courseId }: { courseId: string }) => {
           showCloseButton={false}
         >
           <DialogHeader>
-            <DialogTitle>Are you sure, you want to delete?</DialogTitle>
+            <DialogTitle>{t("common:courses.modals.delete.title")}</DialogTitle>
           </DialogHeader>
 
           <DialogFooter className="flex justify-end gap-2">
@@ -56,7 +58,7 @@ const DeleteCourseModal = ({ courseId }: { courseId: string }) => {
               className="bg-black hover:bg-black/80"
               onClick={() => setOpen(false)}
             >
-              No
+              {t("common:courses.modals.delete.cancel")}
             </Button>
             <Button
               disabled={deleteLoading}
@@ -65,7 +67,9 @@ const DeleteCourseModal = ({ courseId }: { courseId: string }) => {
                 handleDelete(courseId);
               }}
             >
-              {deleteLoading ? "Deleting..." : "Yes"}
+              {deleteLoading
+                ? t("common:courses.modals.delete.loading")
+                : t("common:courses.modals.delete.confirm")}
             </Button>
           </DialogFooter>
         </DialogContent>

@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 type TProps = {
   subscibers: ISubscriber[];
@@ -36,6 +37,7 @@ const SubscriberTable = ({
   pageSize,
   setPageSize,
 }: TProps) => {
+  const { t } = useTranslation("common");
   return (
     <>
       <div className="border border-border rounded-lg bg-card overflow-hidden">
@@ -45,13 +47,17 @@ const SubscriberTable = ({
             <Table className="min-w-[800px]">
               <TableHeader className="sticky top-0 z-10 bg-yellow-50 border-b">
                 <TableRow className="hover:bg-yellow-50">
-                  <TableHead className="w-16 bg-yellow-50">S.N.</TableHead>
-                  <TableHead className="min-w-48 bg-yellow-50">Email</TableHead>
-                  <TableHead className="min-w-48 bg-yellow-50">
-                    Subscribe Date
+                  <TableHead className="w-16 bg-yellow-50">
+                    {t("common:subscribers.table.headers.sn")}
                   </TableHead>
                   <TableHead className="min-w-48 bg-yellow-50">
-                    Action
+                    {t("common:subscribers.table.headers.email")}
+                  </TableHead>
+                  <TableHead className="min-w-48 bg-yellow-50">
+                    {t("common:subscribers.table.headers.subscribeDate")}
+                  </TableHead>
+                  <TableHead className="min-w-48 bg-yellow-50">
+                    {t("common:subscribers.table.headers.actions")}
                   </TableHead>
                 </TableRow>
               </TableHeader>
@@ -85,7 +91,7 @@ const SubscriberTable = ({
                       colSpan={5}
                       className="text-center py-8 text-muted-foreground"
                     >
-                      No subscribers found matching your search.
+                      {t("common:subscribers.table.empty")}
                     </TableCell>
                   </TableRow>
                 )}
@@ -117,13 +123,13 @@ const SubscriberTable = ({
                 id="results-per-page"
                 className="w-fit whitespace-nowrap"
               >
-                <SelectValue placeholder="Select number of results" />
+                <SelectValue placeholder={t("common:subscribers.pagination.selectPlaceholder")} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="10">10 / page</SelectItem>
-                <SelectItem value="20">20 / page</SelectItem>
-                <SelectItem value="50">50 / page</SelectItem>
-                <SelectItem value="100">100 / page</SelectItem>
+                <SelectItem value="10">{t("common:subscribers.pagination.pageSize", { count: 10 })}</SelectItem>
+                <SelectItem value="20">{t("common:subscribers.pagination.pageSize", { count: 20 })}</SelectItem>
+                <SelectItem value="50">{t("common:subscribers.pagination.pageSize", { count: 50 })}</SelectItem>
+                <SelectItem value="100">{t("common:subscribers.pagination.pageSize", { count: 100 })}</SelectItem>
               </SelectContent>
             </Select>
           </div>

@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
@@ -24,16 +26,18 @@ interface TFormValues {
 }
 
 const CreateEmployeeForm = () => {
+  const { t } = useTranslation("common");
   const navigate = useNavigate();
   const [addEmployee, { isLoading }] = useAddEmployeeMutation();
   const { data: coursesRes, isLoading: coursesLoading } = useGetAllCoursesAdminQuery({} as any);
+  const untitledCourseLabel = t("employees.form.defaults.untitledCourse");
 
   const courses: Array<{ id: string; title: string }> = useMemo(() => {
     const items = (coursesRes as any)?.data || (coursesRes as any)?.items || [];
     return Array.isArray(items)
-      ? items.map((c: any) => ({ id: c.id, title: c.courseTitle || c.title || "Untitled" }))
+      ? items.map((c: any) => ({ id: c.id, title: c.courseTitle || c.title || untitledCourseLabel }))
       : [];
-  }, [coursesRes]);
+  }, [coursesRes, untitledCourseLabel]);
 
   const form = useForm<TFormValues>({
     defaultValues: {
@@ -56,18 +60,18 @@ const CreateEmployeeForm = () => {
     try {
       const payload = { ...data, status: "active" } as any;
       await addEmployee(payload).unwrap();
-      SuccessToast("Employee created successfully");
+      SuccessToast(t("employees.form.notifications.createSuccess"));
       navigate("/employees");
     } catch (e: any) {
-      ErrorToast(e?.data?.message || "Something Went Wrong");
+      ErrorToast(e?.data?.message || t("employees.form.notifications.createError"));
     }
   };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Create Employee</h1>
-        <Button variant="outline" onClick={() => navigate(-1)}>Back</Button>
+        <h1 className="text-2xl font-semibold">{t("employees.form.title")}</h1>
+        <Button variant="outline" onClick={() => navigate(-1)}>{t("employees.form.back")}</Button>
       </div>
 
       <Form {...form}>
@@ -76,12 +80,12 @@ const CreateEmployeeForm = () => {
             <FormField
               control={form.control}
               name="fullName"
-              rules={{ required: "Full name is required" }}
+              rules={{ required: t("employees.form.fields.fullName.required") }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Full Name</FormLabel>
+                  <FormLabel>{t("employees.form.fields.fullName.label")}</FormLabel>
                   <FormControl>
-                    <Input placeholder="John Doe" {...field} />
+                    <Input placeholder={t("employees.form.fields.fullName.placeholder")} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -90,12 +94,12 @@ const CreateEmployeeForm = () => {
             <FormField
               control={form.control}
               name="email"
-              rules={{ required: "Email is required" }}
+              rules={{ required: t("employees.form.fields.email.required") }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{t("employees.form.fields.email.label")}</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="john@example.com" {...field} />
+                    <Input type="email" placeholder={t("employees.form.fields.email.placeholder")} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -104,12 +108,15 @@ const CreateEmployeeForm = () => {
             <FormField
               control={form.control}
               name="password"
-              rules={{ required: "Password is required", minLength: { value: 8, message: "Minimum 8 characters" } }}
+              rules={{
+                required: t("employees.form.fields.password.required"),
+                minLength: { value: 8, message: t("employees.form.fields.password.minLength") },
+              }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>{t("employees.form.fields.password.label")}</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="********" {...field} />
+                    <Input type="password" placeholder={t("employees.form.fields.password.placeholder")} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -118,10 +125,10 @@ const CreateEmployeeForm = () => {
             <FormField
               control={form.control}
               name="dateOfBirth"
-              rules={{ required: "Date of birth is required" }}
+              rules={{ required: t("employees.form.fields.dateOfBirth.required") }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Date of Birth</FormLabel>
+                  <FormLabel>{t("employees.form.fields.dateOfBirth.label")}</FormLabel>
                   <FormControl>
                     <Input type="date" {...field} />
                   </FormControl>
@@ -132,12 +139,12 @@ const CreateEmployeeForm = () => {
             <FormField
               control={form.control}
               name="address"
-              rules={{ required: "Address is required" }}
+              rules={{ required: t("employees.form.fields.address.required") }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Address</FormLabel>
+                  <FormLabel>{t("employees.form.fields.address.label")}</FormLabel>
                   <FormControl>
-                    <Input placeholder="123 Main Street, New York, NY 10001" {...field} />
+                    <Input placeholder={t("employees.form.fields.address.placeholder")} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -146,12 +153,12 @@ const CreateEmployeeForm = () => {
             <FormField
               control={form.control}
               name="phoneNumber"
-              rules={{ required: "Phone number is required" }}
+              rules={{ required: t("employees.form.fields.phoneNumber.required") }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Phone Number</FormLabel>
+                  <FormLabel>{t("employees.form.fields.phoneNumber.label")}</FormLabel>
                   <FormControl>
-                    <Input placeholder="+1-555-123-4567" {...field} />
+                    <Input placeholder={t("employees.form.fields.phoneNumber.placeholder")} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -160,12 +167,12 @@ const CreateEmployeeForm = () => {
             <FormField
               control={form.control}
               name="companyName"
-              rules={{ required: "Company name is required" }}
+              rules={{ required: t("employees.form.fields.companyName.required") }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Company Name</FormLabel>
+                  <FormLabel>{t("employees.form.fields.companyName.label")}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Tech Solutions Ltd." {...field} />
+                    <Input placeholder={t("employees.form.fields.companyName.placeholder")} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -174,12 +181,12 @@ const CreateEmployeeForm = () => {
             <FormField
               control={form.control}
               name="companyEmail"
-              rules={{ required: "Company email is required" }}
+              rules={{ required: t("employees.form.fields.companyEmail.required") }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Company Email</FormLabel>
+                  <FormLabel>{t("employees.form.fields.companyEmail.label")}</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="contact@techsolutions.com" {...field} />
+                    <Input type="email" placeholder={t("employees.form.fields.companyEmail.placeholder")} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -188,12 +195,15 @@ const CreateEmployeeForm = () => {
             <FormField
               control={form.control}
               name="companyPassword"
-              rules={{ required: "Company password is required", minLength: { value: 8, message: "Minimum 8 characters" } }}
+              rules={{
+                required: t("employees.form.fields.companyPassword.required"),
+                minLength: { value: 8, message: t("employees.form.fields.companyPassword.minLength") },
+              }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Company Password</FormLabel>
+                  <FormLabel>{t("employees.form.fields.companyPassword.label")}</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="********" {...field} />
+                    <Input type="password" placeholder={t("employees.form.fields.companyPassword.placeholder")} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -202,12 +212,12 @@ const CreateEmployeeForm = () => {
             <FormField
               control={form.control}
               name="companyAddress"
-              rules={{ required: "Company address is required" }}
+              rules={{ required: t("employees.form.fields.companyAddress.required") }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Company Address</FormLabel>
+                  <FormLabel>{t("employees.form.fields.companyAddress.label")}</FormLabel>
                   <FormControl>
-                    <Input placeholder="456 Business Ave, San Francisco, CA 94105" {...field} />
+                    <Input placeholder={t("employees.form.fields.companyAddress.placeholder")} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -216,12 +226,12 @@ const CreateEmployeeForm = () => {
             <FormField
               control={form.control}
               name="companyVatId"
-              rules={{ required: "VAT ID is required" }}
+              rules={{ required: t("employees.form.fields.companyVatId.required") }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Company VAT ID</FormLabel>
+                  <FormLabel>{t("employees.form.fields.companyVatId.label")}</FormLabel>
                   <FormControl>
-                    <Input placeholder="US123456789" {...field} />
+                    <Input placeholder={t("employees.form.fields.companyVatId.placeholder")} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -230,14 +240,18 @@ const CreateEmployeeForm = () => {
             <FormField
               control={form.control}
               name="courseId"
-              rules={{ required: "Course is required" }}
+              rules={{ required: t("employees.form.fields.course.required") }}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Course</FormLabel>
+                  <FormLabel>{t("employees.form.fields.course.label")}</FormLabel>
                   <FormControl>
                     <Select value={field.value} onValueChange={field.onChange}>
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder={coursesLoading ? "Loading courses..." : "Select course"} />
+                        <SelectValue
+                          placeholder={
+                            coursesLoading ? t("employees.form.fields.course.loading") : t("employees.form.fields.course.placeholder")
+                          }
+                        />
                       </SelectTrigger>
                       <SelectContent>
                         {courses.map((c) => (
@@ -253,9 +267,11 @@ const CreateEmployeeForm = () => {
           </div>
 
           <div className="flex justify-end gap-2">
-            <Button type="button" variant="ghost" onClick={() => navigate("/employees")}>Cancel</Button>
+            <Button type="button" variant="ghost" onClick={() => navigate("/employees")}>
+              {t("employees.form.actions.cancel")}
+            </Button>
             <Button type="submit" disabled={isLoading} className="bg-cyan-600 hover:bg-cyan-700 text-white">
-              {isLoading ? "Creating..." : "Create"}
+              {isLoading ? t("employees.form.actions.submitting") : t("employees.form.actions.submit")}
             </Button>
           </div>
         </form>
