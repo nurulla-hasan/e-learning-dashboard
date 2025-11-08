@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
 import { ArrowLeft, Trash2, Plus } from "lucide-react"
@@ -82,7 +83,6 @@ const CreateTestForm = () => {
     const { path, message } = firstError(errors);
     let finalMessage = message || "Please fix the validation errors and try again";
     if (path) {
-      // @ts-ignore
       form.setFocus(path as any, { shouldSelect: true });
       finalMessage = `${prettyFieldLabel(path)}: ${finalMessage}`;
     }
@@ -333,7 +333,7 @@ const CreateTestForm = () => {
                               <FormItem>
                                 <FormLabel>Explanation (optional)</FormLabel>
                                 <FormControl>
-                                  <Textarea {...field} className="min-h-[80px]" />
+                                  <Textarea {...field} className="min-h-20" />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>

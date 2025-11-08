@@ -81,7 +81,7 @@ const UserList = () => {
       </div>
 
       {/* Table */}
-      <ScrollArea className="w-[calc(100vw-64px)] lg:w-full overflow-hidden overflow-x-auto rounded-xl whitespace-nowrap border border-border bg-card">
+      <ScrollArea className="w-[calc(100vw-60px)]  lg:w-full overflow-hidden overflow-x-auto rounded-xl whitespace-nowrap">
         <Table className="min-w-[800px]">
           <TableHeader className="bg-yellow-50">
             <TableRow>

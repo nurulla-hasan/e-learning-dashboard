@@ -7,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Pencil, Search } from "lucide-react";
 import DeleteTestModal from "../modal/test/DeleteTestModal";
 import { Button } from "../ui/button";
@@ -86,81 +87,62 @@ const TestList = () => {
         </div>
       </div>
 
-      {/* Table Container with Fixed Height and Scrolling */}
-      <div className="border border-border rounded-lg bg-card overflow-hidden">
-        <div className="relative">
-          {/* Single table container with synchronized scrolling */}
-          <div className="overflow-auto">
-            <Table>
-              <TableHeader className="sticky top-0 z-10 bg-yellow-50 border-b">
-                <TableRow className="hover:bg-yellow-50">
-                  <TableHead className="w-16 bg-yellow-50">
-                    {t("common:tests.table.headers.sn")}
-                  </TableHead>
-                  <TableHead className="min-w-32 bg-yellow-50">
-                    {t("common:tests.table.headers.testName")}
-                  </TableHead>
-                  <TableHead className="min-w-32 bg-yellow-50">
-                    {t("common:tests.table.headers.courseName")}
-                  </TableHead>
-                  <TableHead className="min-w-32 bg-yellow-50">
-                    {t("common:tests.table.headers.passingScore")}
-                  </TableHead>
-                  <TableHead className="min-w-24 bg-yellow-50">
-                    {t("common:tests.table.headers.actions")}
-                  </TableHead>
+      {/* Table */}
+      <ScrollArea className="w-[calc(100vw-64px)] lg:w-full overflow-hidden overflow-x-auto rounded-xl whitespace-nowrap">
+        <Table>
+          <TableHeader className="bg-yellow-50">
+            <TableRow>
+              <TableHead>{t("common:tests.table.headers.sn")}</TableHead>
+              <TableHead>{t("common:tests.table.headers.testName")}</TableHead>
+              <TableHead>{t("common:tests.table.headers.courseName")}</TableHead>
+              <TableHead>{t("common:tests.table.headers.passingScore")}</TableHead>
+              <TableHead className="text-center">
+                {t("common:tests.table.headers.actions")}
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {testItems.length > 0 ? (
+              testItems.map((item: Test, index) => (
+                <TableRow
+                  key={item.id}
+                  className={index % 2 === 0 ? "bg-gray-50" : "bg-muted/30"}
+                >
+                  <TableCell>{index + 1 + (page - 1) * limit}</TableCell>
+                  <TableCell className="font-medium text-foreground">
+                    {item.title}
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {item.courseTitle
+                      ? item.courseTitle
+                      : t("common:tests.table.courseNotAssigned")}
+                  </TableCell>
+                  <TableCell>{item.passingScore}</TableCell>
+                  <TableCell className="text-center">
+                    <div className="flex items-center justify-center gap-2">
+                      <Button
+                        onClick={() => navigate(`/update-test/${item?.id}`)}
+                        size="icon"
+                        className="bg-cyan-600 hover:bg-cyan-700 text-white"
+                      >
+                        <Pencil className="h-3 w-3" />
+                      </Button>
+                      <DeleteTestModal testId={item.id} />
+                    </div>
+                  </TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {testItems.length > 0 ? (
-                  testItems.map((item: Test, index) => (
-                    <TableRow
-                      key={item.id}
-                      className={index % 2 === 0 ? "bg-gray-50" : "bg-muted/30"}
-                    >
-                      <TableCell className="w-16 text-muted-foreground">
-                        {index + 1 + (page - 1) * limit}
-                      </TableCell>
-                      <TableCell className="min-w-32 font-medium text-foreground">
-                        {item.title}
-                      </TableCell>
-                      <TableCell className="min-w-32 font-medium text-foreground">
-                        {item.courseTitle
-                          ? item.courseTitle
-                          : t("common:tests.table.courseNotAssigned")}
-                      </TableCell>
-                      <TableCell className="min-w-32 font-medium text-foreground">
-                        {item.passingScore}
-                      </TableCell>
-                      <TableCell className="min-w-24">
-                        <div className="flex items-center gap-2">
-                          <Button
-                            onClick={() => navigate(`/update-test/${item?.id}`)}
-                            size="icon"
-                            className="bg-cyan-600 hover:bg-cyan-700 text-white"
-                          >
-                            <Pencil className="h-3 w-3" />
-                          </Button>
-                          <DeleteTestModal testId={item.id} />
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell
-                      colSpan={5}
-                      className="text-center py-8 text-muted-foreground"
-                    >
-                      {t("common:tests.table.empty")}
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
-        </div>
-      </div>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
+                  {t("common:tests.table.empty")}
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
 
       {/* Fixed Pagination at bottom */}
       <div className="fixed bottom-0 left-0 w-full bg-white border-t py-3">

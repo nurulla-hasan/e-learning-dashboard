@@ -9,7 +9,7 @@ const ListLoading = () => {
             {loadingArray?.map((item) => (
                 <div
                   key={item}
-                  className="bg-gray-300 h-[40px]  text-white font-bold py-2 px-4 rounded-md"
+                  className="bg-gray-300 h-10  text-white font-bold py-2 px-4 rounded-md"
                 ></div>
             ))}
           </div>

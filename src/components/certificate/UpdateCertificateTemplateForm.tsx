@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import type { z } from "zod";
@@ -69,7 +70,7 @@ const UpdateCertificateTemplateForm = ({ id, content = "", title = "" }: TProps)
       data: submitData
     }).unwrap();
     SuccessToast("Certificate template updated successfully");
-    }catch(error){
+    }catch{
       ErrorToast("Failed to update certificate template");
     }
   };

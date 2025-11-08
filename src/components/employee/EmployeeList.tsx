@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 // Response shape based on provided example
 interface IEmployeeEnrollment {
@@ -136,134 +137,114 @@ const EmployeeList = () => {
       </div>
 
       {/* Table */}
-      <div className="border border-border rounded-lg bg-card overflow-hidden">
-        <div className="relative">
-          <div className="overflow-x-auto overflow-y-auto max-h-[70vh]">
-            <Table className="min-w-[900px]">
-              <TableHeader className="sticky top-0 z-10 bg-yellow-50 border-b">
-                <TableRow className="hover:bg-yellow-50">
-                  <TableHead className="w-16 bg-yellow-50">
-                    {t("employees.table.headers.sn")}
-                  </TableHead>
-                  <TableHead className="bg-yellow-50">
-                    {t("employees.table.headers.employee")}
-                  </TableHead>
-                  <TableHead className="bg-yellow-50">
-                    {t("employees.table.headers.company")}
-                  </TableHead>
-                  <TableHead className="bg-yellow-50">
-                    {t("employees.table.headers.course")}
-                  </TableHead>
-                  <TableHead className="bg-yellow-50">
-                    {t("employees.table.headers.enrolled")}
-                  </TableHead>
-                  <TableHead className="bg-yellow-50">
-                    {t("employees.table.headers.payment")}
-                  </TableHead>
-                  <TableHead className="bg-yellow-50">
-                    {t("employees.table.headers.access")}
-                  </TableHead>
-                  <TableHead className="bg-yellow-50">
-                    {t("employees.table.headers.certificate")}
-                  </TableHead>
+      <ScrollArea className="w-[calc(100vw-60px)]  lg:w-full overflow-hidden overflow-x-auto rounded-xl whitespace-nowrap">
+        <Table>
+          <TableHeader className="bg-yellow-50">
+            <TableRow>
+              <TableHead>{t("employees.table.headers.sn")}</TableHead>
+              <TableHead>{t("employees.table.headers.employee")}</TableHead>
+              <TableHead>{t("employees.table.headers.company")}</TableHead>
+              <TableHead>{t("employees.table.headers.course")}</TableHead>
+              <TableHead>{t("employees.table.headers.enrolled")}</TableHead>
+              <TableHead>{t("employees.table.headers.payment")}</TableHead>
+              <TableHead>{t("employees.table.headers.access")}</TableHead>
+              <TableHead className="text-center">{t("employees.table.headers.certificate")}</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {Array.isArray(items) && items.length > 0 ? (
+              (items as IEmployeeEnrollment[]).map((row, index) => (
+                <TableRow
+                  key={row.id || index}
+                  className={index % 2 === 0 ? "bg-gray-50" : "bg-muted/30"}
+                >
+                  <TableCell className="text-muted-foreground">
+                    {index + 1 + (page - 1) * limit}
+                  </TableCell>
+                  <TableCell className="font-medium text-foreground">
+                    <div className="flex items-center gap-2">
+                      {row.userImage ? (
+                        <img
+                          src={row.userImage}
+                          alt={row.userFullName || t("employees.table.defaults.employeeImageAlt")}
+                          className="w-10 h-10 rounded-lg object-cover"
+                        />
+                      ) : (
+                        <div className="w-10 h-10 rounded-lg bg-gray-200" />
+                      )}
+                      <div className="flex flex-col">
+                        <span className="text-gray-800 font-medium">
+                          {safeText(row.userFullName)}
+                        </span>
+                        <span className="text-sm text-muted-foreground">
+                          {safeText(row.userEmail)}
+                        </span>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="font-medium text-foreground">
+                    {safeText(row.companyName)}
+                  </TableCell>
+                  <TableCell className="font-medium text-foreground">
+                    <div className="flex flex-col">
+                      <span>{safeText(row.courseTitle)}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {[safeText(row.categoryName), safeText(row.courseLevel), safeText(row.instructorName)]
+                          .filter((segment) => segment !== t("employees.common.notAvailable"))
+                          .join(" • ") || t("employees.common.notAvailable")}
+                      </span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="font-medium text-foreground">
+                    {formatDateTime(row.enrolledAt)}
+                  </TableCell>
+                  <TableCell className="font-medium text-foreground">
+                    {(() => {
+                      const { className, label } = getPaymentBadge(row.paymentStatus);
+                      return (
+                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${className}`}>
+                          {label}
+                        </span>
+                      );
+                    })()}
+                  </TableCell>
+                  <TableCell className="font-medium text-foreground">
+                    {(() => {
+                      const key = row.lifetimeAccess ? "LIFETIME" : "LIMITED";
+                      const className = accessBadgeMap[key];
+                      const label = t(`employees.access.${key}`);
+                      return (
+                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${className}`}>
+                          {label}
+                        </span>
+                      );
+                    })()}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {(() => {
+                      const key = row.certificate ? "ENABLED" : "DISABLED";
+                      const className = certificateBadgeMap[key];
+                      const label = t(`employees.certificate.${key}`);
+                      return (
+                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${className}`}>
+                          {label}
+                        </span>
+                      );
+                    })()}
+                  </TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {Array.isArray(items) && items.length > 0 ? (
-                  (items as IEmployeeEnrollment[]).map((row, index) => (
-                    <TableRow key={row.id || index} className={index % 2 === 0 ? "bg-gray-50" : "bg-muted/30"}>
-                      <TableCell className="text-muted-foreground">
-                        {index + 1 + (page - 1) * limit}
-                      </TableCell>
-                      <TableCell className="font-medium text-foreground">
-                        <div className="flex items-center gap-2">
-                          {row.userImage ? (
-                            <img
-                              src={row.userImage}
-                              alt={row.userFullName || t("employees.table.defaults.employeeImageAlt")}
-                              className="w-10 h-10 rounded-lg object-cover"
-                            />
-                          ) : (
-                            <div className="w-10 h-10 rounded-lg bg-gray-200" />
-                          )}
-                          <div className="flex flex-col">
-                            <span className="text-gray-800 font-medium">
-                              {safeText(row.userFullName)}
-                            </span>
-                            <span className="text-sm text-muted-foreground">
-                              {safeText(row.userEmail)}
-                            </span>
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell className="font-medium text-foreground">
-                        {safeText(row.companyName)}
-                      </TableCell>
-                      <TableCell className="font-medium text-foreground">
-                        <div className="flex flex-col">
-                          <span>{safeText(row.courseTitle)}</span>
-                          <span className="text-xs text-muted-foreground">
-                            {[
-                              safeText(row.categoryName),
-                              safeText(row.courseLevel),
-                              safeText(row.instructorName),
-                            ]
-                              .filter((segment) => segment !== t("employees.common.notAvailable"))
-                              .join(" • ") || t("employees.common.notAvailable")}
-                          </span>
-                        </div>
-                      </TableCell>
-                      <TableCell className="font-medium text-foreground">
-                        {formatDateTime(row.enrolledAt)}
-                      </TableCell>
-                      <TableCell className="font-medium text-foreground">
-                        {(() => {
-                          const { className, label } = getPaymentBadge(row.paymentStatus);
-                          return (
-                            <span className={`px-2 py-1 rounded-full text-xs font-semibold ${className}`}>
-                              {label}
-                            </span>
-                          );
-                        })()}
-                      </TableCell>
-                      <TableCell className="font-medium text-foreground">
-                        {(() => {
-                          const key = row.lifetimeAccess ? "LIFETIME" : "LIMITED";
-                          const className = accessBadgeMap[key];
-                          const label = t(`employees.access.${key}`);
-                          return (
-                            <span className={`px-2 py-1 rounded-full text-xs font-semibold ${className}`}>
-                              {label}
-                            </span>
-                          );
-                        })()}
-                      </TableCell>
-                      <TableCell className="font-medium text-foreground">
-                        {(() => {
-                          const key = row.certificate ? "ENABLED" : "DISABLED";
-                          const className = certificateBadgeMap[key];
-                          const label = t(`employees.certificate.${key}`);
-                          return (
-                            <span className={`px-2 py-1 rounded-full text-xs font-semibold ${className}`}>
-                              {label}
-                            </span>
-                          );
-                        })()}
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
-                      {t("employees.table.empty")}
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
-        </div>
-      </div>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
+                  {t("employees.table.empty")}
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
 
       {/* Pagination */}
       <div className="fixed bottom-0 left-0 w-full bg-white border-t py-3">

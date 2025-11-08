@@ -310,7 +310,7 @@ const OrderList = () => {
             <ServerErrorCard />
           ) : (
             <>
-              <ScrollArea className="w-[calc(100vw-64px)] lg:w-full overflow-hidden overflow-x-auto rounded-xl whitespace-nowrap border border-border bg-card">
+              <ScrollArea className="w-[calc(100vw-60px)]  lg:w-full overflow-hidden overflow-x-auto rounded-xl whitespace-nowrap border border-border bg-card">
                 <Table>
                   <TableHeader className="bg-yellow-50">
                     <TableRow>

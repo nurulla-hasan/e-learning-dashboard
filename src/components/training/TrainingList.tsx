@@ -121,7 +121,7 @@ const TrainingList = () => {
       </div>
 
       {/* Table Container */}
-      <ScrollArea className="w-[calc(100vw-64px)] lg:w-full overflow-hidden overflow-x-auto rounded-xl whitespace-nowrap">
+      <ScrollArea className="w-[calc(100vw-60px)]  lg:w-full overflow-hidden overflow-x-auto rounded-xl whitespace-nowrap">
           <Table>
             <TableHeader className="bg-yellow-50">
               <TableRow>

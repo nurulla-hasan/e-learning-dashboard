@@ -7,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -76,105 +77,94 @@ const TestResultList = () => {
         </div>
       </div>
 
-      {/* Table Container with Fixed Height and Scrolling */}
-      <div className="border border-border rounded-lg bg-card overflow-hidden">
-        <div className="relative">
-          {/* Single table container with synchronized scrolling */}
-          <div className="overflow-auto max-h-[600px]">
-            <Table className="min-w-[800px]">
-              <TableHeader className="sticky top-0 z-10 bg-yellow-50 border-b">
-                <TableRow className="hover:bg-yellow-50">
-                  <TableHead className="w-16 bg-yellow-50">
-                    {t("common:testResults.table.headers.sn")}
-                  </TableHead>
-                  <TableHead className="bg-yellow-50">
-                    {t("common:testResults.table.headers.student")}
-                  </TableHead>
-                  <TableHead className="bg-yellow-50">
-                    {t("common:testResults.table.headers.courseName")}
-                  </TableHead>
-                  <TableHead className="bg-yellow-50">
-                    {t("common:testResults.table.headers.date")}
-                  </TableHead>
-                  <TableHead className="bg-yellow-50">
-                    {t("common:testResults.table.headers.score")}
-                  </TableHead>
-                  <TableHead className="bg-yellow-50">
-                    {t("common:testResults.table.headers.result")}
-                  </TableHead>
-                  <TableHead className="min-w-24 bg-yellow-50 text-right">
-                    {t("common:testResults.table.headers.actions")}
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {items?.length > 0 ? (
-                  items.map((attempt, index) => (
-                    <TableRow
-                      key={index}
-                      className={index % 2 === 0 ? "bg-gray-50" : "bg-muted/30"}
-                    >
-                      <TableCell className="w-16 text-muted-foreground">
-                        {index + 1 + (page - 1) * limit}
-                      </TableCell>
-                      <TableCell className="font-medium text-foreground">
-                        <div className="flex items-center space-x-3 px-3 rounded-xl transition">
-                          <img
-                            src={attempt?.userImage}
-                            alt={attempt?.userFullName || "User"}
-                            className="w-12 h-12 rounded-lg object-cover"
-                          />
-                          <div className="flex flex-col">
-                            <span className="text-gray-800 font-medium text-lg">
-                              {attempt?.userFullName}
-                            </span>
-                            <span className="text-sm text-muted-foreground">
-                              {attempt?.userEmail}
-                            </span>
-                          </div>
-                        </div>
-                      </TableCell>
-                      <TableCell className="font-medium text-foreground">
-                        {attempt?.courseTitle}
-                      </TableCell>
-                      <TableCell className="font-medium text-foreground">
-                        {attempt?.completedAt ? new Date(attempt.completedAt).toLocaleString() : "-"}
-                      </TableCell>
-                      <TableCell className="font-medium text-foreground">
-                        {`${attempt?.score ?? 0}/${attempt?.totalMarks ?? 0}`} {typeof attempt?.percentage === "number" ? `(${attempt.percentage}%)` : ""}
-                      </TableCell>
-                      <TableCell className="font-medium text-foreground">
-                        <span
-                          className={`px-2 py-1 rounded-full text-xs font-semibold ${attempt?.isPassed ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}
-                        >
-                          {attempt?.isPassed
-                            ? t("common:testResults.table.statuses.passed")
-                            : t("common:testResults.table.statuses.failed")}
+      {/* Table */}
+      <ScrollArea className="w-[calc(100vw-60px)] lg:w-full overflow-hidden overflow-x-auto rounded-xl whitespace-nowrap border border-border bg-card">
+        <Table className="min-w-[900px]">
+          <TableHeader className="bg-yellow-50">
+            <TableRow>
+              <TableHead>{t("common:testResults.table.headers.sn")}</TableHead>
+              <TableHead>{t("common:testResults.table.headers.student")}</TableHead>
+              <TableHead>{t("common:testResults.table.headers.courseName")}</TableHead>
+              <TableHead>{t("common:testResults.table.headers.date")}</TableHead>
+              <TableHead>{t("common:testResults.table.headers.score")}</TableHead>
+              <TableHead>{t("common:testResults.table.headers.result")}</TableHead>
+              <TableHead className="text-center">
+                {t("common:testResults.table.headers.actions")}
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {items?.length > 0 ? (
+              items.map((attempt, index) => (
+                <TableRow
+                  key={index}
+                  className={index % 2 === 0 ? "bg-gray-50" : "bg-muted/30"}
+                >
+                  <TableCell>{index + 1 + (page - 1) * limit}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-3 px-3">
+                      <img
+                        src={attempt?.userImage}
+                        alt={attempt?.userFullName || "User"}
+                        className="w-12 h-12 rounded-lg object-cover"
+                      />
+                      <div className="flex flex-col">
+                        <span className="text-gray-800 font-medium text-lg">
+                          {attempt?.userFullName}
                         </span>
-                      </TableCell>
-                      <TableCell className="min-w-24 text-right">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => attempt?.id && navigate(`/test-attempts/${attempt.id}`)}
-                        >
-                          {t("common:testResults.actions.view")}
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
-                      {t("common:testResults.table.empty")}
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
-        </div>
-      </div>
+                        <span className="text-sm text-muted-foreground">
+                          {attempt?.userEmail}
+                        </span>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {attempt?.courseTitle}
+                  </TableCell>
+                  <TableCell>
+                    {attempt?.completedAt
+                      ? new Date(attempt.completedAt).toLocaleString()
+                      : "-"}
+                  </TableCell>
+                  <TableCell>
+                    {`${attempt?.score ?? 0}/${attempt?.totalMarks ?? 0}`}
+                    {typeof attempt?.percentage === "number"
+                      ? ` (${attempt.percentage}%)`
+                      : ""}
+                  </TableCell>
+                  <TableCell>
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-semibold ${attempt?.isPassed ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}
+                    >
+                      {attempt?.isPassed
+                        ? t("common:testResults.table.statuses.passed")
+                        : t("common:testResults.table.statuses.failed")}
+                    </span>
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() =>
+                        attempt?.id && navigate(`/test-attempts/${attempt.id}`)
+                      }
+                    >
+                      {t("common:testResults.actions.view")}
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={7} className="text-center py-8 text-muted-foreground">
+                  {t("common:testResults.table.empty")}
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
 
       {/* Fixed Pagination at bottom */}
       <div className="fixed bottom-0 left-0 w-full bg-white border-t py-3">

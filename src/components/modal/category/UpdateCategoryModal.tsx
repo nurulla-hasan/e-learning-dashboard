@@ -59,9 +59,9 @@ const UpdateCategoryModal = ({ category } : TProps) => {
             <Button
                 onClick={()=>setOpen(true)}
                 size="icon"
-                className="bg-green-600 hover:bg-green-700 text-white rounded-md"
+                className="bg-green-600 hover:bg-green-700"
             >
-                <Pencil className="h-3 w-3" />
+                <Pencil/>
             </Button>
 
             <Dialog open={open} onOpenChange={setOpen}>

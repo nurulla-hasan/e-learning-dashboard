@@ -10,6 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -149,163 +150,132 @@ const CertificateTemplatePage = () => {
       </div>
 
       {/* Table */}
-      <div className="border border-border rounded-lg bg-card overflow-hidden">
-        <div className="relative">
-          {/* Responsive Table with Horizontal Scroll */}
-          <div className="overflow-x-auto overflow-y-auto max-h-[70vh]">
-            <Table className="">
-              <TableHeader className="sticky top-0 z-10 bg-yellow-50 border-b">
-                <TableRow className="hover:bg-yellow-50">
-                  <TableHead className="w-16 bg-yellow-50">
-                    {t("common:certificates.table.headers.sn")}
-                  </TableHead>
-                  <TableHead className="bg-yellow-50">
-                    {t("common:certificates.table.headers.title")}
-                  </TableHead>
-                  <TableHead className="bg-yellow-50">
-                    {t("common:certificates.table.headers.course")}
-                  </TableHead>
-                  <TableHead className="bg-yellow-50">
-                    {t("common:certificates.table.headers.level")}
-                  </TableHead>
-                  <TableHead className="bg-yellow-50">
-                    {t("common:certificates.table.headers.instructor")}
-                  </TableHead>
-                  <TableHead className="bg-yellow-50">
-                    {t("common:certificates.table.headers.category")}
-                  </TableHead>
-                  <TableHead className="bg-yellow-50">
-                    {t("common:certificates.table.headers.placeholders")}
-                  </TableHead>
-                  <TableHead className="bg-yellow-50">
-                    {t("common:certificates.table.headers.created")}
-                  </TableHead>
-                  <TableHead className="bg-yellow-50 text-right">
-                    {t("common:certificates.table.headers.actions")}
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {items?.length > 0 ? (
-                  items.map((item, index) => (
-                    <TableRow
-                      key={item?.id || index}
-                      className={index % 2 === 0 ? "bg-gray-50" : "bg-muted/30"}
-                    >
-                      <TableCell className="text-muted-foreground">
-                        {index + 1 + (page - 1) * limit}
-                      </TableCell>
-                      <TableCell className=" font-medium text-foreground">
-                        <div className="flex flex-col">
-                          <span className="text-gray-800 font-medium">
-                            {item?.title}
-                          </span>
-                        </div>
-                      </TableCell>
-                      <TableCell className="font-medium text-foreground">
-                        {item?.courseTitle}
-                      </TableCell>
-                      <TableCell className="font-medium text-foreground">
-                        {item?.courseLevel}
-                      </TableCell>
-                      <TableCell className="font-medium text-foreground">
-                        {item?.instructorName}
-                      </TableCell>
-                      <TableCell className="font-medium text-foreground">
-                        {item?.categoryName}
-                      </TableCell>
-                      <TableCell className="font-medium text-foreground">
-                        {typeof item?.placeholderCount === "number"
-                          ? item.placeholderCount
-                          : item?.placeholders?.length || 0}
-                      </TableCell>
-                      <TableCell className="font-medium text-foreground">
-                        {item?.createdAt
-                          ? new Date(item.createdAt).toLocaleString()
-                          : "-"}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex justify-end gap-2">
-                          <Dialog>
-                            <DialogTrigger asChild>
-                              <Button
-                                variant="outline"
-                                size="icon"
-                                title={t("certificates.table.actions.view")}
-                              >
-                                <Eye className="h-4 w-4" />
-                              </Button>
-                            </DialogTrigger>
-                            <DialogContent className="max-w-[95vw] sm:max-w-4xl max-h-[90vh] md:max-h-[80vh] overflow-y-auto mx-4">
-                              <DialogHeader className="space-y-2">
-                                <DialogTitle className="text-lg sm:text-xl font-semibold pr-8">
-                                  {item?.title}
-                                </DialogTitle>
-                                <div className="text-xs sm:text-sm text-gray-500">
-                                  {item?.courseTitle} • {item?.courseLevel} •{" "}
-                                  {item?.categoryName}
-                                </div>
-                              </DialogHeader>
-                              <div className="space-y-3 sm:space-y-4 mt-4">
-                                {Array.isArray(item?.placeholders) &&
-                                  item.placeholders.length > 0 && (
-                                    <div className="flex flex-wrap gap-1 sm:gap-2">
-                                      {item.placeholders.map(
-                                        (ph: string, i: number) => (
-                                          <span
-                                            key={i}
-                                            className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-700 border"
-                                          >
-                                            {ph}
-                                          </span>
-                                        )
-                                      )}
-                                    </div>
-                                  )}
-                                <div className="border rounded-md p-2 sm:p-4 bg-gray-50">
-                                  <div
-                                    className="prose prose-sm sm:prose max-w-none"
-                                    dangerouslySetInnerHTML={{
-                                      __html: item?.htmlContents || "",
-                                    }}
-                                  />
-                                </div>
-                              </div>
-                            </DialogContent>
-                          </Dialog>
+      <ScrollArea className="w-[calc(100vw-64px)] h-[calc(100vh-64px)] lg:w-full overflow-hidden overflow-x-auto rounded-xl whitespace-nowrap border border-border bg-card">
+        <Table className="min-w-[1100px]">
+          <TableHeader className="bg-yellow-50">
+            <TableRow>
+              <TableHead>{t("common:certificates.table.headers.sn")}</TableHead>
+              <TableHead>{t("common:certificates.table.headers.title")}</TableHead>
+              <TableHead>{t("common:certificates.table.headers.course")}</TableHead>
+              <TableHead>{t("common:certificates.table.headers.level")}</TableHead>
+              <TableHead>{t("common:certificates.table.headers.instructor")}</TableHead>
+              <TableHead>{t("common:certificates.table.headers.category")}</TableHead>
+              <TableHead>{t("common:certificates.table.headers.placeholders")}</TableHead>
+              <TableHead>{t("common:certificates.table.headers.created")}</TableHead>
+              <TableHead className="text-center">
+                {t("common:certificates.table.headers.actions")}
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {items?.length > 0 ? (
+              items.map((item, index) => (
+                <TableRow
+                  key={item?.id || index}
+                  className={index % 2 === 0 ? "bg-gray-50" : "bg-muted/30"}
+                >
+                  <TableCell className="text-muted-foreground">
+                    {index + 1 + (page - 1) * limit}
+                  </TableCell>
+                  <TableCell className="font-medium text-foreground">
+                    {item?.title}
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {item?.courseTitle}
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {item?.courseLevel}
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {item?.instructorName}
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {item?.categoryName}
+                  </TableCell>
+                  <TableCell>
+                    {typeof item?.placeholderCount === "number"
+                      ? item.placeholderCount
+                      : item?.placeholders?.length || 0}
+                  </TableCell>
+                  <TableCell>
+                    {item?.createdAt
+                      ? new Date(item.createdAt).toLocaleString()
+                      : "-"}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <div className="flex justify-center gap-2">
+                      <Dialog>
+                        <DialogTrigger asChild>
                           <Button
                             variant="outline"
                             size="icon"
-                            onClick={() =>
-                              setEditing({
-                                id: item?.id,
-                                content: item?.htmlContents || "",
-                                title: item?.title || "",
-                              })
-                            }
-                            title={t("common:certificates.table.actions.edit")}
+                            title={t("certificates.table.actions.view")}
                           >
-                            <Pencil className="h-4 w-4" />
+                            <Eye className="h-4 w-4" />
                           </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell
-                      colSpan={9}
-                      className="text-center py-8 text-muted-foreground"
-                    >
-                      {t("common:certificates.table.empty")}
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
-        </div>
-      </div>
+                        </DialogTrigger>
+                        <DialogContent className="max-w-[95vw] sm:max-w-4xl max-h-[90vh] md:max-h-[80vh] overflow-y-auto mx-4">
+                          <DialogHeader className="space-y-2">
+                            <DialogTitle className="text-lg sm:text-xl font-semibold pr-8">
+                              {item?.title}
+                            </DialogTitle>
+                            <div className="text-xs sm:text-sm text-gray-500">
+                              {item?.courseTitle} • {item?.courseLevel} • {item?.categoryName}
+                            </div>
+                          </DialogHeader>
+                          <div className="space-y-3 sm:space-y-4 mt-4">
+                            {Array.isArray(item?.placeholders) && item.placeholders.length > 0 && (
+                              <div className="flex flex-wrap gap-1 sm:gap-2">
+                                {item.placeholders.map((ph: string, i: number) => (
+                                  <span
+                                    key={i}
+                                    className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-700 border"
+                                  >
+                                    {ph}
+                                  </span>
+                                ))}
+                              </div>
+                            )}
+                            <div className="border rounded-md p-2 sm:p-4 bg-gray-50">
+                              <div
+                                className="prose prose-sm sm:prose max-w-none"
+                                dangerouslySetInnerHTML={{
+                                  __html: item?.htmlContents || "",
+                                }}
+                              />
+                            </div>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() =>
+                          setEditing({
+                            id: item?.id,
+                            content: item?.htmlContents || "",
+                            title: item?.title || "",
+                          })
+                        }
+                        title={t("common:certificates.table.actions.edit")}
+                      >
+                        <Pencil className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={9} className="text-center py-8 text-muted-foreground">
+                  {t("common:certificates.table.empty")}
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
 
       {/* Pagination */}
       <div className="mt-6 md:fixed md:bottom-0 md:left-0 md:w-full bg-white border-t py-3 px-4 md:px-0">

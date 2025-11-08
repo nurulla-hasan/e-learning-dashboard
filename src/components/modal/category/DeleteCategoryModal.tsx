@@ -35,9 +35,9 @@ const DeleteCategoryModal = ({ categoryId }: TProps) => {
       <Button
         onClick={() =>setOpen(true)}
         size="icon"
-        className="bg-red-600 hover:bg-red-700 text-white rounded-md"
+        className="bg-red-600 hover:bg-red-700"
       >
-        <Trash2 className="h-3 w-3" />
+        <Trash2/>
       </Button>
 
       <Dialog open={open} onOpenChange={setOpen}>

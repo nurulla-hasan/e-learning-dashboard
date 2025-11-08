@@ -17,6 +17,7 @@ import { useGetCoursesQuery } from "@/redux/features/course/courseApi";
 import CustomPagination2 from "../../../tools/CustomPagination2";
 import ListLoading from "../loader/ListLoading";
 import ServerErrorCard from "../card/ServerErrorCard";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 // Course interface matching API response
 interface ICourse {
@@ -93,100 +94,80 @@ const CourseList = () => {
         </div>
       </div>
 
-      {/* Table Container with Fixed Height and Scrolling */}
-      <div className="border border-border rounded-lg bg-card overflow-hidden">
-        <div className="relative">
-          {/* Single table container with synchronized scrolling */}
-          <div className="overflow-auto">
-            <Table className="">
-              <TableHeader className="sticky top-0 z-10 bg-yellow-50 border-b">
-                <TableRow className="hover:bg-yellow-50">
-                  <TableHead className="w-16 bg-yellow-50">{t("common:courses.table.headers.sn")}</TableHead>
-                  <TableHead className="min-w-32 bg-yellow-50">
-                    {t("common:courses.table.headers.course")}
-                  </TableHead>
-                  <TableHead className="min-w-32 bg-yellow-50">
-                    {t("common:courses.table.headers.category")}
-                  </TableHead>
-                  <TableHead className="min-w-32 bg-yellow-50">
-                    {t("common:courses.table.headers.price")}
-                  </TableHead>
-                  <TableHead className="min-w-32 bg-yellow-50">
-                    {t("common:courses.table.headers.instructor")}
-                  </TableHead>
-                  <TableHead className="min-w-32 bg-yellow-50">
-                    {t("common:courses.table.headers.enrolled")}
-                  </TableHead>
-                  <TableHead className="min-w-24 bg-yellow-50">
-                    {t("common:courses.table.headers.actions")}
-                  </TableHead>
+      {/* Table */}
+      <ScrollArea className="w-[calc(100vw-60px)] lg:w-full overflow-hidden overflow-x-auto rounded-xl whitespace-nowrap">
+        <Table>
+          <TableHeader className="bg-yellow-50">
+            <TableRow>
+              <TableHead>{t("common:courses.table.headers.sn")}</TableHead>
+              <TableHead>{t("common:courses.table.headers.course")}</TableHead>
+              <TableHead>{t("common:courses.table.headers.category")}</TableHead>
+              <TableHead>{t("common:courses.table.headers.price")}</TableHead>
+              <TableHead>{t("common:courses.table.headers.instructor")}</TableHead>
+              <TableHead>{t("common:courses.table.headers.enrolled")}</TableHead>
+              <TableHead className="text-center">{t("common:courses.table.headers.actions")}</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {items.length > 0 ? (
+              (items as ICourse[]).map((course, index) => (
+                <TableRow
+                  key={course?.id || index}
+                  className={index % 2 === 0 ? "bg-gray-50" : "bg-muted/30"}
+                >
+                  <TableCell>{index + 1 + (currentPage - 1) * 10}</TableCell>
+                  <TableCell>
+                    <span className="font-medium text-foreground">{course?.courseTitle}</span>
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {course?.categoryName}
+                  </TableCell>
+                  <TableCell>
+                    <span className="font-medium text-foreground">${course?.price}</span>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-3">
+                      <img
+                        src={course?.instructorImage}
+                        alt={course?.instructorName}
+                        className="w-8 h-8 rounded-lg object-cover"
+                      />
+                      <span className="text-gray-800 font-medium">
+                        {course?.instructorName}
+                      </span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {course?.totalEnrollments}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <div className="flex items-center justify-center gap-2">
+                      <Button
+                        onClick={() => navigate(`/update-course/${course?.id}`)}
+                        size="icon"
+                        className="bg-green-600 hover:bg-green-700 text-white"
+                      >
+                        <Pencil className="h-3 w-3" />
+                      </Button>
+                      <DeleteCourseModal courseId={course?.id} />
+                    </div>
+                  </TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {items.length > 0 ? (
-                  (items as ICourse[]).map((course, index) => (
-                    <TableRow
-                      key={course?.id || index}
-                      className={index % 2 === 0 ? "bg-gray-50" : "bg-muted/30"}
-                    >
-                      <TableCell className="w-16 text-muted-foreground">
-                        {index + 1 + (currentPage - 1) * 10}
-                      </TableCell>
-                      <TableCell className="min-w-32 font-medium text-foreground">
-                        {course?.courseTitle}
-                      </TableCell>
-                      <TableCell className="min-w-32 font-medium text-foreground">
-                        {course?.categoryName}
-                      </TableCell>
-                      <TableCell className="min-w-32 font-medium text-foreground">
-                        ${course?.price}
-                      </TableCell>
-                      <TableCell className="min-w-32 font-medium text-foreground">
-                        <div className="flex items-center space-x-3 px-3 rounded-xl transition">
-                          <img
-                            src={course?.instructorImage}
-                            alt={course?.instructorName}
-                            className="w-8 h-8 rounded-lg object-cover"
-                          />
-                          <span className="text-gray-800 font-medium text-lg">
-                            {course?.instructorName}
-                          </span>
-                        </div>
-                      </TableCell>
-                      <TableCell className="min-w-32 font-medium text-foreground">
-                        {course?.totalEnrollments}
-                      </TableCell>
-                      <TableCell className="min-w-24">
-                        <div className="flex items-center gap-2">
-                          <Button
-                            onClick={() =>
-                              navigate(`/update-course/${course?.id}`)
-                            }
-                            size="icon"
-                            className="bg-green-600 hover:bg-green-700 text-white rounded-full"
-                          >
-                            <Pencil className="h-3 w-3" />
-                          </Button>
-                          <DeleteCourseModal courseId={course?.id} />
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell
-                      colSpan={7}
-                      className="text-center py-8 text-muted-foreground"
-                    >
-                      {t("common:courses.table.empty")}
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
-        </div>
-      </div>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={7}
+                  className="text-center py-8 text-muted-foreground"
+                >
+                  {t("common:courses.table.empty")}
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
 
       {/* Fixed Pagination at bottom */}
       <div className="fixed bottom-0 left-0 w-full bg-white border-t py-3">
