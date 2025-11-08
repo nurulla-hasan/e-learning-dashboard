@@ -42,12 +42,12 @@ const MenuItem: React.FC<SidebarNavItemProps> = ({ item, level = 0, setSidebarOp
               level > 0 && "ml-6 text-sm"
             )}
           >
-            <item.icon className="h-4 w-4 flex-shrink-0" />
+            <item.icon className="h-4 w-4 shrink-0" />
             <span className="flex-1 text-left">{getLabel(item)}</span>
             {isExpanded ? (
-              <ChevronDown className="h-4 w-4 flex-shrink-0" />
+              <ChevronDown className="h-4 w-4 shrink-0" />
             ) : (
-              <ChevronRight className="h-4 w-4 flex-shrink-0" />
+              <ChevronRight className="h-4 w-4 shrink-0" />
             )}
 
           </Button>
@@ -64,7 +64,7 @@ const MenuItem: React.FC<SidebarNavItemProps> = ({ item, level = 0, setSidebarOp
                 level > 0 && "ml-6 text-sm", child.href === pathname ? "bg-indigo-50 border-r-2 border-l-2 border-indigo-500 text-indigo-700" : ""
               )}
             >
-              <child.icon className="h-4 w-4 flex-shrink-0" />
+              <child.icon className="h-4 w-4 shrink-0" />
               <span className="flex-1 text-left">{getLabel(child)}</span>
             </Button>
           ))}
@@ -84,7 +84,7 @@ const MenuItem: React.FC<SidebarNavItemProps> = ({ item, level = 0, setSidebarOp
         level > 0 && "ml-6 text-sm", item.href === pathname ? "bg-indigo-50 border-r-2 border-l-2 border-indigo-500 text-indigo-700" : ""
       )}
     >
-      <item.icon className="h-4 w-4 flex-shrink-0" />
+      <item.icon className="h-4 w-4 shrink-0" />
       <span className="flex-1 text-left">{getLabel(item)}</span>
     </Button>
   )

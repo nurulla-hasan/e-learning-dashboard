@@ -59,13 +59,13 @@ const TrainingDetailsModal = ({ item }: TrainingDetailsModalProps) => {
     <>
       <Button
         variant="outline"
-        size="sm"
+        size="icon"
         onClick={() => setOpen(true)}
         className="text-cyan-700 border-cyan-200 hover:bg-cyan-50"
         aria-label={t("training.details.open")}
       >
-        <Eye className="h-4 w-4 mr-1" />
-        {t("training.details.open")}
+        <Eye/>
+        {/* {t("training.details.open")} */}
       </Button>
 
       <Dialog open={open} onOpenChange={setOpen}>

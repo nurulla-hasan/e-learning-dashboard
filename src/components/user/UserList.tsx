@@ -18,6 +18,7 @@ import ListLoading from "../loader/ListLoading";
 import ServerErrorCard from "../card/ServerErrorCard";
 import ToggleButton from "./ToggleButton";
 import { useTranslation } from "react-i18next";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 const statusClassMap: Record<string, string> = {
   ACTIVE: "bg-green-100 text-green-800 hover:bg-green-100 border-green-200",
@@ -79,102 +80,93 @@ const UserList = () => {
         </div>
       </div>
 
-      {/* Table Container with Fixed Height and Scrolling */}
-      <div className="border border-border rounded-lg bg-card overflow-hidden">
-        <div className="relative">
-          {/* Single table container with synchronized scrolling */}
-          <div className="overflow-auto">
-            <Table className="min-w-[800px]">
-              <TableHeader className="sticky top-0 z-10 bg-yellow-50 border-b">
-                <TableRow className="hover:bg-yellow-50">
-                  <TableHead className="w-16 bg-yellow-50">
-                    {t("users.table.headers.sn")}
-                  </TableHead>
-                  <TableHead className="min-w-32 bg-yellow-50">
-                    {t("users.table.headers.name")}
-                  </TableHead>
-                  <TableHead className="min-w-48 bg-yellow-50">
-                    {t("users.table.headers.email")}
-                  </TableHead>
-                  <TableHead className="min-w-32 hidden sm:table-cell bg-yellow-50">
-                    {t("users.table.headers.role")}
-                  </TableHead>
-                  <TableHead className="min-w-32 hidden sm:table-cell bg-yellow-50">
-                    {t("users.table.headers.created")}
-                  </TableHead>
-                  <TableHead className="min-w-24 bg-yellow-50">
-                    {t("users.table.headers.status")}
-                  </TableHead>
-                  <TableHead className="min-w-24 bg-yellow-50">
-                    {t("users.table.headers.action")}
-                  </TableHead>
+      {/* Table */}
+      <ScrollArea className="w-[calc(100vw-64px)] lg:w-full overflow-hidden overflow-x-auto rounded-xl whitespace-nowrap border border-border bg-card">
+        <Table className="min-w-[800px]">
+          <TableHeader className="bg-yellow-50">
+            <TableRow>
+              <TableHead>
+                {t("users.table.headers.sn")}
+              </TableHead>
+              <TableHead>
+                {t("users.table.headers.name")}
+              </TableHead>
+              <TableHead>
+                {t("users.table.headers.email")}
+              </TableHead>
+              <TableHead className="hidden sm:table-cell">
+                {t("users.table.headers.role")}
+              </TableHead>
+              <TableHead className="hidden sm:table-cell">
+                {t("users.table.headers.created")}
+              </TableHead>
+              <TableHead>
+                {t("users.table.headers.status")}
+              </TableHead>
+              <TableHead className="text-center">
+                {t("users.table.headers.action")}
+              </TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {items?.length > 0 ? (
+              (items as IUser[])?.map((user, index) => (
+                <TableRow
+                  key={user.id}
+                  className={index % 2 === 0 ? "bg-gray-50" : "bg-muted/30"}
+                >
+                  <TableCell>
+                    {index + 1 + (page - 1) * limit}
+                  </TableCell>
+                  <TableCell>
+                    {user.fullName}
+                  </TableCell>
+                  <TableCell>
+                    {user.email}
+                  </TableCell>
+                  <TableCell>
+                    {user.role}
+                  </TableCell>
+                  <TableCell>
+                    {new Date(user.createdAt).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell className="flex items-center gap-2">
+                      {(() => {
+                        const normalizedStatus = (user.status || "UNKNOWN").toUpperCase();
+                        const badgeClassName =
+                          statusClassMap[normalizedStatus] ?? statusClassMap.DEFAULT;
+                        const statusLabel = t(`users.status.${normalizedStatus}`, {
+                          defaultValue: user.status || t("users.status.UNKNOWN"),
+                        });
+                        return (
+                          <Badge
+                            variant="secondary"
+                            className={badgeClassName}
+                          >
+                            {statusLabel}
+                          </Badge>
+                        );
+                      })()}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    <ToggleButton user={user} />
+                  </TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {items?.length > 0 ? (
-                  (items as IUser[])?.map((user, index) => (
-                    <TableRow
-                      key={user.id}
-                      className={index % 2 === 0 ? "bg-gray-50" : "bg-muted/30"}
-                    >
-                      <TableCell className="w-16 text-muted-foreground">
-                        {index + 1 + (page - 1) * limit}
-                      </TableCell>
-                      <TableCell className="min-w-32 font-medium text-foreground">
-                        {user.fullName}
-                      </TableCell>
-                      <TableCell className="min-w-48 text-muted-foreground">
-                        {user.email}
-                      </TableCell>
-                      <TableCell className="min-w-32 text-muted-foreground hidden sm:table-cell">
-                        {user.role}
-                      </TableCell>
-                      <TableCell className="min-w-32 text-muted-foreground hidden sm:table-cell">
-                        {new Date(user.createdAt).toLocaleDateString()}
-                      </TableCell>
-                      <TableCell className="min-w-24">
-                        <div className="flex items-center gap-2">
-                          {(() => {
-                            const normalizedStatus = (user.status || "UNKNOWN").toUpperCase();
-                            const badgeClassName =
-                              statusClassMap[normalizedStatus] ?? statusClassMap.DEFAULT;
-                            const statusLabel = t(`users.status.${normalizedStatus}`, {
-                              defaultValue: user.status || t("users.status.UNKNOWN"),
-                            });
-                            return (
-                              <Badge
-                                variant="secondary"
-                                className={badgeClassName}
-                              >
-                                {statusLabel}
-                              </Badge>
-                            );
-                          })()}
-                        </div>
-                      </TableCell>
-                      <TableCell className="min-w-24">
-                        <div className="flex items-center gap-2">
-                          <ToggleButton user={user} />
-                          
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell
-                      colSpan={7}
-                      className="text-center py-8 text-muted-foreground"
-                    >
-                      {t("users.table.empty")}
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
-        </div>
-      </div>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={7}
+                  className="text-center py-8 text-muted-foreground"
+                >
+                  {t("users.table.empty")}
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
 
       {/* Fixed Pagination at bottom */}
       <div className="fixed bottom-0 left-0 w-full bg-white border-t py-3">

@@ -19,6 +19,8 @@ import ListLoading from "../loader/ListLoading";
 import ServerErrorCard from "../card/ServerErrorCard";
 import CompanyOrderList from "./CompanyOrderList";
 import { useTranslation } from "react-i18next";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Badge } from "../ui/badge";
 
 // Types for student orders based on provided schema
 export interface StudentInvoice {
@@ -90,22 +92,30 @@ const OrderList = () => {
     items: studentItems,
     isLoading: studentLoading,
     isError: studentError,
-  } = useSmartFetchHook<StudentOrder>(useStudentOrdersHook as any, {}, {}, { skip: activeTab !== "student" });
+  } = useSmartFetchHook<StudentOrder>(
+    useStudentOrdersHook as any,
+    {},
+    {},
+    { skip: activeTab !== "student" }
+  );
 
-  const invoiceStrings = useMemo(() => ({
-    title: t("orders.invoice.student.title"),
-    companyName: t("orders.invoice.student.companyName"),
-    companyDetails: t("orders.invoice.student.companyDetails"),
-    sellerHeading: t("orders.invoice.student.seller"),
-    buyerHeading: t("orders.invoice.student.buyer"),
-    invoiceNumber: t("orders.invoice.student.invoiceNumber"),
-    invoiceDate: t("orders.invoice.student.invoiceDate"),
-    description: t("orders.invoice.student.description"),
-    courseIds: t("orders.invoice.student.courseIds"),
-    vat: t("orders.invoice.student.vat"),
-    amount: t("orders.invoice.student.amount"),
-    total: t("orders.invoice.student.total"),
-  }), [t]);
+  const invoiceStrings = useMemo(
+    () => ({
+      title: t("orders.invoice.student.title"),
+      companyName: t("orders.invoice.student.companyName"),
+      companyDetails: t("orders.invoice.student.companyDetails"),
+      sellerHeading: t("orders.invoice.student.seller"),
+      buyerHeading: t("orders.invoice.student.buyer"),
+      invoiceNumber: t("orders.invoice.student.invoiceNumber"),
+      invoiceDate: t("orders.invoice.student.invoiceDate"),
+      description: t("orders.invoice.student.description"),
+      courseIds: t("orders.invoice.student.courseIds"),
+      vat: t("orders.invoice.student.vat"),
+      amount: t("orders.invoice.student.amount"),
+      total: t("orders.invoice.student.total"),
+    }),
+    [t]
+  );
 
   const getPaymentStatusLabel = (status?: string) => {
     if (!status) return t("orders.common.status.unknown");
@@ -113,27 +123,42 @@ const OrderList = () => {
     if (normalized === "paid") return t("orders.common.status.paid");
     if (normalized === "completed") return t("orders.common.status.completed");
     if (normalized === "pending") return t("orders.common.status.pending");
-    if (normalized === "cancelled" || normalized === "canceled") return t("orders.common.status.cancelled");
+    if (normalized === "cancelled" || normalized === "canceled")
+      return t("orders.common.status.cancelled");
     return status;
   };
 
   const handlePrintStudent = (order: any) => {
     const inv = order?.invoice || {};
-    const invoiceNumber = inv['Invoice Number'] || order?.invoiceId || order?.id || '-';
-    const invoiceDate = inv['Invoice Date'] || (order?.enrolledAt ? new Date(order.enrolledAt).toLocaleDateString() : new Date().toLocaleDateString());
-    const seller = inv['Seller'] || invoiceStrings.companyName;
-    const sellerEmail = inv['Email'] || 'support@e-learning.com';
-    const sellerContact = inv['Contact Number'] || '+1234567890';
-    const sellerAddress = inv['Address'] || invoiceStrings.companyDetails;
-    const buyer = inv['Buyer'] || order?.user?.fullName || '-';
-    const buyerEmail = inv['Buyer Email'] || '';
-    const buyerContact = inv['Buyer Contact Number'] || '';
-    const buyerAddress = inv['Buyer Address'] || '';
-    const courseName = inv['Course(s) Purchased'] || order?.course?.title || t("orders.invoice.student.defaultCourse");
-    const courseIds = inv['Course ID(s)'] || order?.courseId || '';
-    const coursePrice = inv['Course Price(s)'] || (typeof order?.totalAmount === 'number' ? order.totalAmount.toFixed(2) : order?.totalAmount || '0.00');
-    const vatRate = inv['Course vat rate(s) included '] || t("orders.invoice.student.defaultVat");
-    const totalAmount = inv['Total Amount'] || coursePrice || '0.00';
+    const invoiceNumber =
+      inv["Invoice Number"] || order?.invoiceId || order?.id || "-";
+    const invoiceDate =
+      inv["Invoice Date"] ||
+      (order?.enrolledAt
+        ? new Date(order.enrolledAt).toLocaleDateString()
+        : new Date().toLocaleDateString());
+    const seller = inv["Seller"] || invoiceStrings.companyName;
+    const sellerEmail = inv["Email"] || "support@e-learning.com";
+    const sellerContact = inv["Contact Number"] || "+1234567890";
+    const sellerAddress = inv["Address"] || invoiceStrings.companyDetails;
+    const buyer = inv["Buyer"] || order?.user?.fullName || "-";
+    const buyerEmail = inv["Buyer Email"] || "";
+    const buyerContact = inv["Buyer Contact Number"] || "";
+    const buyerAddress = inv["Buyer Address"] || "";
+    const courseName =
+      inv["Course(s) Purchased"] ||
+      order?.course?.title ||
+      t("orders.invoice.student.defaultCourse");
+    const courseIds = inv["Course ID(s)"] || order?.courseId || "";
+    const coursePrice =
+      inv["Course Price(s)"] ||
+      (typeof order?.totalAmount === "number"
+        ? order.totalAmount.toFixed(2)
+        : order?.totalAmount || "0.00");
+    const vatRate =
+      inv["Course vat rate(s) included "] ||
+      t("orders.invoice.student.defaultVat");
+    const totalAmount = inv["Total Amount"] || coursePrice || "0.00";
 
     const html = `<!doctype html>
 <html>
@@ -225,14 +250,22 @@ const OrderList = () => {
       <div className="flex items-center gap-2 mb-6">
         <Button
           variant="ghost"
-          className={activeTab === "student" ? "bg-cyan-600 text-white hover:bg-cyan-700" : "bg-muted text-foreground"}
+          className={
+            activeTab === "student"
+              ? "bg-cyan-600 text-white hover:bg-cyan-700"
+              : "bg-muted text-foreground"
+          }
           onClick={() => setActiveTab("student")}
         >
           {t("orders.tabs.student")}
         </Button>
         <Button
           variant="ghost"
-          className={activeTab === "company" ? "bg-cyan-600 text-white hover:bg-cyan-700" : "bg-muted text-foreground"}
+          className={
+            activeTab === "company"
+              ? "bg-cyan-600 text-white hover:bg-cyan-700"
+              : "bg-muted text-foreground"
+          }
           onClick={() => setActiveTab("company")}
         >
           {t("orders.tabs.company")}
@@ -246,10 +279,16 @@ const OrderList = () => {
           {/* Student Header */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <div className="flex justify-between items-center gap-3 w-full sm:w-auto">
-              <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">{t("orders.student.heading")}</h1>
+              <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">
+                {t("orders.student.heading")}
+              </h1>
               <div className="flex items-center">
-                <span className="text-sm sm:text-base text-gray-600">{t("orders.common.totalLabel")}</span>
-                <span className="ml-2 px-3 py-1 bg-blue-100 text-blue-800 font-semibold rounded-full text-sm">{studentTotal || 0}</span>
+                <span className="text-sm sm:text-base text-gray-600">
+                  {t("orders.common.totalLabel")}
+                </span>
+                <span className="ml-2 px-3 py-1 bg-blue-100 text-blue-800 font-semibold rounded-full text-sm">
+                  {studentTotal || 0}
+                </span>
               </div>
             </div>
             <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
@@ -271,72 +310,139 @@ const OrderList = () => {
             <ServerErrorCard />
           ) : (
             <>
-              <div className="border border-border rounded-lg bg-card overflow-hidden">
-                <div className="relative">
-                  <div className="overflow-auto">
-                    <Table className="min-w-[800px]">
-                      <TableHeader className="sticky top-0 z-10 bg-yellow-50 border-b">
-                        <TableRow className="hover:bg-yellow-50">
-                          <TableHead className="w-16 bg-yellow-50">{t("orders.student.table.sn")}</TableHead>
-                          <TableHead className="min-w-32 bg-yellow-50">{t("orders.student.table.orderNo")}</TableHead>
-                          <TableHead className="min-w-40 bg-yellow-50">{t("orders.student.table.name")}</TableHead>
-                          <TableHead className="min-w-32 bg-yellow-50">{t("orders.student.table.date")}</TableHead>
-                          <TableHead className="min-w-32 bg-yellow-50">{t("orders.student.table.amount")}</TableHead>
-                          <TableHead className="min-w-32 bg-yellow-50">{t("orders.student.table.invoice")}</TableHead>
-                          <TableHead className="min-w-32 bg-yellow-50">{t("orders.student.table.status")}</TableHead>
-                          <TableHead className="min-w-24 bg-yellow-50">{t("orders.student.table.actions")}</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {studentItems.length > 0 ? (
-                          studentItems.map((order: StudentOrder, index: number) => {
-                            const inv = order?.invoice || {};
-                            const invoiceNumber = inv['Invoice Number'] || order?.invoiceId || order?.id || '-';
-                            const buyer = inv['Buyer'] || order?.user?.fullName || '-';
-                            const invoiceDate = inv['Invoice Date'] || (order?.enrolledAt ? new Date(order.enrolledAt).toLocaleDateString() : '-');
-                            const amount = inv['Total Amount'] || order?.totalAmount || order?.course?.price || order?.course?.discountPrice || '-';
-                            return (
-                              <TableRow key={order?.id ?? index} className={index % 2 === 0 ? "bg-gray-50" : "bg-muted/30"}>
-                                <TableCell className="w-16 text-muted-foreground">{index + 1 + ((studentPage || 1) - 1) * (studentLimit || 0)}</TableCell>
-                                <TableCell className="min-w-32 font-medium text-foreground">{invoiceNumber}</TableCell>
-                                <TableCell className="min-w-40 font-medium text-foreground">{buyer}</TableCell>
-                                <TableCell className="min-w-32 font-medium text-foreground">{invoiceDate}</TableCell>
-                                <TableCell className="min-w-32 font-medium text-foreground">{amount}</TableCell>
-                                <TableCell className="min-w-32 font-medium text-foreground">
-                                  {order?.invoice ? (
-                                    <Button variant="ghost" size="sm" className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 p-0 h-auto font-normal" onClick={() => handlePrintStudent(order)}>
-                                      <Download className="h-4 w-4 mr-1" />
-                                      {t("orders.common.download")}
-                                    </Button>
-                                  ) : (
-                                    <span className="text-muted-foreground">—</span>
-                                  )}
-                                </TableCell>
-                                <TableCell className="min-w-24">
-                                  <button className={`px-3 py-1.5 border w-28 rounded-xl ${
-                                    (order?.paymentStatus?.toUpperCase?.() === 'PAID' || order?.paymentStatus?.toUpperCase?.() === 'COMPLETED')
-                                      ? 'border-green-200 text-green-600' : 'border-red-200 text-red-600'}`}>{getPaymentStatusLabel(order?.paymentStatus)}
-                                  </button>
-                                </TableCell>
-                                <TableCell className="min-w-24">
-                                  <OrderDetailsModal order={order} />
-                                </TableCell>
-                              </TableRow>
-                            );
-                          })
-                        ) : (
-                          <TableRow>
-                            <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">{t("orders.student.empty")}</TableCell>
+              <ScrollArea className="w-[calc(100vw-64px)] lg:w-full overflow-hidden overflow-x-auto rounded-xl whitespace-nowrap border border-border bg-card">
+                <Table>
+                  <TableHeader className="bg-yellow-50">
+                    <TableRow>
+                      <TableHead>
+                        {t("orders.student.table.sn")}
+                      </TableHead>
+                      <TableHead>
+                        {t("orders.student.table.orderNo")}
+                      </TableHead>
+                      <TableHead>
+                        {t("orders.student.table.name")}
+                      </TableHead>
+                      <TableHead>
+                        {t("orders.student.table.date")}
+                      </TableHead>
+                      <TableHead>
+                        {t("orders.student.table.amount")}
+                      </TableHead>
+                      <TableHead>
+                        {t("orders.student.table.invoice")}
+                      </TableHead>
+                      <TableHead>
+                        {t("orders.student.table.status")}
+                      </TableHead>
+                      <TableHead className="text-end">
+                        {t("orders.student.table.actions")}
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {studentItems.length > 0 ? (
+                      studentItems.map((order: StudentOrder, index: number) => {
+                        const inv = order?.invoice || {};
+                        const invoiceNumber =
+                          inv["Invoice Number"] ||
+                          order?.invoiceId ||
+                          order?.id ||
+                          "-";
+                        const buyer =
+                          inv["Buyer"] || order?.user?.fullName || "-";
+                        const invoiceDate =
+                          inv["Invoice Date"] ||
+                          (order?.enrolledAt
+                            ? new Date(order.enrolledAt).toLocaleDateString()
+                            : "-");
+                        const amount =
+                          inv["Total Amount"] ||
+                          order?.totalAmount ||
+                          order?.course?.price ||
+                          order?.course?.discountPrice ||
+                          "-";
+                        return (
+                          <TableRow
+                            key={order?.id ?? index}
+                            className={
+                              index % 2 === 0 ? "bg-gray-50" : "bg-muted/30"
+                            }
+                          >
+                            <TableCell>
+                              {index +
+                                1 +
+                                ((studentPage || 1) - 1) * (studentLimit || 0)}
+                            </TableCell>
+                            <TableCell>
+                              {invoiceNumber}
+                            </TableCell>
+                            <TableCell>
+                              {buyer}
+                            </TableCell>
+                            <TableCell>
+                              {invoiceDate}
+                            </TableCell>
+                            <TableCell>
+                              {amount}
+                            </TableCell>
+                            <TableCell>
+                              {order?.invoice ? (
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  className="text-blue-600 hover:text-blue-700"
+                                  onClick={() => handlePrintStudent(order)}
+                                >
+                                  <Download className="h-4 w-4 mr-1" />
+                                  {t("orders.common.download")}
+                                </Button>
+                              ) : (
+                                <span className="text-muted-foreground">—</span>
+                              )}
+                            </TableCell>
+                            <TableCell>
+                              <Badge
+                                variant="outline"
+                                className={`rounded-xl ${
+                                  order?.paymentStatus?.toUpperCase?.() ===
+                                    "PAID" ||
+                                  order?.paymentStatus?.toUpperCase?.() ===
+                                    "COMPLETED"
+                                    ? "border-green-200 text-green-600"
+                                    : "border-red-200 text-red-600"
+                                }`}
+                              >
+                                {getPaymentStatusLabel(order?.paymentStatus)}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="flex justify-end">
+                              <OrderDetailsModal order={order} />
+                            </TableCell>
                           </TableRow>
-                        )}
-                      </TableBody>
-                    </Table>
-                  </div>
-                </div>
-              </div>
+                        );
+                      })
+                    ) : (
+                      <TableRow>
+                        <TableCell
+                          colSpan={8}
+                          className="text-center py-8 text-muted-foreground"
+                        >
+                          {t("orders.student.empty")}
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+                <ScrollBar orientation="horizontal" />
+              </ScrollArea>
 
               <div className="fixed bottom-0 left-0 w-full bg-white border-t py-3">
-                <CustomPagination2 currentPage={studentCurrentPage} totalPages={studentTotalPages} setCurrentPage={setStudentCurrentPage} />
+                <CustomPagination2
+                  currentPage={studentCurrentPage}
+                  totalPages={studentTotalPages}
+                  setCurrentPage={setStudentCurrentPage}
+                />
               </div>
             </>
           )}

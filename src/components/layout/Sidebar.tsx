@@ -18,13 +18,13 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
     <>
       {/* Desktop Sidebar */}
       <div className={cn(
-        "hidden lg:flex lg:flex-shrink-0 lg:inset-y-0"
+        "hidden lg:flex lg:shrink-0 lg:inset-y-0"
       )}>
         <div className="flex flex-col w-72">
           <div className="flex flex-col h-0 flex-1 bg-white border-r border-gray-200">
             {/* Logo */}
             <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
-              <div className="flex items-center flex-shrink-0 px-6">
+              <div className="flex items-center shrink-0 px-6">
                 <div className="flex items-center">
                   <img src="/logo.png" alt="logo" className="w-12 h-12" />
                   <span className="ml-3 text-xl font-semibold text-gray-900">

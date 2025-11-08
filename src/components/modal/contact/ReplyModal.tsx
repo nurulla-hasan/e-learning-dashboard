@@ -64,7 +64,7 @@ const ReplyModal = ({ contactId }: TProps) => {
               <Textarea
                 id="question"
                 placeholder="write a question..."
-                className="min-h-[80px] resize-y"
+                className="min-h-20 resize-y"
               />
             </div>
 

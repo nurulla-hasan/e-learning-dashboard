@@ -20,6 +20,18 @@ import ListLoading from "../loader/ListLoading";
 import ServerErrorCard from "../card/ServerErrorCard";
 import { Button } from "../ui/button";
 import TrainingDetailsModal from "@/components/modal/training/TrainingDetailsModal";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { useTranslation } from "react-i18next";
 
 interface TrainingItem {
@@ -27,12 +39,17 @@ interface TrainingItem {
   status: string;
   createdAt?: string;
   user?: { fullName?: string; email?: string; phoneNumber?: string };
-  course?: { courseTitle?: string; price?: number; category?: { name?: string } };
+  course?: {
+    courseTitle?: string;
+    price?: number;
+    category?: { name?: string };
+  };
 }
 
 const statusClassMap: Record<string, string> = {
   CONFIRMED: "bg-green-100 text-green-800 hover:bg-green-100 border-green-200",
-  PENDING: "bg-yellow-100 text-yellow-800 hover:bg-yellow-100 border-yellow-200",
+  PENDING:
+    "bg-yellow-100 text-yellow-800 hover:bg-yellow-100 border-yellow-200",
   REJECTED: "bg-red-100 text-red-800 hover:bg-red-100 border-red-200",
   CANCELLED: "bg-red-100 text-red-800 hover:bg-red-100 border-red-200",
   DEFAULT: "bg-gray-100 text-gray-800 hover:bg-gray-100 border-gray-200",
@@ -54,7 +71,8 @@ const TrainingList = () => {
     isError,
   } = useSmartFetchHook<TrainingItem>(useGetTrainingOrdersQuery);
 
-  const [updateTrainingOrder, { isLoading: updating }] = useUpdateTrainingOrderMutation();
+  const [updateTrainingOrder, { isLoading: updating }] =
+    useUpdateTrainingOrderMutation();
 
   const handleAccept = async (id: string) => {
     try {
@@ -64,11 +82,11 @@ const TrainingList = () => {
     }
   };
 
-//   const handleReject = async (id: string) => {
-//     try {
-//       await updateTrainingOrder({ id, data: { status: "REJECTED" } });
-//     } catch {}
-//   };
+  //   const handleReject = async (id: string) => {
+  //     try {
+  //       await updateTrainingOrder({ id, data: { status: "REJECTED" } });
+  //     } catch {}
+  //   };
 
   if (isLoading) return <ListLoading />;
   if (isError) return <ServerErrorCard />;
@@ -103,120 +121,133 @@ const TrainingList = () => {
       </div>
 
       {/* Table Container */}
-      <div className="border border-border rounded-lg bg-card overflow-hidden">
-        <div className="relative">
-          <div className="overflow-auto">
-            <Table className="min-w-[1000px]">
-              <TableHeader className="sticky top-0 z-10 bg-yellow-50 border-b">
-                <TableRow className="hover:bg-yellow-50">
-                  <TableHead className="w-16 bg-yellow-50">
-                    {t("training.table.headers.sn")}
-                  </TableHead>
-                  <TableHead className="min-w-44 bg-yellow-50">
-                    {t("training.table.headers.trainee")}
-                  </TableHead>
-                  <TableHead className="min-w-56 bg-yellow-50">
-                    {t("training.table.headers.email")}
-                  </TableHead>
-                  <TableHead className="min-w-48 bg-yellow-50">
-                    {t("training.table.headers.course")}
-                  </TableHead>
-                  <TableHead className="min-w-28 bg-yellow-50">
-                    {t("training.table.headers.price")}
-                  </TableHead>
-                  <TableHead className="min-w-32 bg-yellow-50">
-                    {t("training.table.headers.created")}
-                  </TableHead>
-                  <TableHead className="min-w-28 bg-yellow-50">
-                    {t("training.table.headers.status")}
-                  </TableHead>
-                  <TableHead className="min-w-40 bg-yellow-50">
-                    {t("training.table.headers.actions")}
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {items?.length ? (
-                  (items as TrainingItem[]).map((trainingItem, index) => {
-                    const normalizedStatusKey = (trainingItem.status || "UNKNOWN").toUpperCase();
-                    const statusLabel = t(`training.status.${normalizedStatusKey}`, {
-                      defaultValue: trainingItem.status || t("training.status.UNKNOWN"),
-                    });
-                    const badgeClassName =
-                      statusClassMap[normalizedStatusKey] ?? statusClassMap.DEFAULT;
+      <ScrollArea className="w-[calc(100vw-64px)] lg:w-full overflow-hidden overflow-x-auto rounded-xl whitespace-nowrap">
+          <Table>
+            <TableHeader className="bg-yellow-50">
+              <TableRow>
+                <TableHead>{t("training.table.headers.sn")}</TableHead>
+                <TableHead>{t("training.table.headers.trainee")}</TableHead>
+                <TableHead>{t("training.table.headers.email")}</TableHead>
+                <TableHead>{t("training.table.headers.course")}</TableHead>
+                <TableHead>{t("training.table.headers.price")}</TableHead>
+                <TableHead>{t("training.table.headers.created")}</TableHead>
+                <TableHead>{t("training.table.headers.status")}</TableHead>
+                <TableHead className="text-center">
+                  {t("training.table.headers.actions")}
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {items?.length ? (
+                (items as TrainingItem[]).map((trainingItem, index) => {
+                  const normalizedStatusKey = (
+                    trainingItem.status || "UNKNOWN"
+                  ).toUpperCase();
+                  const statusLabel = t(
+                    `training.status.${normalizedStatusKey}`,
+                    {
+                      defaultValue:
+                        trainingItem.status || t("training.status.UNKNOWN"),
+                    }
+                  );
+                  const badgeClassName =
+                    statusClassMap[normalizedStatusKey] ?? statusClassMap.DEFAULT;
 
-                    return (
-                      <TableRow
-                        key={trainingItem.id}
-                        className={index % 2 === 0 ? "bg-gray-50" : "bg-muted/30"}
-                      >
-                        <TableCell className="w-16 text-muted-foreground">
-                          {index + 1 + ((page || 1) - 1) * (limit || 0)}
-                        </TableCell>
-                        <TableCell className="min-w-44 font-medium text-foreground">
-                          {trainingItem.user?.fullName || "-"}
-                        </TableCell>
-                        <TableCell className="min-w-56 text-muted-foreground">
-                          {trainingItem.user?.email || "-"}
-                        </TableCell>
-                        <TableCell className="min-w-48 text-foreground">
-                          {trainingItem.course?.courseTitle || "-"}
-                        </TableCell>
-                        <TableCell className="min-w-28 text-foreground">
-                          {trainingItem.course?.price ?? "-"}
-                        </TableCell>
-                        <TableCell className="min-w-32 text-muted-foreground">
-                          {trainingItem.createdAt
-                            ? new Date(trainingItem.createdAt).toLocaleDateString()
-                            : "-"}
-                        </TableCell>
-                        <TableCell className="min-w-28">
-                          <Badge
-                            variant="secondary"
-                            className={badgeClassName}
-                          >
+                  return (
+                    <TableRow
+                      key={trainingItem.id}
+                      className={index % 2 === 0 ? "bg-gray-50" : "bg-muted/30"}
+                    >
+                      <TableCell>
+                        {index + 1 + ((page || 1) - 1) * (limit || 0)}
+                      </TableCell>
+                      <TableCell>{trainingItem.user?.fullName || "-"}</TableCell>
+                      <TableCell>{trainingItem.user?.email || "-"}</TableCell>
+                      <TableCell>
+                        {trainingItem.course?.courseTitle || "-"}
+                      </TableCell>
+                      <TableCell>{trainingItem.course?.price ?? "-"}</TableCell>
+                      <TableCell>
+                        {trainingItem.createdAt
+                          ? new Date(trainingItem.createdAt).toLocaleDateString()
+                          : "-"}
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant="secondary" className={badgeClassName}>
                           {statusLabel}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="min-w-40">
-                          <div className="flex items-center gap-2">
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="flex justify-center gap-2">
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
                             <Button
                               variant="outline"
                               size="sm"
-                              aria-label={t("training.actions.acceptAria", {
-                                name: trainingItem.user?.fullName ?? "",
-                              })}
                               disabled={
                                 updating || normalizedStatusKey === "CONFIRMED"
                               }
-                              onClick={() => handleAccept(trainingItem.id)}
-                              className="text-green-700 border-green-200 hover:bg-green-50"
                             >
-                            <Check className="mr-1 h-4 w-4" />
-                            {t("training.actions.accept")}
+                              <Check />
+                              {t("training.actions.accept")}
                             </Button>
-                          <TrainingDetailsModal item={trainingItem} />
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={8} className="text-center py-8 text-muted-foreground">
-                      {t("training.table.empty")}
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
-        </div>
-      </div>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent className="sm:max-w-md">
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>
+                                {t("training.actions.acceptConfirmTitle", {
+                                  defaultValue: "Confirm acceptance",
+                                })}
+                              </AlertDialogTitle>
+                              <AlertDialogDescription>
+                                {t("training.actions.acceptConfirmDescription", {
+                                  defaultValue:
+                                    "Are you sure you want to accept this training request? This action cannot be undone.",
+                                })}
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel disabled={updating}>
+                                {t("common.actions.cancel", {
+                                  defaultValue: "Cancel",
+                                })}
+                              </AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => handleAccept(trainingItem.id)}
+                                disabled={updating}
+                              >
+                                {updating
+                                  ? t("training.actions.accepting", {
+                                      defaultValue: "Accepting...",
+                                    })
+                                  : t("training.actions.accept")}
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                        <TrainingDetailsModal item={trainingItem} />
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={8} className="text-center">
+                    {t("training.table.empty")}
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+          <ScrollBar orientation="horizontal" />
+      </ScrollArea>
 
       {/* Pagination */}
       <div className="fixed bottom-0 left-0 w-full bg-white border-t py-3">
-        <CustomPagination2 currentPage={currentPage} totalPages={totalPages} setCurrentPage={setCurrentPage} />
+        <CustomPagination2
+          currentPage={currentPage}
+          totalPages={totalPages}
+          setCurrentPage={setCurrentPage}
+        />
       </div>
     </div>
   );
