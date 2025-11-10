@@ -406,6 +406,11 @@
           "cancel": "Cancel",
           "submit": "Create",
           "submitting": "Creating..."
+        },
+        "confirmation": {
+          "title": "Confirm Employee Creation",
+          "description": "Please confirm you want to create this employee with the provided details.",
+          "confirm": "Confirm"
         }
       }
     }
@@ -682,6 +687,14 @@
       "pagination": {
         "selectPlaceholder": "Select number of results",
         "pageSize": "{{count}} / page"
+      },
+      "modal": {
+        "delete": {
+          "title": "Are you sure you want to delete?",
+          "cancel": "Cancel",
+          "confirm": "Delete",
+          "loading": "Deleting..."
+        }
       }
     },
     "help": {

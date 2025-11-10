@@ -406,6 +406,11 @@
           "cancel": "Anuluj",
           "submit": "Dodaj",
           "submitting": "Dodawanie..."
+        },
+        "confirmation": {
+          "title": "Potwierdź dodanie pracownika",
+          "description": "Potwierdź, że chcesz utworzyć tego pracownika z podanymi danymi.",
+          "confirm": "Potwierdź"
         }
       }
     },
@@ -674,13 +679,21 @@
           "sn": "Lp.",
           "email": "Email",
           "subscribeDate": "Data subskrypcji",
-          "actions": "Akcje"
+          "actions": "Działania"
         },
         "empty": "Brak subskrybentów spełniających kryteria wyszukiwania."
       },
       "pagination": {
         "selectPlaceholder": "Wybierz liczbę wyników",
         "pageSize": "{{count}} / stronę"
+      },
+      "modal": {
+        "delete": {
+          "title": "Czy na pewno chcesz usunąć?",
+          "cancel": "Anuluj",
+          "confirm": "Usuń",
+          "loading": "Usuwanie..."
+        }
       }
     },
     "help": {

@@ -1,3 +1,4 @@
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
   Table,
   TableBody,
@@ -39,70 +40,65 @@ const SubscriberTable = ({
 }: TProps) => {
   const { t } = useTranslation("common");
   return (
-    <>
-      <div className="border border-border rounded-lg bg-card overflow-hidden">
-        <div className="relative">
-          {/* Single table container with synchronized scrolling */}
-          <div className="overflow-auto">
-            <Table className="min-w-[800px]">
-              <TableHeader className="sticky top-0 z-10 bg-yellow-50 border-b">
-                <TableRow className="hover:bg-yellow-50">
-                  <TableHead className="w-16 bg-yellow-50">
-                    {t("common:subscribers.table.headers.sn")}
-                  </TableHead>
-                  <TableHead className="min-w-48 bg-yellow-50">
-                    {t("common:subscribers.table.headers.email")}
-                  </TableHead>
-                  <TableHead className="min-w-48 bg-yellow-50">
-                    {t("common:subscribers.table.headers.subscribeDate")}
-                  </TableHead>
-                  <TableHead className="min-w-48 bg-yellow-50">
-                    {t("common:subscribers.table.headers.actions")}
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {subscibers?.length > 0 ? (
-                  subscibers?.map((subscriber, index) => (
-                    <TableRow
-                      key={index}
-                      className={index % 2 === 0 ? "bg-gray-50" : "bg-muted/30"}
-                    >
-                      <TableCell className="w-16 text-muted-foreground">
-                        {Number(index + 1) + (meta?.page - 1) * pageSize}
-                      </TableCell>
-                      <TableCell className="min-w-48 text-muted-foreground">
-                        {subscriber?.email}
-                      </TableCell>
-                      <TableCell className="min-w-48 text-muted-foreground">
-                        {subscriber?.createdAt?.split("T")[0]}
-                      </TableCell>
-                      <TableCell className="min-w-24">
-                        <DeleteSubscriberModal
-                          key={Math.random()}
-                          subscriberId={subscriber?.id}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell
-                      colSpan={5}
-                      className="text-center py-8 text-muted-foreground"
-                    >
-                      {t("common:subscribers.table.empty")}
+    <div className="space-y-4">
+      <div className="border border-border rounded-xl bg-card">
+        <ScrollArea className="w-[calc(100vw-64px)] lg:w-full overflow-hidden overflow-x-auto rounded-xl whitespace-nowrap">
+          <Table className="min-w-[720px]">
+            <TableHeader className="sticky top-0 z-10 bg-yellow-50 border-b">
+              <TableRow className="hover:bg-yellow-50">
+                <TableHead className="w-16 bg-yellow-50">
+                  {t("common:subscribers.table.headers.sn")}
+                </TableHead>
+                <TableHead className="min-w-48 bg-yellow-50">
+                  {t("common:subscribers.table.headers.email")}
+                </TableHead>
+                <TableHead className="min-w-48 bg-yellow-50">
+                  {t("common:subscribers.table.headers.subscribeDate")}
+                </TableHead>
+                <TableHead className="min-w-32 bg-yellow-50">
+                  {t("common:subscribers.table.headers.actions")}
+                </TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {subscibers?.length > 0 ? (
+                subscibers?.map((subscriber, index) => (
+                  <TableRow
+                    key={subscriber?.id ?? index}
+                    className={index % 2 === 0 ? "bg-gray-50" : "bg-muted/30"}
+                  >
+                    <TableCell className="w-16 text-muted-foreground">
+                      {Number(index + 1) + (meta?.page - 1) * pageSize}
+                    </TableCell>
+                    <TableCell className="min-w-48 text-muted-foreground">
+                      {subscriber?.email}
+                    </TableCell>
+                    <TableCell className="min-w-48 text-muted-foreground">
+                      {subscriber?.createdAt?.split("T")[0]}
+                    </TableCell>
+                    <TableCell className="min-w-24">
+                      <DeleteSubscriberModal subscriberId={subscriber?.id} />
                     </TableCell>
                   </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
-        </div>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={4}
+                    className="text-center py-8 text-muted-foreground"
+                  >
+                    {t("common:subscribers.table.empty")}
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
       </div>
 
       {/* Pagination */}
-      <div className="fixed bottom-0 flex left-0 w-full bg-white border-t py-3">
+      <div className="fixed bottom-0 left-0 flex w-full bg-white border-t py-3">
         <CustomPagination
           currentPage={currentPage}
           setCurrentPage={setCurrentPage}
@@ -135,7 +131,7 @@ const SubscriberTable = ({
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

@@ -3,6 +3,17 @@ import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -270,9 +281,39 @@ const CreateEmployeeForm = () => {
             <Button type="button" variant="ghost" onClick={() => navigate("/employees")}>
               {t("employees.form.actions.cancel")}
             </Button>
-            <Button type="submit" disabled={isLoading} className="bg-cyan-600 hover:bg-cyan-700 text-white">
-              {isLoading ? t("employees.form.actions.submitting") : t("employees.form.actions.submit")}
-            </Button>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button type="button" disabled={isLoading} className="bg-cyan-600 hover:bg-cyan-700 text-white">
+                  {isLoading ? t("employees.form.actions.submitting") : t("employees.form.actions.submit")}
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>
+                    {t("employees.form.confirmation.title", { defaultValue: "Confirm Employee Creation" })}
+                  </AlertDialogTitle>
+                  <AlertDialogDescription>
+                    {t("employees.form.confirmation.description", {
+                      defaultValue: "Please confirm you want to create this employee with the provided details.",
+                    })}
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel disabled={isLoading}>
+                    {t("employees.form.actions.cancel")}
+                  </AlertDialogCancel>
+                  <AlertDialogAction
+                    className="bg-cyan-600 hover:bg-cyan-700 text-white"
+                    disabled={isLoading}
+                    onClick={() => form.handleSubmit(onSubmit)()}
+                  >
+                    {isLoading
+                      ? t("employees.form.actions.submitting")
+                      : t("employees.form.confirmation.confirm", { defaultValue: "Confirm" })}
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         </form>
       </Form>

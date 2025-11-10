@@ -10,12 +10,14 @@ import { Trash2 } from "lucide-react"
 import DeleteButton from "@/components/form/DeleteButton"
 import { useEffect, useState } from "react"
 import { useDeleteSubscriberMutation } from "@/redux/features/newsletter/newsletterApi"
+import { useTranslation } from "react-i18next"
 
 type TProps = {
   subscriberId : string;
 }
 
 const DeleteSubscriberModal = ({ subscriberId }: TProps) => {
+  const { t } = useTranslation("common")
   const [modalOpen, setModalOpen] = useState(false)
   const [deleteSubscriber, { isLoading, isSuccess }] = useDeleteSubscriberMutation();
 
@@ -43,13 +45,18 @@ const DeleteSubscriberModal = ({ subscriberId }: TProps) => {
       <Dialog open={modalOpen} onOpenChange={setModalOpen}>
         <DialogContent className="sm:max-w-md" onInteractOutside={(e) => e.preventDefault()} showCloseButton={false}>
           <DialogHeader>
-            <DialogTitle>Are you sure, you want to delete?</DialogTitle>
+            <DialogTitle>{t("subscribers.modal.delete.title")}</DialogTitle>
           </DialogHeader>
           <div className="flex justify-end gap-2">
-            <Button variant="default" className="bg-black hover:bg-black/80" onClick={() => setModalOpen(false)}>
-              No
+            <Button variant="outline" onClick={() => setModalOpen(false)}>
+              {t("subscribers.modal.delete.cancel")}
             </Button>
-            <DeleteButton onClick={handleClick} isLoading={isLoading} />
+            <DeleteButton
+              onClick={handleClick}
+              isLoading={isLoading}
+              label={t("subscribers.modal.delete.confirm")}
+              loadingLabel={t("subscribers.modal.delete.loading")}
+            />
           </div>
         </DialogContent>
       </Dialog>
