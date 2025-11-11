@@ -18,6 +18,7 @@ import { useGetCategoriesQuery } from "@/redux/features/category/categoryApi";
 import { useGetTestsQuery } from "@/redux/features/test/testApi";
 import { useGetSingleCourseQuery, useUpdateCourseMutation } from "@/redux/features/course/courseApi";
 import type { ISection } from "../../types/create.course.type";
+import { Loader } from "lucide-react";
 
 const UpdateCourseForm = () => {
   const navigate = useNavigate();
@@ -64,7 +65,7 @@ const UpdateCourseForm = () => {
     },
   });
 
-  const { data: courseRes } = useGetSingleCourseQuery(id as string, { skip: !id });
+  const { data: courseRes, isLoading: courseLoading } = useGetSingleCourseQuery(id as string, { skip: !id });
 
   useEffect(() => {
     const c: any = courseRes?.data;
@@ -211,6 +212,14 @@ const UpdateCourseForm = () => {
       ErrorToast(e?.data?.message || "Failed to update course");
     }
   };
+
+  if(courseLoading) {
+    return (
+      <div className="flex items-center justify-center h-[75vh]">
+        <Loader size={40} className="animate-spin"/>
+      </div>
+    )
+  }
 
   return (
     <Form {...form}>
