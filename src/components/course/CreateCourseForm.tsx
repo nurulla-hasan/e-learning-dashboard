@@ -9,7 +9,6 @@ import {
   useCreateCourseMutation
 } from "@/redux/features/course/courseApi";
 import type { ISection } from "../../types/create.course.type";
-import { useGetCategoriesQuery } from "@/redux/features/category/categoryApi";
 import { Form } from "@/components/ui/form";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -33,13 +32,6 @@ const CreateCourseForm = () => {
       title: test.title,
     })) || [];
 
-  const { data: categories } = useGetCategoriesQuery({});
-  const categoryOptions =
-    categories?.data?.map((category: any) => ({
-      id: category.id,
-      title: category.name,
-    })) || [];
-
   const [createCourseMutation] = useCreateCourseMutation();
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null);
@@ -48,10 +40,9 @@ const CreateCourseForm = () => {
     string | null
   >(null);
 
-  const [lessonFiles, setLessonFiles] = useState<{ [lessonId: string]: File }>(
+  const [lessonFiles, setLessonFiles] = useState<{ [tempKey: string]: File }>(
     {}
   );
-  const [lessonKeyCounter, setLessonKeyCounter] = useState(1);
   const [sections, setSections] = useState<ISection[]>([]);
 
   const form = useForm<TCourseFormValues>({
@@ -81,74 +72,6 @@ const CreateCourseForm = () => {
     form.trigger("discountPrice");
   }, [watchedPrice, watchedDiscount, form]);
 
-  const handleSectionsChange = (updated: ISection[]) => {
-    setSections(updated);
-  };
-
-  const handleLessonFileChange = (lessonId: string, file: File) => {
-    const tempKey = `lesson${lessonKeyCounter}`;
-    setLessonKeyCounter((prev) => prev + 1);
-
-    setLessonFiles((prev) => ({ ...prev, [tempKey]: file }));
-
-    const updatedSections = sections.map((section) => ({
-      ...section,
-      lessons: section.lessons.map((lesson) =>
-        lesson.id === lessonId ? { ...lesson, tempKey } : lesson
-      ),
-    }));
-
-    setSections(updatedSections);
-  };
-
-  const handleDeleteLesson = (lessonId: string) => {
-    let tempKeyToDelete: string | undefined;
-
-    const updatedSections = sections.map((section) => ({
-      ...section,
-      lessons: section.lessons.filter((lesson) => {
-        if (lesson.id === lessonId) {
-          tempKeyToDelete = lesson.tempKey;
-          return false;
-        }
-        return true;
-      }),
-    }));
-
-    if (tempKeyToDelete) {
-      const newLessonFiles = { ...lessonFiles };
-      delete newLessonFiles[tempKeyToDelete];
-      setLessonFiles(newLessonFiles);
-    }
-
-    setSections(updatedSections);
-  };
-
-  const handleAddTest = (sectionId: string, testId: string) => {
-    const updatedSections = sections.map((section) => {
-      if (section.id === sectionId) {
-        if (section.tests.some((test) => test.testId === testId)) {
-          return section;
-        }
-        return { ...section, tests: [...section.tests, { testId }] };
-      }
-      return section;
-    });
-    setSections(updatedSections);
-  };
-
-  const handleRemoveTest = (sectionId: string, testId: string) => {
-    const updatedSections = sections.map((section) => {
-      if (section.id === sectionId) {
-        return {
-          ...section,
-          tests: section.tests.filter((test) => test.testId !== testId),
-        };
-      }
-      return section;
-    });
-    setSections(updatedSections);
-  };
 
   const onSubmit: SubmitHandler<TCourseFormValues> = async (values) => {
     const apiFormData = new FormData();
@@ -203,7 +126,6 @@ const CreateCourseForm = () => {
       setInstructorImage(null);
       setInstructorImagePreview(null);
       setLessonFiles({});
-      setLessonKeyCounter(1);
     } catch (error) {
       console.log(error);
       ErrorToast("Failed to create course");
@@ -225,7 +147,7 @@ const CreateCourseForm = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <CourseMetaDetails
               control={form.control}
-              categoryOptions={categoryOptions}
+              setValue={form.setValue}
             />
 
             <CoursePricing control={form.control} />
@@ -243,12 +165,9 @@ const CreateCourseForm = () => {
         <div className="grid grid-cols-1 gap-6">
           <CurriculumForm
             sections={sections}
-            onSectionsChange={handleSectionsChange}
+            setSections={setSections}
             lessonFiles={lessonFiles}
-            onLessonFileChange={handleLessonFileChange}
-            onDeleteLesson={handleDeleteLesson}
-            onAddTest={handleAddTest}
-            onRemoveTest={handleRemoveTest}
+            setLessonFiles={setLessonFiles}
             testsData={requiredTestInfo}
           />
 
