@@ -7,6 +7,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
 import ImageUpload from "@/components/form/ImageUpload"
 import type React from "react"
+import { Button } from "@/components/ui/button"
+import { useFormContext } from "react-hook-form"
+import type { TCourseFormValues } from "@/schema/course.schema"
+import { useParams } from "react-router-dom"
+import { useUpdateCourseMutation } from "@/redux/features/course/courseApi"
+import { ErrorToast, SuccessToast } from "@/helper/ValidationHelper"
 
 interface CourseBasicInfoProps {
   control: any
@@ -17,6 +23,29 @@ interface CourseBasicInfoProps {
 }
 
 const CourseBasicInfo = ({ control, thumbnail, setThumbnail, thumbnailPreview, setThumbnailPreview }: CourseBasicInfoProps) => {
+  const form = useFormContext<TCourseFormValues>()
+  const { id } = useParams()
+  const [updateCourse, { isLoading }] = useUpdateCourseMutation()
+
+  const handleSaveBasicInfo = async () => {
+    if (!id) return
+    const apiFormData = new FormData()
+    if (thumbnail) apiFormData.append("courseThumbnail", thumbnail)
+    const currentValues = form.getValues()
+    const finalBodyData = {
+      ...currentValues,
+      price: Number(currentValues.price) || 0,
+      discountPrice: Number(currentValues.discountPrice) || 0,
+    }
+    apiFormData.append("bodyData", JSON.stringify(finalBodyData))
+    try {
+      await updateCourse({ id, bodyData: apiFormData }).unwrap()
+      SuccessToast("Basic info updated successfully")
+    } catch (e: any) {
+      ErrorToast(e?.data?.message || "Failed to save basic info")
+    }
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <Card>
@@ -82,6 +111,11 @@ const CourseBasicInfo = ({ control, thumbnail, setThumbnail, thumbnailPreview, s
             )}
           />
         </CardContent>
+        <div className="px-6 pb-6">
+          <Button disabled={isLoading} type="button" onClick={handleSaveBasicInfo} className="bg-cyan-500 hover:bg-cyan-600 text-white">
+            Save Basic Information
+          </Button>
+        </div>
       </Card>
     </div>
   )

@@ -3,12 +3,41 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/components/ui/form"
+import { Button } from "@/components/ui/button"
+import { useFormContext, type Control } from "react-hook-form"
+import type { TCourseFormValues } from "@/schema/course.schema"
+import { useParams } from "react-router-dom"
+import { useUpdateCourseMutation } from "@/redux/features/course/courseApi"
+import { ErrorToast, SuccessToast } from "@/helper/ValidationHelper"
 
 interface CoursePricingProps {
-  control: any
+  control: Control<TCourseFormValues>
 }
 
 const CoursePricing = ({ control }: CoursePricingProps) => {
+  const form = useFormContext<TCourseFormValues>()
+  const { id } = useParams()
+  const [updateCourse, { isLoading }] = useUpdateCourseMutation()
+
+  const handleSavePricing = async () => {
+    if (!id) return
+    const apiFormData = new FormData()
+    const currentValues = form.getValues()
+    const finalBodyData = {
+      ...currentValues,
+      price: Number(currentValues.price) || 0,
+      discountPrice: Number(currentValues.discountPrice) || 0,
+    }
+    apiFormData.append("bodyData", JSON.stringify(finalBodyData))
+    try {
+      await updateCourse({ id, bodyData: apiFormData }).unwrap()
+      SuccessToast("Pricing updated successfully")
+    } catch (e: unknown) {
+      type ApiError = { data?: { message?: string } }
+      const err = e as ApiError
+      ErrorToast(err?.data?.message || (e instanceof Error ? e.message : "Failed to save pricing"))
+    }
+  }
   return (
     <Card>
       <CardHeader>
@@ -74,6 +103,11 @@ const CoursePricing = ({ control }: CoursePricingProps) => {
           )}
         />
       </CardContent>
+      <div className="px-6 pb-6">
+        <Button disabled={isLoading} type="button" onClick={handleSavePricing} className="bg-cyan-500 hover:bg-cyan-600 text-white">
+          Save Pricing
+        </Button>
+      </div>
     </Card>
   )
 }

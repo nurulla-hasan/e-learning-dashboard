@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, Upload, X, Check, Trash2 } from "lucide-react";
+
 import {
   Select,
   SelectContent,
@@ -19,17 +20,23 @@ import type {
   ILesson,
 } from "../../types/create.course.type";
 import { ScrollArea } from "../ui/scroll-area";
+import { useFormContext } from "react-hook-form";
+import type { TCourseFormValues } from "@/schema/course.schema";
+import { useParams } from "react-router-dom";
+import { useUpdateCourseMutation } from "@/redux/features/course/courseApi";
+import { ErrorToast, SuccessToast } from "@/helper/ValidationHelper";
 
 const CurriculumForm: React.FC<ICurriculumFormProps> = ({
   sections,
-  onSectionsChange,
-  onLessonFileChange,
-  onDeleteLesson,
-  onAddTest,
-  onRemoveTest,
+  setSections,
   lessonFiles,
+  setLessonFiles,
   testsData,
 }) => {
+  const form = useFormContext<TCourseFormValues>();
+  const { id } = useParams();
+  const [updateCourse, { isLoading }] = useUpdateCourseMutation();
+
   const [selectedSectionId, setSelectedSectionId] = useState<string | null>(
     null
   );
@@ -41,6 +48,7 @@ const CurriculumForm: React.FC<ICurriculumFormProps> = ({
     null
   );
   const [selectedTestId, setSelectedTestId] = useState<string>("");
+  const [lessonKeyCounter, setLessonKeyCounter] = useState(1);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const selectedSection = sections.find((s) => s.id === selectedSectionId);
@@ -60,12 +68,36 @@ const CurriculumForm: React.FC<ICurriculumFormProps> = ({
         order: sections.length + 1,
         tests: [],
       };
-      const newSections = [...sections, newSection];
-      onSectionsChange(newSections);
+      setSections((prev) => {
+        const next = [...prev, newSection];
+        return next;
+      });
       setNewSectionTitle("");
       setIsAddingSectionOpen(false);
       setSelectedSectionId(newSection.id);
     }
+  };
+
+  const handleDeleteLesson = (lessonId: string) => {
+    let tempKeyToDelete: string | undefined;
+    const updatedSections = sections.map((section) => ({
+      ...section,
+      lessons: section.lessons.filter((lesson) => {
+        if (lesson.id === lessonId) {
+          tempKeyToDelete = lesson.tempKey;
+          return false;
+        }
+        return true;
+      }),
+    }));
+    if (tempKeyToDelete) {
+      setLessonFiles((prev) => {
+        const next = { ...prev } as { [k: string]: File };
+        delete next[tempKeyToDelete as string];
+        return next;
+      });
+    }
+    setSections(updatedSections);
   };
 
   const handleAddLesson = () => {
@@ -81,7 +113,7 @@ const CurriculumForm: React.FC<ICurriculumFormProps> = ({
           ? { ...section, lessons: [...section.lessons, newLesson] }
           : section
       );
-      onSectionsChange(newSections);
+      setSections(newSections);
       setNewLessonTitle("");
       setIsAddingLesson(false);
     }
@@ -99,7 +131,7 @@ const CurriculumForm: React.FC<ICurriculumFormProps> = ({
       }
       return section;
     });
-    onSectionsChange(newSections);
+    setSections(newSections);
   };
 
   const handleUploadClick = (lessonId: string) => {
@@ -109,7 +141,17 @@ const CurriculumForm: React.FC<ICurriculumFormProps> = ({
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0 && uploadingLessonId) {
-      onLessonFileChange(uploadingLessonId, e.target.files[0]);
+      const file = e.target.files[0];
+      const tempKey = `lesson${lessonKeyCounter}`;
+      setLessonKeyCounter((prev) => prev + 1);
+      setLessonFiles((prev) => ({ ...prev, [tempKey]: file }));
+      const newSections = sections.map((section) => ({
+        ...section,
+        lessons: section.lessons.map((lesson) =>
+          lesson.id === uploadingLessonId ? { ...lesson, tempKey } : lesson
+        ),
+      }));
+      setSections(newSections);
       setUploadingLessonId(null);
     }
     if (fileInputRef.current) {
@@ -119,13 +161,61 @@ const CurriculumForm: React.FC<ICurriculumFormProps> = ({
 
   const handleAddTestClick = () => {
     if (selectedSectionId && selectedTestId) {
-      onAddTest(selectedSectionId, selectedTestId);
+      const updatedSections = sections.map((section) => {
+        if (section.id === selectedSectionId) {
+          if (section.tests.some((t) => t.testId === selectedTestId)) return section;
+          return { ...section, tests: [...section.tests, { testId: selectedTestId }] };
+        }
+        return section;
+      });
+      setSections(updatedSections);
     }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent, action: () => void) => {
     if (e.key === "Enter") {
       action();
+    }
+  };
+
+  const handleSaveSection = async (sectionId: string) => {
+    if (!id) return;
+    const apiFormData = new FormData();
+    const targetSection = sections.find((s) => s.id === sectionId);
+    if (targetSection) {
+      targetSection.lessons.forEach((lesson) => {
+        if (lesson.tempKey) {
+          const file = lessonFiles[lesson.tempKey];
+          if (file) apiFormData.append(lesson.tempKey, file);
+        }
+      });
+    }
+    const cleanedSections = sections.map((section) => ({
+      title: section.title,
+      order: section.order,
+      tests: section.tests,
+      lessons: section.lessons.map((lesson) => ({
+        title: lesson.title,
+        order: lesson.order,
+        tempKey: lesson.tempKey,
+      })),
+    }));
+    const currentValues = form.getValues();
+    const finalBodyData = {
+      ...currentValues,
+      sections: cleanedSections,
+      price: Number(currentValues.price) || 0,
+      discountPrice: Number(currentValues.discountPrice) || 0,
+    };
+    apiFormData.append("bodyData", JSON.stringify(finalBodyData));
+    try {
+      await updateCourse({ id, bodyData: apiFormData }).unwrap();
+      SuccessToast("Section updated successfully");
+    } catch (e: unknown) {
+      type ApiError = { data?: { message?: string } }
+      const err = e as ApiError
+      const msg = err?.data?.message || (e instanceof Error ? e.message : "Failed to save section")
+      ErrorToast(msg);
     }
   };
 
@@ -226,7 +316,7 @@ const CurriculumForm: React.FC<ICurriculumFormProps> = ({
                           <Button
                             variant="destructive"
                             size="sm"
-                            onClick={() => onDeleteLesson(lesson.id)}
+                            onClick={() => handleDeleteLesson(lesson.id)}
                           >
                             <Trash2 className="h-4 w-4" />
                           </Button>
@@ -338,9 +428,15 @@ const CurriculumForm: React.FC<ICurriculumFormProps> = ({
                         <Button
                           variant="destructive"
                           size="icon"
-                          onClick={() =>
-                            onRemoveTest(selectedSection.id, test.testId)
-                          }
+                          onClick={() => {
+                            const updatedSections = sections.map((section) => {
+                              if (section.id === selectedSection.id) {
+                                return { ...section, tests: section.tests.filter((t) => t.testId !== test.testId) };
+                              }
+                              return section;
+                            });
+                            setSections(updatedSections);
+                          }}
                         >
                           <X className="h-4 w-4" />
                         </Button>
@@ -374,6 +470,18 @@ const CurriculumForm: React.FC<ICurriculumFormProps> = ({
                   </div>
                 </CardContent>
               </Card>
+            )}
+            {selectedSection && (
+              <div className="px-0 md:px-6">
+                <Button
+                  className="w-full md:w-auto bg-cyan-500 hover:bg-cyan-600 text-white"
+                  onClick={() => handleSaveSection(selectedSection.id)}
+                  type="button"
+                  disabled={isLoading}
+                >
+                  Save This Section
+                </Button>
+              </div>
             )}
           </div>
         </ScrollArea>

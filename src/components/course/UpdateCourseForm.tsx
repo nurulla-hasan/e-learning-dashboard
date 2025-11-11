@@ -4,9 +4,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { Button } from "../ui/button";
 import { useNavigate, useParams } from "react-router-dom";
-import { ErrorToast, SuccessToast } from "@/helper/ValidationHelper";
 import { Form } from "@/components/ui/form";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { courseSchema, type TCourseFormValues } from "@/schema/course.schema";
 import CourseBasicInfo from "./CourseBasicInfo";
@@ -14,20 +13,28 @@ import CourseMetaDetails from "./CourseMetaDetails";
 import CoursePricing from "./CoursePricing";
 import CourseInstructorInfo from "./CourseInstructorInfo";
 import CurriculumForm from "./CurriculumForm";
-import { useGetCategoriesQuery } from "@/redux/features/category/categoryApi";
 import { useGetTestsQuery } from "@/redux/features/test/testApi";
-import { useGetSingleCourseQuery, useUpdateCourseMutation } from "@/redux/features/course/courseApi";
+import { useGetSingleCourseQuery } from "@/redux/features/course/courseApi";
 import type { ISection } from "../../types/create.course.type";
 import { Loader } from "lucide-react";
+
+// Normalize API courseLevel to Select option values
+const normalizeCourseLevel = (lvl: string | null | undefined) => {
+  const map: Record<string, string> = {
+    beginner: "Beginner",
+    intermediate: "Intermediate",
+    advanced: "Advanced",
+  };
+  if (!lvl) return "Select Level";
+  const key = String(lvl).trim().toLowerCase();
+  return map[key] ?? "Select Level";
+};
 
 const UpdateCourseForm = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const [updateCourse, { isLoading: updateLoading }] = useUpdateCourseMutation();
-  const { data: categories } = useGetCategoriesQuery({});
-  const categoryOptions =
-    categories?.data?.map((category: any) => ({ id: category.id, title: category.name })) || [];
+  
 
   const { data: tests } = useGetTestsQuery({});
   const requiredTestInfo = useMemo(
@@ -43,7 +50,6 @@ const UpdateCourseForm = () => {
   const [instructorImage, setInstructorImage] = useState<File | null>(null);
   const [instructorImagePreview, setInstructorImagePreview] = useState<string | null>(null);
   const [lessonFiles, setLessonFiles] = useState<{ [lessonId: string]: File }>({});
-  const [lessonKeyCounter, setLessonKeyCounter] = useState(1);
   const [sections, setSections] = useState<ISection[]>([]);
   const [testsData, setTestsData] = useState<{ id: string; title: string }[]>([]);
 
@@ -74,8 +80,8 @@ const UpdateCourseForm = () => {
       courseTitle: c.courseTitle ?? "",
       courseShortDescription: c.courseShortDescription ?? "",
       courseDescription: c.courseDescription ?? "",
-      courseLevel: c.courseLevel ?? "Select Level",
-      categoryId: c.categoryId ?? "Select Category",
+      courseLevel: normalizeCourseLevel(c.courseLevel),
+      categoryId: (c?.categoryId ?? c?.category?.id) ? String(c?.categoryId ?? c?.category?.id) : "Select Category",
       price: c.price ?? 0,
       discountPrice: c.discountPrice ?? 0,
       skillLevel: c.skillLevel ?? "BEGINNER",
@@ -124,106 +130,19 @@ const UpdateCourseForm = () => {
     setTestsData(deduped);
   }, [requiredTestInfo, courseRes]);
 
-  const handleSectionsChange = (updated: ISection[]) => setSections(updated);
-
-  const handleLessonFileChange = (lessonId: string, file: File) => {
-    const tempKey = `lesson${lessonKeyCounter}`;
-    setLessonKeyCounter((prev) => prev + 1);
-    setLessonFiles((prev) => ({ ...prev, [tempKey]: file }));
-    setSections((prev) =>
-      prev.map((section) => ({
-        ...section,
-        lessons: section.lessons.map((lesson) =>
-          lesson.id === lessonId ? { ...lesson, tempKey } : lesson
-        ),
-      })),
-    );
-  };
-
-  const handleDeleteLesson = (lessonId: string) => {
-    let tempKeyToDelete: string | undefined;
-    const updatedSections = sections.map((section) => ({
-      ...section,
-      lessons: section.lessons.filter((lesson) => {
-        if (lesson.id === lessonId) {
-          tempKeyToDelete = lesson.tempKey;
-          return false;
-        }
-        return true;
-      }),
-    }));
-    if (tempKeyToDelete) {
-      const newLessonFiles = { ...lessonFiles };
-      delete newLessonFiles[tempKeyToDelete];
-      setLessonFiles(newLessonFiles);
-    }
-    setSections(updatedSections);
-  };
-
-  const handleAddTest = (sectionId: string, testId: string) => {
-    const updatedSections = sections.map((section) => {
-      if (section.id === sectionId) {
-        if (section.tests.some((t) => t.testId === testId)) return section;
-        return { ...section, tests: [...section.tests, { testId }] };
-      }
-      return section;
-    });
-    setSections(updatedSections);
-  };
-
-  const handleRemoveTest = (sectionId: string, testId: string) => {
-    const updatedSections = sections.map((section) => {
-      if (section.id === sectionId) {
-        return { ...section, tests: section.tests.filter((t) => t.testId !== testId) };
-      }
-      return section;
-    });
-    setSections(updatedSections);
-  };
-
-  const onSubmit: SubmitHandler<TCourseFormValues> = async (values) => {
-    if (!id) return;
-    const apiFormData = new FormData();
-    if (thumbnail) apiFormData.append("courseThumbnail", thumbnail);
-    if (instructorImage) apiFormData.append("instructorImage", instructorImage);
-    Object.entries(lessonFiles).forEach(([key, file]) => apiFormData.append(key, file));
-    const cleanedSections = sections.map((section) => ({
-      title: section.title,
-      order: section.order,
-      tests: section.tests,
-      lessons: section.lessons.map((lesson) => ({
-        title: lesson.title,
-        order: lesson.order,
-        tempKey: lesson.tempKey,
-      })),
-    }));
-    const finalBodyData = {
-      ...values,
-      sections: cleanedSections,
-      price: Number(values.price) || 0,
-      discountPrice: Number(values.discountPrice) || 0,
-    };
-    apiFormData.append("bodyData", JSON.stringify(finalBodyData));
-    try {
-      await updateCourse({ id, bodyData: apiFormData }).unwrap();
-      SuccessToast("Course updated successfully");
-      navigate("/courses");
-    } catch (e: any) {
-      ErrorToast(e?.data?.message || "Failed to update course");
-    }
-  };
+  // Child components perform their own save operations now.
 
   if(courseLoading) {
     return (
       <div className="flex items-center justify-center h-[75vh]">
-        <Loader size={40} className="animate-spin"/>
+        <Loader size={30} className="animate-spin"/>
       </div>
     )
   }
 
   return (
     <Form {...form}>
-      <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
+      <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
         <div className="grid grid-cols-1 gap-6">
           <CourseBasicInfo
             control={form.control}
@@ -232,11 +151,13 @@ const UpdateCourseForm = () => {
             thumbnailPreview={thumbnailPreview}
             setThumbnailPreview={setThumbnailPreview}
           />
+          
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <CourseMetaDetails control={form.control} categoryOptions={categoryOptions} />
+            <CourseMetaDetails control={form.control} setValue={form.setValue} initialCourse={courseRes?.data} />
             <CoursePricing control={form.control} />
           </div>
+          
 
           <CourseInstructorInfo
             control={form.control}
@@ -245,17 +166,15 @@ const UpdateCourseForm = () => {
             instructorImagePreview={instructorImagePreview}
             setInstructorImagePreview={setInstructorImagePreview}
           />
+          
         </div>
 
         <div className="grid grid-cols-1 gap-6">
           <CurriculumForm
             sections={sections}
-            onSectionsChange={handleSectionsChange}
+            setSections={setSections}
             lessonFiles={lessonFiles}
-            onLessonFileChange={handleLessonFileChange}
-            onDeleteLesson={handleDeleteLesson}
-            onAddTest={handleAddTest}
-            onRemoveTest={handleRemoveTest}
+            setLessonFiles={setLessonFiles}
             testsData={testsData}
           />
 
@@ -264,16 +183,9 @@ const UpdateCourseForm = () => {
               onClick={() => navigate("/courses")}
               type="button"
               variant="outline"
-              className="flex-1 bg-transparent"
+              className="w-full bg-transparent"
             >
               Cancel
-            </Button>
-            <Button
-              disabled={updateLoading}
-              type="submit"
-              className="bg-cyan-500 hover:bg-cyan-600 duration-200 text-white flex-1"
-            >
-              {updateLoading ? "Saving..." : "Save Changes"}
             </Button>
           </div>
         </div>

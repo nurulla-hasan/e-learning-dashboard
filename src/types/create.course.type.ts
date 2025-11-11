@@ -20,11 +20,14 @@ export interface ISection {
 
 export interface ICurriculumFormProps {
   sections: ISection[];
-  onSectionsChange: (sections: ISection[]) => void;
-  onLessonFileChange: (lessonId: string, file: File) => void;
-  onDeleteLesson: (lessonId: string) => void;
-  onAddTest: (sectionId: string, testId: string) => void;
-  onRemoveTest: (sectionId: string, testId: string) => void;
+  setSections: (
+    updater: ISection[] | ((prev: ISection[]) => ISection[])
+  ) => void;
   lessonFiles: { [tempKey: string]: File };
+  setLessonFiles: (
+    updater:
+      | ((prev: { [tempKey: string]: File }) => { [tempKey: string]: File })
+      | { [tempKey: string]: File }
+  ) => void;
   testsData: { id: string; title: string }[];
 }
