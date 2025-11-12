@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import { Outlet } from 'react-router-dom';
-import { ScrollArea } from '@/components/ui/scroll-area';
+// import { ScrollArea } from '@/components/ui/scroll-area';
 
 const DashboardLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -23,9 +23,11 @@ const DashboardLayout: React.FC = () => {
         />
         
         {/* Main Content Area */}
-        <ScrollArea className="flex-1 h-[calc(100vh-62px)] p-4">
+        {/* <ScrollArea className="flex-1 h-[calc(100vh-62px)] p-4"> */}
+        <div className="flex-1 h-[calc(100vh-62px)]  overflow-auto p-4">
             <Outlet/>
-        </ScrollArea>
+        </div>
+        {/* </ScrollArea> */}
       </div>
       
       {/* Mobile Sidebar Overlay */}

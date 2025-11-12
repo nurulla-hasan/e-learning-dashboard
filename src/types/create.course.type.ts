@@ -8,6 +8,9 @@ export interface ILesson {
   order: number;
   description: string;
   tempKey?: string;
+  isNew?: boolean;
+  content?: string;
+  contentType?: string | null;
 }
 
 export interface ISection {

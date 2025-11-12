@@ -101,6 +101,9 @@ const UpdateCourseForm = () => {
         order: l.order ?? li + 1,
         description: l.description ?? "",
         tempKey: undefined,
+        isNew: false,
+        content: l.content,
+        contentType: l.contentType ?? null,
       })),
       tests: (s.Test ?? []).map((t: any) => ({ testId: t.id ?? t.testId ?? t })),
     }));
