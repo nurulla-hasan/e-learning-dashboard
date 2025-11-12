@@ -37,7 +37,7 @@ export const courseApi = apiSlice.injectEndpoints({
     // Get single course
     getSingleCourse: builder.query({
       query: (id: string) => ({
-        url: `/courses/${id}`,
+        url: `/courses/admin/${id}`,
         method: "GET",
       }),
       providesTags: [TagTypes.courses],

@@ -59,6 +59,19 @@ const CurriculumForm: React.FC<ICurriculumFormProps> = ({
     }
   }, [sections, selectedSectionId]);
 
+  const getResourceKind = (url?: string, contentType?: string | null) => {
+    if (!url && !contentType) return "other" as const;
+    const u = url || "";
+    const ct = (contentType || "").toLowerCase();
+    if (ct.startsWith("image") || /\.(png|jpe?g|gif|webp|bmp|svg)$/i.test(u))
+      return "image" as const;
+    if (ct.startsWith("video") || /\.(mp4|webm|ogg|mov|m4v)$/i.test(u))
+      return "video" as const;
+    if (ct.includes("pdf") || /\.pdf$/i.test(u)) return "pdf" as const;
+    if (/\.(docx?|pptx?|xlsx?)$/i.test(u)) return "doc" as const;
+    return "other" as const;
+  };
+
   const handleAddSection = () => {
     if (newSectionTitle.trim()) {
       const newSection: ISection = {
@@ -107,6 +120,7 @@ const CurriculumForm: React.FC<ICurriculumFormProps> = ({
         title: newLessonTitle.trim(),
         description: "",
         order: selectedSection.lessons.length + 1,
+        isNew: true,
       };
       const newSections = sections.map((section) =>
         section.id === selectedSectionId
@@ -163,8 +177,12 @@ const CurriculumForm: React.FC<ICurriculumFormProps> = ({
     if (selectedSectionId && selectedTestId) {
       const updatedSections = sections.map((section) => {
         if (section.id === selectedSectionId) {
-          if (section.tests.some((t) => t.testId === selectedTestId)) return section;
-          return { ...section, tests: [...section.tests, { testId: selectedTestId }] };
+          if (section.tests.some((t) => t.testId === selectedTestId))
+            return section;
+          return {
+            ...section,
+            tests: [...section.tests, { testId: selectedTestId }],
+          };
         }
         return section;
       });
@@ -212,9 +230,11 @@ const CurriculumForm: React.FC<ICurriculumFormProps> = ({
       await updateCourse({ id, bodyData: apiFormData }).unwrap();
       SuccessToast("Section updated successfully");
     } catch (e: unknown) {
-      type ApiError = { data?: { message?: string } }
-      const err = e as ApiError
-      const msg = err?.data?.message || (e instanceof Error ? e.message : "Failed to save section")
+      type ApiError = { data?: { message?: string } };
+      const err = e as ApiError;
+      const msg =
+        err?.data?.message ||
+        (e instanceof Error ? e.message : "Failed to save section");
       ErrorToast(msg);
     }
   };
@@ -305,21 +325,73 @@ const CurriculumForm: React.FC<ICurriculumFormProps> = ({
                       ? lessonFiles[lessonTempKey]
                       : null;
                     return (
-                      <Card
-                        key={lesson.id}
-                        className="shadow-none"
-                      >
-                        <CardHeader className="flex-row items-center justify-between">
-                          <CardTitle className="text-lg font-semibold">
-                            Lesson {index + 1}
-                          </CardTitle>
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            onClick={() => handleDeleteLesson(lesson.id)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
+                      <Card key={lesson.id} className="shadow-none">
+                        <CardHeader className="flex-row items-center justify-between gap-3">
+                          <div className="flex items-center justify-between gap-2">
+                            <CardTitle className="text-lg font-semibold">
+                              Lesson {index + 1}
+                            </CardTitle>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleDeleteLesson(lesson.id)}
+                              className="rounded-full text-red-500 hover:text-red-600"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            {!lesson.isNew &&
+                              lesson.content &&
+                              (() => {
+                                const kind = getResourceKind(
+                                  lesson.content,
+                                  lesson.contentType
+                                );
+                                if (kind === "image") {
+                                  return (
+                                    <a
+                                      href={lesson.content}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                    >
+                                      <img
+                                        src={lesson.content}
+                                        alt={lesson.title}
+                                        className="w-16 h-10 object-cover rounded border"
+                                      />
+                                    </a>
+                                  );
+                                }
+                                if (kind === "video") {
+                                  return (
+                                    <a
+                                      href={lesson.content}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                    >
+                                      <video
+                                        src={lesson.content}
+                                        className="w-16 h-10 rounded border object-cover"
+                                        muted
+                                        playsInline
+                                        preload="metadata"
+                                      />
+                                    </a>
+                                  );
+                                }
+                                return (
+                                  <a
+                                    href={lesson.content}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="text-xs text-blue-600 underline"
+                                  >
+                                    View
+                                  </a>
+                                );
+                              })()}
+                          </div>
                         </CardHeader>
                         <CardContent className="space-y-4">
                           <div>
@@ -336,33 +408,37 @@ const CurriculumForm: React.FC<ICurriculumFormProps> = ({
                               }
                               placeholder="Enter lesson title"
                               className="w-full"
+                              disabled={!lesson.isNew}
                             />
                           </div>
 
-                          <div>
-                            <label className="block text-sm font-medium mb-2">
-                              Upload Resources
-                            </label>
-                            <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-                              <Button
-                                variant="ghost"
-                                className="text-blue-600 hover:text-blue-700"
-                                onClick={() => handleUploadClick(lesson.id)}
-                                type="button"
-                              >
-                                <Upload className="h-4 w-4 mr-2" />
-                                Upload
-                              </Button>
-                              <p className="text-xs text-gray-500 mt-2">
-                                *Upload video file/pdf/docs
-                              </p>
-                              {selectedFile && (
-                                <p className="text-sm text-green-600 mt-2">
-                                  File selected: {selectedFile.name}
+                          {lesson.isNew && (
+                            <div>
+                              <label className="block text-sm font-medium mb-2">
+                                Upload Resources
+                              </label>
+                              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                                <Button
+                                  variant="ghost"
+                                  className="text-blue-600 hover:text-blue-700"
+                                  onClick={() => handleUploadClick(lesson.id)}
+                                  type="button"
+                                >
+                                  <Upload className="h-4 w-4 mr-2" />
+                                  Upload
+                                </Button>
+                                <p className="text-xs text-gray-500 mt-2">
+                                  *Upload video file/pdf/docs
                                 </p>
-                              )}
+                                {selectedFile && (
+                                  <p className="text-sm text-green-600 mt-2">
+                                    File selected: {selectedFile.name}
+                                  </p>
+                                )}
+                              </div>
                             </div>
-                          </div>
+                          )}
+                          {!lesson.isNew && lesson.content && null}
                         </CardContent>
                       </Card>
                     );
@@ -431,7 +507,12 @@ const CurriculumForm: React.FC<ICurriculumFormProps> = ({
                           onClick={() => {
                             const updatedSections = sections.map((section) => {
                               if (section.id === selectedSection.id) {
-                                return { ...section, tests: section.tests.filter((t) => t.testId !== test.testId) };
+                                return {
+                                  ...section,
+                                  tests: section.tests.filter(
+                                    (t) => t.testId !== test.testId
+                                  ),
+                                };
                               }
                               return section;
                             });
@@ -452,11 +533,17 @@ const CurriculumForm: React.FC<ICurriculumFormProps> = ({
                         <SelectValue placeholder="Select a test" />
                       </SelectTrigger>
                       <SelectContent>
-                        {testsData.length > 0 ? testsData.map((test) => (
-                          <SelectItem key={test.id} value={test.id}>
-                            {test.title}
+                        {testsData.length > 0 ? (
+                          testsData.map((test) => (
+                            <SelectItem key={test.id} value={test.id}>
+                              {test.title}
+                            </SelectItem>
+                          ))
+                        ) : (
+                          <SelectItem disabled value="no test data available">
+                            No tests available
                           </SelectItem>
-                        )) : <SelectItem disabled value="no test data available">No tests available</SelectItem>}
+                        )}
                       </SelectContent>
                     </Select>
                     <Button
