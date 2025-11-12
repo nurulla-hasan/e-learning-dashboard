@@ -1,122 +1,88 @@
 {
     "success": true,
     "statusCode": 200,
-    "message": "Course details retrieved successfully",
+    "message": "Course details for admin retrieved successfully",
     "data": {
-        "categoryName": "Własny testowy",
-        "id": "68fa1cb4907852d98bd98d79",
+        "categoryName": "Development",
+        "id": "68ca2e049043bcfafae98e9b",
         "userId": "68ddfadcace204dd21badd3b",
-        "courseTitle": "Omnis sapiente eu non sit quisquam reprehenderit officia nemo id odit",
-        "courseShortDescription": "Placeat vero consectetur ullam ut reprehenderit quo molestiae",
-        "courseDescription": "Doloribus consequat Proident officiis debitis in aperiam quisquam nihil voluptas laborum elit reiciendis sunt",
+        "courseTitle": "Design Mastery",
+        "courseShortDescription": "Learn design from scratch",
+        "courseDescription": "Full UI?UX guide...",
         "courseLevel": "Beginner",
-        "categoryId": "6904a915a9d4aa00741a6793",
-        "certificate": false,
-        "lifetimeAccess": false,
-        "price": 100,
-        "discountPrice": 60,
+        "categoryId": "68c7adabfa864223d9f28fa9",
+        "certificate": true,
+        "lifetimeAccess": true,
+        "price": 150,
+        "discountPrice": 120,
         "vatPercentage": 0,
-        "instructorName": "Emerson Barber",
-        "instructorImage": "https://lerirides.nyc3.digitaloceanspaces.com/courses/instructors/1761221812302_Screenshot 2025-10-17 125322.png",
-        "instructorDesignation": "Modi sit dolor porro dolore suscipit adipisci velit mollitia rerum dicta ut",
-        "instructorDescription": "Amet cillum corrupti velit reprehenderit doloribus dolor neque",
-        "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1761221812242_Screenshot 2025-10-23 131151.png",
-        "totalLessons": 0,
-        "totalSections": 0,
+        "instructorName": "John Doe",
+        "instructorImage": "https://lerirides.nyc3.digitaloceanspaces.com/courses/instructors/1758082951849_female-instructor.png",
+        "instructorDesignation": "Senior Designer",
+        "instructorDescription": "10 years exp.",
+        "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1758082948594_nick-morrison-FHnnjk1Yj7Y-unsplash.jpg",
+        "totalLessons": 3,
+        "totalSections": 2,
         "totalDuration": 0,
-        "avgRating": 0,
-        "totalRatings": 0,
-        "totalEnrollments": 0,
+        "avgRating": 5,
+        "totalRatings": 1,
+        "totalEnrollments": 1,
         "isPublished": false,
-        "lastUpdated": "2025-11-11T09:56:33.560Z",
+        "lastUpdated": "2025-09-17T03:41:56.813Z",
         "difficulty": "EASY",
         "skillLevel": "BEGINNER",
         "courseLength": null,
-        "createdAt": "2025-10-23T12:16:52.466Z",
-        "updatedAt": "2025-11-11T09:56:32.855Z",
+        "createdAt": "2025-10-04T10:22:31.077Z",
+        "updatedAt": "2025-10-04T10:22:31.077Z",
         "Section": [
             {
-                "id": "68fa1cb5907852d98bd98d7a",
-                "courseId": "68fa1cb4907852d98bd98d79",
-                "title": "efs",
+                "id": "68ca378c3959272421d53d49",
+                "courseId": "68ca2e049043bcfafae98e9b",
+                "title": "Introduction",
                 "order": 1,
                 "totalLength": 0,
-                "totalLessons": 1,
-                "testCount": 1,
-                "createdAt": "2025-10-23T12:16:52.466Z",
-                "updatedAt": "2025-10-23T12:16:52.466Z",
+                "totalLessons": 2,
+                "testCount": null,
+                "createdAt": "2025-09-17T04:22:34.873Z",
+                "updatedAt": "2025-09-17T04:22:34.873Z",
                 "Lesson": [
                     {
-                        "title": "gfdfg",
-                        "order": 1
+                        "title": "Welcome",
+                        "order": 1,
+                        "content": "https://lerirides.nyc3.digitaloceanspaces.com/courses/lessons/1758082952694_nick-morrison-FHnnjk1Yj7Y-unsplash.jpg",
+                        "contentType": null,
+                        "videoDuration": null
+                    },
+                    {
+                        "title": "Setup",
+                        "order": 2,
+                        "content": "https://lerirides.nyc3.digitaloceanspaces.com/courses/lessons/1758082953530_man-9377284_1280.jpg",
+                        "contentType": null,
+                        "videoDuration": null
                     }
                 ],
-                "Test": [
-                    {
-                        "id": "68fa0f4f221bcc8a2d62b771",
-                        "title": "Midterm Examination"
-                    }
-                ]
+                "Test": []
             },
             {
-                "id": "68fa1cb7907852d98bd98d7c",
-                "courseId": "68fa1cb4907852d98bd98d79",
-                "title": "ffdgfrgtreg",
+                "id": "68ca378c3959272421d53d4c",
+                "courseId": "68ca2e049043bcfafae98e9b",
+                "title": "Advanced",
                 "order": 2,
                 "totalLength": 0,
                 "totalLessons": 1,
-                "testCount": 1,
-                "createdAt": "2025-10-23T12:16:52.466Z",
-                "updatedAt": "2025-10-23T12:16:52.466Z",
+                "testCount": null,
+                "createdAt": "2025-09-17T04:22:34.873Z",
+                "updatedAt": "2025-09-17T04:22:34.873Z",
                 "Lesson": [
                     {
-                        "title": "rgfsrfg",
-                        "order": 1
+                        "title": "Tools",
+                        "order": 1,
+                        "content": "https://lerirides.nyc3.digitaloceanspaces.com/courses/lessons/1758082954357_man-4672229_1280.jpg",
+                        "contentType": null,
+                        "videoDuration": null
                     }
                 ],
-                "Test": [
-                    {
-                        "id": "68fa100e221bcc8a2d62b786",
-                        "title": "Final Examination"
-                    }
-                ]
-            }
-        ],
-        "Review": [],
-        "similarCourses": [
-            {
-                "id": "68e0f8de4e2e1554687454a0",
-                "courseTitle": "Design Mastery12",
-                "courseShortDescription": "Learn design from scratch12",
-                "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1759574235590_nick-morrison-FHnnjk1Yj7Y-unsplash.jpg",
-                "price": 200,
-                "discountPrice": 180,
-                "instructorName": "John Doe",
-                "totalSections": 1,
-                "totalLessons": 1,
-                "totalDuration": 0,
-                "avgRating": 0,
-                "totalRatings": 0,
-                "category": {
-                    "name": "Własny testowy"
-                }
-            },
-            {
-                "id": "68fe05f1278f5b74cb9f243c",
-                "courseTitle": "Design Master",
-                "courseShortDescription": "Expedita qui sint perferendis dolore fugiat unde...",
-                "courseThumbnail": "https://lerirides.nyc3.digitaloceanspaces.com/courses/thumbnails/1762836392312_nick-morrison-FHnnjk1Yj7Y-unsplash.jpg",
-                "price": 200,
-                "discountPrice": 150,
-                "instructorName": "John Doe",
-                "totalSections": 0,
-                "totalLessons": 0,
-                "totalDuration": 0,
-                "avgRating": 0,
-                "totalRatings": 0,
-                "category": {
-                    "name": "Własny testowy"
-                }
+                "Test": []
             }
         ]
     }
